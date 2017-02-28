@@ -45,10 +45,29 @@ Procedure.l CountFileStrings(FileName.s)
   EndIf
 EndProcedure
 
+; Читаем настройки из файла
+cache_updates.l = 1 ; Обновлять кеш с сервера
+cache_hidden.l = 0 ; Загружать скрытые обновления
+If OpenPreferences("config.cfg", #PB_Preference_GroupSeparator)
+  PreferenceGroup("cache")
+  cache_updates = ReadPreferenceLong("updates", cache_updates)
+  cache_hidden = ReadPreferenceLong("hidden", cache_hidden)
+  ClosePreferences()
+EndIf
+
+; Создаем дирректории
+If FileSize("updates")=-1 : CreateDirectory("updates") : EndIf
+If FileSize("updates/cache_updates")=-1 : CreateDirectory("updates/cache_updates") : EndIf
+
 ; Обновление прошивок в локальном каталоге
 Global UpdateSuccess.b = #False
-Procedure UpdateCacheFirmware(Null)
-  If ReceiveHTTPFile("http://deus.lipkop.club/Update/deus_updates/versions.php", "updates/versions.txt")
+Procedure UpdateCacheFirmware(hidden)
+  If hidden>0
+    versions_url$ = "http://deus.lipkop.club/Update/deus_updates/versions.php?show=all"
+  Else
+    versions_url$ = "http://deus.lipkop.club/Update/deus_updates/versions.php"
+  EndIf
+  If ReceiveHTTPFile(versions_url$, "updates/versions.txt")
     Count.l = CountFileStrings("updates/versions.txt")
     If Count>0 And ReadFile(0, "updates/versions.txt")
       SetGadgetAttribute(0, #PB_ProgressBar_Maximum, Count*ListSize(FirmwareFiles()))
@@ -91,11 +110,11 @@ Procedure UpdateCacheFirmware(Null)
 EndProcedure
 
 ; Если интернет доступен
-If CheckInternetConnection()
+If cache_updates>0 And CheckInternetConnection()
   Exit.b = #False
   OpenWindow(0, #PB_Any, #PB_Any, 300, 35, "Updating...", #PB_Window_ScreenCentered)
   ProgressBarGadget(0, 5, 5, 290, 25, 0, 1)
-  CreateThread(@UpdateCacheFirmware(), #Null)
+  CreateThread(@UpdateCacheFirmware(), cache_hidden)
   Repeat
     WaitWindowEvent(100)
   Until UpdateSuccess
@@ -212,11 +231,23 @@ If CreateNetworkServer(0, 8080, #PB_Network_TCP)
 Else
   MessageRequester("Error", "Can`t create the http server on port 8080!", #MB_ICONERROR)
 EndIf
+
+; Сохраняем настройки в файл
+If Not OpenPreferences("config.cfg", #PB_Preference_GroupSeparator)
+  If Not CreatePreferences("config.cfg", #PB_Preference_GroupSeparator)
+    End
+  EndIf
+EndIf
+PreferenceGroup("cache")
+WritePreferenceLong("updates", cache_updates)
+WritePreferenceLong("hidden", cache_hidden)
+ClosePreferences()
+
 End
 
 ; IDE Options = PureBasic 5.31 (Windows - x86)
-; CursorPosition = 178
-; FirstLine = 153
+; CursorPosition = 236
+; FirstLine = 198
 ; Folding = -
 ; EnableUnicode
 ; EnableThread
