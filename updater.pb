@@ -45,19 +45,75 @@ Procedure.l CountFileStrings(FileName.s)
   EndIf
 EndProcedure
 
+; Процедура записи сообщения в лог файл
+Procedure.l AddToLogFile(Message.s, DateTime.b=#True, NewLine.b=#True, Enable.b=#True)
+  If Enable
+    LogFile.l = OpenFile(#PB_Any, "updater.log", #PB_File_Append)
+    If LogFile
+      DateString$ = ""
+      If DateTime
+        Date.l = Date()
+        Hour$ = LSet(Str(Hour(Date)), 2, "0")
+        Minute$ = LSet(Str(Minute(Date)), 2, "0")
+        Second$ = LSet(Str(Second(Date)), 2, "0")
+        Day$ = LSet(Str(Day(Date)), 2, "0")
+        Month$ = LSet(Str(Month(Date)), 2, "0")
+        Year$ = LSet(Str(Year(Date)), 4)
+        DateString$ = "["+Hour$+":"+Minute$+":"+Second$+" "+Day$+"/"+Month$+"/"+Year$+"]: "
+      EndIf
+      If NewLine
+        WriteStringN(LogFile, DateString$+Message)
+      Else
+        WriteString(LogFile, DateString$+Message)
+      EndIf
+      CloseFile(LogFile)
+      ProcedureReturn #True
+    Else
+      ProcedureReturn #False
+    EndIf
+  Else
+    ProcedureReturn -1
+  EndIf
+EndProcedure
+
 ; Читаем настройки из файла
+Global system_debug.l = 0 ; Режим отладки
 cache_updates.l = 1 ; Обновлять кеш с сервера
-cache_hidden.l = 0 ; Загружать скрытые обновления
+cache_hidden.l = 0  ; Загружать скрытые обновления
 If OpenPreferences("config.cfg", #PB_Preference_GroupSeparator)
+  PreferenceGroup("system")
+  system_debug = ReadPreferenceLong("debug", system_debug)
   PreferenceGroup("cache")
   cache_updates = ReadPreferenceLong("updates", cache_updates)
   cache_hidden = ReadPreferenceLong("hidden", cache_hidden)
   ClosePreferences()
+  AddToLogFile("Updater started.", #True, #True, system_debug)
+Else
+  AddToLogFile("Updater started.", #True, #True, system_debug)
+  AddToLogFile("Can`t open config file! Will be used default settings.", #True, #True, system_debug)
 EndIf
+AddToLogFile("Current settings:", #True, #True, system_debug)
+AddToLogFile(LSet(#NULL$, 3, Chr(9))+"system_debug = "+Str(system_debug)+";", #False, #True, system_debug)
+AddToLogFile(LSet(#NULL$, 3, Chr(9))+"cache_updates = "+Str(cache_updates)+";", #False, #True, system_debug)
+AddToLogFile(LSet(#NULL$, 3, Chr(9))+"cache_hidden = "+Str(cache_hidden)+";", #False, #True, system_debug)
 
 ; Создаем дирректории
-If FileSize("updates")=-1 : CreateDirectory("updates") : EndIf
-If FileSize("updates/cache_updates")=-1 : CreateDirectory("updates/cache_updates") : EndIf
+If FileSize("updates")=-1
+  AddToLogFile("The directory "+Chr(34)+"updates"+Chr(34)+" does not exist! Create it... ", #True, #False, system_debug)
+  If CreateDirectory("updates")
+    AddToLogFile("DONE!", #False, #True, system_debug)
+  Else
+    AddToLogFile("ERROR!", #False, #True, system_debug)
+  EndIf
+EndIf
+If FileSize("updates/cache_updates")=-1
+  AddToLogFile("The directory "+Chr(34)+"updates/cache_updates"+Chr(34)+" does not exist! Create it... ", #True, #False, system_debug)
+  If CreateDirectory("updates/cache_updates")
+    AddToLogFile("DONE!", #False, #True, system_debug)
+  Else
+    AddToLogFile("ERROR!", #False, #True, system_debug)
+  EndIf
+EndIf
 
 ; Обновление прошивок в локальном каталоге
 Global UpdateSuccess.b = #False
@@ -67,6 +123,7 @@ Procedure UpdateCacheFirmware(hidden)
   Else
     versions_url$ = "http://deus.lipkop.club/Update/deus_updates/versions.php"
   EndIf
+  AddToLogFile("Update url: "+versions_url$, #True, #True, system_debug)
   If ReceiveHTTPFile(versions_url$, "updates/versions.txt")
     Count.l = CountFileStrings("updates/versions.txt")
     If Count>0 And ReadFile(0, "updates/versions.txt")
@@ -75,26 +132,50 @@ Procedure UpdateCacheFirmware(hidden)
         version$ = Trim(ReadString(0))
         If Len(version$)>0
           If FileSize("updates/cache_updates/"+version$) = -1 ; Если в локальном кеше такой прошивки нету
+            AddToLogFile("Get firmware "+Chr(34)+version$+Chr(34)+"...", #True, #True, system_debug)
             ; Качаем ее во временный каталог
             DownloadOfSuccessful.b = #True
-            CreateDirectory("updates/"+version$)
+            AddToLogFile("Create directory "+Chr(34)+"updates/"+version$+Chr(34)+"... ", #True, #False, system_debug)
+            If CreateDirectory("updates/"+version$)
+              AddToLogFile("DONE!", #False, #True, system_debug)
+            Else
+              AddToLogFile("ERROR!", #False, #True, system_debug)
+            EndIf
             ResetList(FirmwareFiles())
             While NextElement(FirmwareFiles())
               If FileSize("updates/"+version$+"/"+FirmwareFiles()\Directory) = -1
-                CreateDirectory("updates/"+version$+"/"+FirmwareFiles()\Directory)
+                AddToLogFile("Create directory "+Chr(34)+"updates/"+version$+"/"+FirmwareFiles()\Directory+Chr(34)+"... ", #True, #False, system_debug)
+                If CreateDirectory("updates/"+version$+"/"+FirmwareFiles()\Directory)
+                  AddToLogFile("DONE!", #False, #True, system_debug)
+                Else
+                  AddToLogFile("ERROR!", #False, #True, system_debug)
+                EndIf
               EndIf
+              AddToLogFile("Download file "+Chr(34)+"http://deus.lipkop.club/Update/deus_updates/"+version$+"/"+FirmwareFiles()\Directory+"/"+FirmwareFiles()\File+Chr(34)+"... ", #True, #False, system_debug)
               If Not ReceiveHTTPFile("http://deus.lipkop.club/Update/deus_updates/"+version$+"/"+FirmwareFiles()\Directory+"/"+FirmwareFiles()\File, "updates/"+version$+"/"+FirmwareFiles()\Directory+"/"+FirmwareFiles()\File) And FirmwareFiles()\Required = #True
                 DownloadOfSuccessful.b = #False
                 SetGadgetState(0, GetGadgetState(0)+ListSize(FirmwareFiles())-ListIndex(FirmwareFiles()))
+                AddToLogFile("ERROR!", #False, #True, system_debug)
                 Break 1
               Else
                 SetGadgetState(0, GetGadgetState(0)+1)
+                AddToLogFile("DONE!", #False, #True, system_debug)
               EndIf
             Wend
             If DownloadOfSuccessful ; Если прошивка скачалась успешно
-              CopyDirectory("updates/"+version$, "updates/cache_updates/"+version$, "", #PB_FileSystem_Recursive | #PB_FileSystem_Force)
+              AddToLogFile("Copy directory "+Chr(34)+"updates/"+version$+Chr(34)+" to "+Chr(34)+"updates/cache_updates/"+version$+Chr(34)+"... ", #True, #False, system_debug)
+              If CopyDirectory("updates/"+version$, "updates/cache_updates/"+version$, "", #PB_FileSystem_Recursive | #PB_FileSystem_Force)
+                AddToLogFile("DONE!", #False, #True, system_debug)
+              Else
+                AddToLogFile("ERROR!", #False, #True, system_debug)
+              EndIf
             EndIf
-            DeleteDirectory("updates/"+version$, "", #PB_FileSystem_Recursive | #PB_FileSystem_Force)
+            AddToLogFile("Delete directory "+Chr(34)+"updates/"+version$+Chr(34)+"... ", #True, #False, system_debug)
+            If DeleteDirectory("updates/"+version$, "", #PB_FileSystem_Recursive | #PB_FileSystem_Force)
+              AddToLogFile("DONE!", #False, #True, system_debug)
+            Else
+              AddToLogFile("ERROR!", #False, #True, system_debug)
+            EndIf
           Else
             SetGadgetState(0, GetGadgetState(0)+ListSize(FirmwareFiles()))
           EndIf
@@ -103,25 +184,42 @@ Procedure UpdateCacheFirmware(hidden)
       CloseFile(0)
     Else
       SetGadgetState(0, 1)
+      AddToLogFile("Can`t open file "+Chr(34)+"updates/versions.txt"+Chr(34)+"!", #True, #True, system_debug)
     EndIf
-    DeleteFile("updates/versions.txt", #PB_FileSystem_Force)
+    AddToLogFile("Delete file "+Chr(34)+"updates/versions.txt"+Chr(34)+"... ", #True, #False, system_debug)
+    If DeleteFile("updates/versions.txt", #PB_FileSystem_Force)
+      AddToLogFile("DONE!", #False, #True, system_debug)
+    Else
+      AddToLogFile("ERROR!", #False, #True, system_debug)
+    EndIf
+  Else
+    AddToLogFile("Can`t get file "+Chr(34)+"updates/versions.txt"+Chr(34)+"!", #True, #True, system_debug)
   EndIf
   UpdateSuccess = #True
+  AddToLogFile("Update finished.", #True, #True, system_debug)
 EndProcedure
 
 ; Если интернет доступен
-If cache_updates>0 And CheckInternetConnection()
-  Exit.b = #False
-  OpenWindow(0, #PB_Any, #PB_Any, 300, 35, "Updating...", #PB_Window_ScreenCentered)
-  ProgressBarGadget(0, 5, 5, 290, 25, 0, 1)
-  CreateThread(@UpdateCacheFirmware(), cache_hidden)
-  Repeat
-    WaitWindowEvent(100)
-  Until UpdateSuccess
-  CloseWindow(0)
+If cache_updates>0
+  If CheckInternetConnection()
+    Exit.b = #False
+    OpenWindow(0, #PB_Any, #PB_Any, 300, 35, "Updating...", #PB_Window_ScreenCentered)
+    ProgressBarGadget(0, 5, 5, 290, 25, 0, 1)
+    AddToLogFile("Updating local cache...", #True, #True, system_debug)
+    CreateThread(@UpdateCacheFirmware(), cache_hidden)
+    Repeat
+      WaitWindowEvent(100)
+    Until UpdateSuccess
+    CloseWindow(0)
+  Else
+    AddToLogFile("Updating the cache is impossible: no network connection.", #True, #True, system_debug)
+  EndIf
+Else
+  AddToLogFile("Updating the cache is disabled in settings.", #True, #True, system_debug)
 EndIf
 
 ; Обновление versions.txt
+AddToLogFile("Updating file "+Chr(34)+"updates/cache_updates/versions.txt"+Chr(34)+"...", #True, #True, system_debug)
 If OpenFile(1, "updates/cache_updates/versions.txt") Or CreateFile(1, "updates/cache_updates/versions.txt")
   TruncateFile(1)
   If ExamineDirectory(0, "updates/cache_updates/", "")
@@ -130,12 +228,17 @@ If OpenFile(1, "updates/cache_updates/versions.txt") Or CreateFile(1, "updates/c
         DirectoryName$ = DirectoryEntryName(0)
         If DirectoryName$<>"." And DirectoryName$<>".."
           WriteStringN(1, DirectoryName$)
+          AddToLogFile(LSet(#NULL$, 3, Chr(9))+"Add version string "+Chr(34)+DirectoryName$+Chr(34)+";", #False, #True, system_debug)
         EndIf
       EndIf
     Wend
     FinishDirectory(0)
+  Else
+    AddToLogFile("Can`t examine directory "+Chr(34)+"updates/cache_updates/"+Chr(34)+"!", #True, #True, system_debug)
   EndIf
   CloseFile(1)
+Else
+  AddToLogFile("Can`t open file "+Chr(34)+"updates/cache_updates/versions.txt"+Chr(34)+"!", #True, #True, system_debug)
 EndIf
 
 ; Процедура обработки запроса для HTTP сервера
@@ -144,15 +247,16 @@ Procedure RequestProcess(ClientID.l)
   MemorySize.l = ReceiveNetworkData(ClientID, *Memory, MemorySize(*Memory))
   ClientRequest$ = PeekS(*Memory, MemorySize, #PB_UTF8)
   If Len(Trim(ClientRequest$))=0 : ProcedureReturn #False : EndIf
-  FreeMemory(*Memory) : RequestFile$ = ""
+  FreeMemory(*Memory) : RequestFile$ = Chr(32)
   For i=1 To CountString(ClientRequest$, #LF$)
     RequestLine$ = Trim(StringField(ClientRequest$, i, #LF$))
     If Left(RequestLine$, 3) = "GET"
       RequestFile$ = Trim(StringField(RequestLine$, 2, " "))
+      AddToLogFile("HTTP/GET file "+Chr(34)+RequestFile$+Chr(34)+"... ", #True, #False, system_debug)
     EndIf
   Next i
   ; Читаем запрошенный файл с диска
-  If Len(RequestFile$)>0
+  If Len(Trim(RequestFile$))>0
     RequestFile$ = Mid(RequestFile$, 2)
     File.l = ReadFile(#PB_Any, RequestFile$)
     If File
@@ -167,8 +271,10 @@ Procedure RequestProcess(ClientID.l)
       SendNetworkString(ClientID, #CR$+#LF$)
       SendNetworkData(ClientID, *Memory, FileSize)
       FreeMemory(*Memory)
+      AddToLogFile("OK-200 ("+Str(FileSize)+" bytes)!", #False, #True, system_debug)
     Else ; Ошибка 404
       If Len(RequestFile$)>0
+        AddToLogFile("ERROR-404!", #False, #True, system_debug)
         Answer$ = #NULL$
         Answer$ + "<!DOCTYPE HTML PUBLIC "+Chr(34)+"-//IETF//DTD HTML 2.0//EN"+Chr(34)+">"+#CR$+#LF$
         Answer$ + "<html><head>"+#CR$+#LF$
@@ -185,6 +291,7 @@ Procedure RequestProcess(ClientID.l)
         SendNetworkString(ClientID, #CR$+#LF$)
         SendNetworkString(ClientID, Answer$)
       Else
+        AddToLogFile("ERROR-404 (header location http://deus.lipkop.club)!", #False, #True, system_debug)
         SendNetworkString(ClientID, "HTTP/1.1 302 Moved Temporarily"+#CR$+#LF$)
         SendNetworkString(ClientID, "Location: http://deus.lipkop.club"+#CR$+#LF$)
         SendNetworkString(ClientID, "Content-Length: 0"+#CR$+#LF$)
@@ -195,6 +302,10 @@ Procedure RequestProcess(ClientID.l)
       EndIf
     EndIf
   Else ; Ошибка 400
+    If RequestFile$=Chr(32)
+      AddToLogFile("HTTP/UNKNOWN request... ", #True, #False, system_debug)
+    EndIf
+    AddToLogFile("ERROR-400!", #False, #True, system_debug)
     Answer$ = #NULL$
     Answer$ + "<!DOCTYPE HTML PUBLIC "+Chr(34)+"-//IETF//DTD HTML 2.0//EN"+Chr(34)+">"+#CR$+#LF$
     Answer$ + "<html><head>"+#CR$+#LF$
@@ -226,28 +337,39 @@ If CreateNetworkServer(0, 8080, #PB_Network_TCP)
       EndSelect
     Until Not ProgramRunning(DeusUpdate)
   Else
+    AddToLogFile("Can`t execute the DEUS_UPDATE.exe file!", #True, #True, system_debug)
     MessageRequester("Error", "Can`t execute the DEUS_UPDATE.exe file!", #MB_ICONERROR)
   EndIf
 Else
+  AddToLogFile("Can`t create the http server on port 8080!", #True, #True, system_debug)
   MessageRequester("Error", "Can`t create the http server on port 8080!", #MB_ICONERROR)
 EndIf
 
 ; Сохраняем настройки в файл
 If Not OpenPreferences("config.cfg", #PB_Preference_GroupSeparator)
+  AddToLogFile("Can`t open config file! Try to create it...", #True, #True, system_debug)
   If Not CreatePreferences("config.cfg", #PB_Preference_GroupSeparator)
+    AddToLogFile("Can`t create config file! The current settings will be lost.", #True, #True, system_debug)
+    AddToLogFile(LSet(#NULL$, 64, Chr(45)), #False, #True, system_debug)
+    AddToLogFile(#NULL$, #False, #True, system_debug)
     End
   EndIf
 EndIf
+PreferenceGroup("system")
+WritePreferenceLong("debug", system_debug)
 PreferenceGroup("cache")
 WritePreferenceLong("updates", cache_updates)
 WritePreferenceLong("hidden", cache_hidden)
 ClosePreferences()
+AddToLogFile("ALL DONE.", #True, #True, system_debug)
+AddToLogFile(LSet(#NULL$, 64, Chr(45)), #False, #True, system_debug)
+AddToLogFile(#NULL$, #False, #True, system_debug)
 
 End
 
 ; IDE Options = PureBasic 5.31 (Windows - x86)
-; CursorPosition = 236
-; FirstLine = 198
+; CursorPosition = 365
+; FirstLine = 320
 ; Folding = -
 ; EnableUnicode
 ; EnableThread
