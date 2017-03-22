@@ -6,6 +6,7 @@ Structure FirmwareFile
   Required.b  ; Этот файл обязателен или нет
 EndStructure
 Global NewList FirmwareFiles.FirmwareFile()
+AddElement(FirmwareFiles()) : FirmwareFiles()\File = "md5sums.txt"          : FirmwareFiles()\Required = #False
 ; Casque
 AddElement(FirmwareFiles()) : FirmwareFiles()\File = "C01.txt"              : FirmwareFiles()\Required = #True
 ; Disques
@@ -154,8 +155,8 @@ Procedure UpdateCacheFirmware(hidden)
             AddToLogFile("Get firmware "+Chr(34)+version$+Chr(34)+"...", #True, #True, system_debug)
             ; Качаем ее во временный каталог
             DownloadOfSuccessful.b = #True
-            AddToLogFile("Create directory "+Chr(34)+"updates/DEUS_V4/"+version$+Chr(34)+"... ", #True, #False, system_debug)
-            If CreateDirectory("updates/DEUS_V4/"+version$)
+            AddToLogFile("Create directory "+Chr(34)+"updates/cache_updates/"+version$+Chr(34)+"... ", #True, #False, system_debug)
+            If CreateDirectory("updates/cache_updates/"+version$)
               AddToLogFile("DONE!", #False, #True, system_debug)
             Else
               AddToLogFile("ERROR!", #False, #True, system_debug)
@@ -379,8 +380,8 @@ AddToLogFile(#NULL$, #False, #True, system_debug)
 End
 
 ; IDE Options = PureBasic 5.31 (Windows - x86)
-; CursorPosition = 136
-; FirstLine = 123
+; CursorPosition = 8
+; FirstLine = 332
 ; Folding = -
 ; EnableUnicode
 ; EnableThread
@@ -388,8 +389,8 @@ End
 ; EnableAdmin
 ; UseIcon = updater.ico
 ; Executable = updater.exe
-; EnableCompileCount = 10
-; EnableBuildCount = 6
+; EnableCompileCount = 13
+; EnableBuildCount = 9
 ; IncludeVersionInfo
 ; VersionField0 = 1.0.%BUILDCOUNT.%COMPILECOUNT
 ; VersionField1 = 1.0.%BUILDCOUNT.%COMPILECOUNT
