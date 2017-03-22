@@ -10,6 +10,7 @@ Global NewList FirmwareFiles.FirmwareFile()
 AddElement(FirmwareFiles()) : FirmwareFiles()\Directory = "Casque" : FirmwareFiles()\File = "C01.txt" : FirmwareFiles()\Required = #True
 AddElement(FirmwareFiles()) : FirmwareFiles()\Directory = "Disques" : FirmwareFiles()\File = "004.txt" : FirmwareFiles()\Required = #True
 AddElement(FirmwareFiles()) : FirmwareFiles()\Directory = "Disques" : FirmwareFiles()\File = "104.txt" : FirmwareFiles()\Required = #True
+AddElement(FirmwareFiles()) : FirmwareFiles()\Directory = "Disques" : FirmwareFiles()\File = "104_7.txt" : FirmwareFiles()\Required = #False
 AddElement(FirmwareFiles()) : FirmwareFiles()\Directory = "Disques" : FirmwareFiles()\File = "R_004.txt" : FirmwareFiles()\Required = #True
 AddElement(FirmwareFiles()) : FirmwareFiles()\Directory = "Disques" : FirmwareFiles()\File = "R_104.txt" : FirmwareFiles()\Required = #True
 AddElement(FirmwareFiles()) : FirmwareFiles()\Directory = "Telecommande" : FirmwareFiles()\File = "Restaure20130108.txt" : FirmwareFiles()\Required = #True
@@ -121,45 +122,46 @@ If FileSize("updates/cache_updates")=-1
     AddToLogFile("ERROR!", #False, #True, system_debug)
   EndIf
 EndIf
+If FileSize("updates/cache_updates/DEUS_V4")=-1
+  AddToLogFile("The directory "+Chr(34)+"updates/cache_updates/DEUS_V4"+Chr(34)+" does not exist! Create it... ", #True, #False, system_debug)
+  If CreateDirectory("updates/cache_updates/DEUS_V4")
+    AddToLogFile("DONE!", #False, #True, system_debug)
+  Else
+    AddToLogFile("ERROR!", #False, #True, system_debug)
+  EndIf
+EndIf
 
 ; Обновление прошивок в локальном каталоге
+Global VersionsFileName$ = "X_X_XX" ;- FIXME
 Global UpdateSuccess.b = #False
 Procedure UpdateCacheFirmware(hidden)
   If hidden>0
-    versions_url$ = "http://deus.lipkop.club/Update/deus_updates/versions.php?show=all"
+    versions_url$ = "http://deus.lipkop.club/Update/deus_updates/DEUS_V4/Versions_"+VersionsFileName$+".php?show=all"
   Else
-    versions_url$ = "http://deus.lipkop.club/Update/deus_updates/versions.php"
+    versions_url$ = "http://deus.lipkop.club/Update/deus_updates/DEUS_V4/Versions_"+VersionsFileName$+".php"
   EndIf
   AddToLogFile("Update url: "+versions_url$, #True, #True, system_debug)
-  If ReceiveHTTPFile(versions_url$, "updates/versions.txt")
-    Count.l = CountFileStrings("updates/versions.txt")
-    If Count>0 And ReadFile(0, "updates/versions.txt")
+  If ReceiveHTTPFile(versions_url$, "updates/cache_updates/Versions_"+VersionsFileName$+".txt")
+    Count.l = CountFileStrings("updates/cache_updates/Versions_"+VersionsFileName$+".txt")
+    If Count>0 And ReadFile(0, "updates/cache_updates/Versions_"+VersionsFileName$+".txt")
       SetGadgetAttribute(0, #PB_ProgressBar_Maximum, Count*ListSize(FirmwareFiles()))
       While Eof(0) = 0
         version$ = Trim(ReadString(0))
         If Len(version$)>0
-          If FileSize("updates/cache_updates/"+version$) = -1 ; Если в локальном кеше такой прошивки нету
+          If FileSize("updates/cache_updates/DEUS_V4/"+version$) = -1 ; Если в локальном кеше такой прошивки нету
             AddToLogFile("Get firmware "+Chr(34)+version$+Chr(34)+"...", #True, #True, system_debug)
             ; Качаем ее во временный каталог
             DownloadOfSuccessful.b = #True
-            AddToLogFile("Create directory "+Chr(34)+"updates/"+version$+Chr(34)+"... ", #True, #False, system_debug)
-            If CreateDirectory("updates/"+version$)
+            AddToLogFile("Create directory "+Chr(34)+"updates/DEUS_V4/"+version$+Chr(34)+"... ", #True, #False, system_debug)
+            If CreateDirectory("updates/DEUS_V4/"+version$)
               AddToLogFile("DONE!", #False, #True, system_debug)
             Else
               AddToLogFile("ERROR!", #False, #True, system_debug)
             EndIf
             ResetList(FirmwareFiles())
             While NextElement(FirmwareFiles())
-              If FileSize("updates/"+version$+"/"+FirmwareFiles()\Directory) = -1
-                AddToLogFile("Create directory "+Chr(34)+"updates/"+version$+"/"+FirmwareFiles()\Directory+Chr(34)+"... ", #True, #False, system_debug)
-                If CreateDirectory("updates/"+version$+"/"+FirmwareFiles()\Directory)
-                  AddToLogFile("DONE!", #False, #True, system_debug)
-                Else
-                  AddToLogFile("ERROR!", #False, #True, system_debug)
-                EndIf
-              EndIf
-              AddToLogFile("Download file "+Chr(34)+"http://deus.lipkop.club/Update/deus_updates/"+version$+"/"+FirmwareFiles()\Directory+"/"+FirmwareFiles()\File+Chr(34)+"... ", #True, #False, system_debug)
-              If Not ReceiveHTTPFile("http://deus.lipkop.club/Update/deus_updates/"+version$+"/"+FirmwareFiles()\Directory+"/"+FirmwareFiles()\File, "updates/"+version$+"/"+FirmwareFiles()\Directory+"/"+FirmwareFiles()\File) And FirmwareFiles()\Required = #True
+              AddToLogFile("Download file "+Chr(34)+"http://deus.lipkop.club/Update/deus_updates/DEUS_V4/"+version$+"/"+FirmwareFiles()\File+Chr(34)+"... ", #True, #False, system_debug)
+              If Not ReceiveHTTPFile("http://deus.lipkop.club/Update/deus_updates/DEUS_V4/"+version$+"/"+FirmwareFiles()\File, "updates/cache_updates/"+version$+"/"+FirmwareFiles()\File) And FirmwareFiles()\Required = #True
                 DownloadOfSuccessful.b = #False
                 SetGadgetState(0, GetGadgetState(0)+ListSize(FirmwareFiles())-ListIndex(FirmwareFiles()))
                 AddToLogFile("ERROR!", #False, #True, system_debug)
@@ -170,15 +172,15 @@ Procedure UpdateCacheFirmware(hidden)
               EndIf
             Wend
             If DownloadOfSuccessful ; Если прошивка скачалась успешно
-              AddToLogFile("Copy directory "+Chr(34)+"updates/"+version$+Chr(34)+" to "+Chr(34)+"updates/cache_updates/"+version$+Chr(34)+"... ", #True, #False, system_debug)
-              If CopyDirectory("updates/"+version$, "updates/cache_updates/"+version$, "", #PB_FileSystem_Recursive | #PB_FileSystem_Force)
+              AddToLogFile("Copy directory "+Chr(34)+"updates/cache_updates/"+version$+Chr(34)+" to "+Chr(34)+"updates/cache_updates/DEUS_V4/"+version$+Chr(34)+"... ", #True, #False, system_debug)
+              If CopyDirectory("updates/cache_updates/"+version$, "updates/cache_updates/DEUS_V4/"+version$, "", #PB_FileSystem_Recursive | #PB_FileSystem_Force)
                 AddToLogFile("DONE!", #False, #True, system_debug)
               Else
                 AddToLogFile("ERROR!", #False, #True, system_debug)
               EndIf
             EndIf
-            AddToLogFile("Delete directory "+Chr(34)+"updates/"+version$+Chr(34)+"... ", #True, #False, system_debug)
-            If DeleteDirectory("updates/"+version$, "", #PB_FileSystem_Recursive | #PB_FileSystem_Force)
+            AddToLogFile("Delete directory "+Chr(34)+"updates/cache_updates/"+version$+Chr(34)+"... ", #True, #False, system_debug)
+            If DeleteDirectory("updates/cache_updates/"+version$, "", #PB_FileSystem_Recursive | #PB_FileSystem_Force)
               AddToLogFile("DONE!", #False, #True, system_debug)
             Else
               AddToLogFile("ERROR!", #False, #True, system_debug)
@@ -191,16 +193,16 @@ Procedure UpdateCacheFirmware(hidden)
       CloseFile(0)
     Else
       SetGadgetState(0, 1)
-      AddToLogFile("Can`t open file "+Chr(34)+"updates/versions.txt"+Chr(34)+"!", #True, #True, system_debug)
+      AddToLogFile("Can`t open file "+Chr(34)+"updates/cache_updates/Versions_"+VersionsFileName$+".txt"+Chr(34)+"!", #True, #True, system_debug)
     EndIf
-    AddToLogFile("Delete file "+Chr(34)+"updates/versions.txt"+Chr(34)+"... ", #True, #False, system_debug)
-    If DeleteFile("updates/versions.txt", #PB_FileSystem_Force)
+    AddToLogFile("Delete file "+Chr(34)+"updates/cache_updates/Versions_"+VersionsFileName$+".txt"+Chr(34)+"... ", #True, #False, system_debug)
+    If DeleteFile("updates/cache_updates/Versions_"+VersionsFileName$+".txt", #PB_FileSystem_Force)
       AddToLogFile("DONE!", #False, #True, system_debug)
     Else
       AddToLogFile("ERROR!", #False, #True, system_debug)
     EndIf
   Else
-    AddToLogFile("Can`t get file "+Chr(34)+"updates/versions.txt"+Chr(34)+"!", #True, #True, system_debug)
+    AddToLogFile("Can`t get file "+Chr(34)+versions_url$+Chr(34)+"!", #True, #True, system_debug)
   EndIf
   UpdateSuccess = #True
   AddToLogFile("Update finished.", #True, #True, system_debug)
@@ -226,10 +228,10 @@ Else
 EndIf
 
 ; Обновление versions.txt
-AddToLogFile("Updating file "+Chr(34)+"updates/cache_updates/versions.txt"+Chr(34)+"...", #True, #True, system_debug)
-If OpenFile(1, "updates/cache_updates/versions.txt") Or CreateFile(1, "updates/cache_updates/versions.txt")
+AddToLogFile("Updating file "+Chr(34)+"updates/cache_updates/DEUS_V4/Versions_"+VersionsFileName$+".txt"+Chr(34)+"...", #True, #True, system_debug)
+If OpenFile(1, "updates/cache_updates/DEUS_V4/Versions_"+VersionsFileName$+".txt") Or CreateFile(1, "updates/cache_updates/DEUS_V4/Versions_"+VersionsFileName$+".txt")
   TruncateFile(1)
-  If ExamineDirectory(0, "updates/cache_updates/", "")
+  If ExamineDirectory(0, "updates/cache_updates/DEUS_V4/", "")
     While NextDirectoryEntry(0)
       If DirectoryEntryType(0) = #PB_DirectoryEntry_Directory
         DirectoryName$ = DirectoryEntryName(0)
@@ -241,11 +243,11 @@ If OpenFile(1, "updates/cache_updates/versions.txt") Or CreateFile(1, "updates/c
     Wend
     FinishDirectory(0)
   Else
-    AddToLogFile("Can`t examine directory "+Chr(34)+"updates/cache_updates/"+Chr(34)+"!", #True, #True, system_debug)
+    AddToLogFile("Can`t examine directory "+Chr(34)+"updates/cache_updates/DEUS_V4/"+Chr(34)+"!", #True, #True, system_debug)
   EndIf
   CloseFile(1)
 Else
-  AddToLogFile("Can`t open file "+Chr(34)+"updates/cache_updates/versions.txt"+Chr(34)+"!", #True, #True, system_debug)
+  AddToLogFile("Can`t open file "+Chr(34)+"updates/cache_updates/DEUS_V4/Versions_"+VersionsFileName$+".txt"+Chr(34)+"!", #True, #True, system_debug)
 EndIf
 
 ; Процедура обработки запроса для HTTP сервера
@@ -298,9 +300,9 @@ Procedure RequestProcess(ClientID.l)
         SendNetworkString(ClientID, #CR$+#LF$)
         SendNetworkString(ClientID, Answer$)
       Else
-        AddToLogFile("ERROR-404 (header location http://deus.lipkop.club)!", #False, #True, system_debug)
+        AddToLogFile("ERROR-404 (header location http://deus.lipkop.club/Update/)!", #False, #True, system_debug)
         SendNetworkString(ClientID, "HTTP/1.1 302 Moved Temporarily"+#CR$+#LF$)
-        SendNetworkString(ClientID, "Location: http://deus.lipkop.club"+#CR$+#LF$)
+        SendNetworkString(ClientID, "Location: http://deus.lipkop.club/Update/"+#CR$+#LF$)
         SendNetworkString(ClientID, "Content-Length: 0"+#CR$+#LF$)
         SendNetworkString(ClientID, "Content-Type: text/html"+#CR$+#LF$)
         SendNetworkString(ClientID, "Connection: close"+#CR$+#LF$)
@@ -375,8 +377,7 @@ AddToLogFile(#NULL$, #False, #True, system_debug)
 End
 
 ; IDE Options = PureBasic 5.31 (Windows - x86)
-; CursorPosition = 95
-; FirstLine = 72
+; CursorPosition = 304
 ; Folding = -
 ; EnableUnicode
 ; EnableThread
@@ -384,8 +385,8 @@ End
 ; EnableAdmin
 ; UseIcon = updater.ico
 ; Executable = updater.exe
-; EnableCompileCount = 9
-; EnableBuildCount = 5
+; EnableCompileCount = 10
+; EnableBuildCount = 6
 ; IncludeVersionInfo
 ; VersionField0 = 1.0.%BUILDCOUNT.%COMPILECOUNT
 ; VersionField1 = 1.0.%BUILDCOUNT.%COMPILECOUNT
