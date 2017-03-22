@@ -2,33 +2,35 @@
 
 ; Список файлов, из которых состоит прошивка
 Structure FirmwareFile
-  Directory.s ; Название дирректории, в которой находится файл
   File.s      ; Имя файла прошивки
   Required.b  ; Этот файл обязателен или нет
 EndStructure
 Global NewList FirmwareFiles.FirmwareFile()
-AddElement(FirmwareFiles()) : FirmwareFiles()\Directory = "Casque" : FirmwareFiles()\File = "C01.txt" : FirmwareFiles()\Required = #True
-AddElement(FirmwareFiles()) : FirmwareFiles()\Directory = "Disques" : FirmwareFiles()\File = "004.txt" : FirmwareFiles()\Required = #True
-AddElement(FirmwareFiles()) : FirmwareFiles()\Directory = "Disques" : FirmwareFiles()\File = "104.txt" : FirmwareFiles()\Required = #True
-AddElement(FirmwareFiles()) : FirmwareFiles()\Directory = "Disques" : FirmwareFiles()\File = "104_7.txt" : FirmwareFiles()\Required = #False
-AddElement(FirmwareFiles()) : FirmwareFiles()\Directory = "Disques" : FirmwareFiles()\File = "R_004.txt" : FirmwareFiles()\Required = #True
-AddElement(FirmwareFiles()) : FirmwareFiles()\Directory = "Disques" : FirmwareFiles()\File = "R_104.txt" : FirmwareFiles()\Required = #True
-AddElement(FirmwareFiles()) : FirmwareFiles()\Directory = "Telecommande" : FirmwareFiles()\File = "Restaure20130108.txt" : FirmwareFiles()\Required = #True
-AddElement(FirmwareFiles()) : FirmwareFiles()\Directory = "Telecommande" : FirmwareFiles()\File = "T01.txt" : FirmwareFiles()\Required = #True
-AddElement(FirmwareFiles()) : FirmwareFiles()\Directory = "Telecommande" : FirmwareFiles()\File = "T02.txt" : FirmwareFiles()\Required = #True
-AddElement(FirmwareFiles()) : FirmwareFiles()\Directory = "Telecommande" : FirmwareFiles()\File = "T03.txt" : FirmwareFiles()\Required = #True
-AddElement(FirmwareFiles()) : FirmwareFiles()\Directory = "Telecommande" : FirmwareFiles()\File = "T04.txt" : FirmwareFiles()\Required = #True
-AddElement(FirmwareFiles()) : FirmwareFiles()\Directory = "Telecommande" : FirmwareFiles()\File = "T05.txt" : FirmwareFiles()\Required = #True
-AddElement(FirmwareFiles()) : FirmwareFiles()\Directory = "Telecommande" : FirmwareFiles()\File = "T06.txt" : FirmwareFiles()\Required = #True
-AddElement(FirmwareFiles()) : FirmwareFiles()\Directory = "Telecommande" : FirmwareFiles()\File = "T07.txt" : FirmwareFiles()\Required = #True
-AddElement(FirmwareFiles()) : FirmwareFiles()\Directory = "Telecommande" : FirmwareFiles()\File = "T08.txt" : FirmwareFiles()\Required = #False
-AddElement(FirmwareFiles()) : FirmwareFiles()\Directory = "Telecommande" : FirmwareFiles()\File = "T09.txt" : FirmwareFiles()\Required = #True
-AddElement(FirmwareFiles()) : FirmwareFiles()\Directory = "Telecommande" : FirmwareFiles()\File = "T0A.txt" : FirmwareFiles()\Required = #True
-AddElement(FirmwareFiles()) : FirmwareFiles()\Directory = "Telecommande" : FirmwareFiles()\File = "T0B.txt" : FirmwareFiles()\Required = #True
-AddElement(FirmwareFiles()) : FirmwareFiles()\Directory = "Telecommande" : FirmwareFiles()\File = "T0C.txt" : FirmwareFiles()\Required = #True
-AddElement(FirmwareFiles()) : FirmwareFiles()\Directory = "Telecommande" : FirmwareFiles()\File = "T0D.txt" : FirmwareFiles()\Required = #True
-AddElement(FirmwareFiles()) : FirmwareFiles()\Directory = "Telecommande" : FirmwareFiles()\File = "T0E.txt" : FirmwareFiles()\Required = #True
-AddElement(FirmwareFiles()) : FirmwareFiles()\Directory = "Telecommande" : FirmwareFiles()\File = "T0F.txt" : FirmwareFiles()\Required = #True
+; Casque
+AddElement(FirmwareFiles()) : FirmwareFiles()\File = "C01.txt"              : FirmwareFiles()\Required = #True
+; Disques
+AddElement(FirmwareFiles()) : FirmwareFiles()\File = "004.txt"              : FirmwareFiles()\Required = #True
+AddElement(FirmwareFiles()) : FirmwareFiles()\File = "104.txt"              : FirmwareFiles()\Required = #True
+AddElement(FirmwareFiles()) : FirmwareFiles()\File = "104_7.txt"            : FirmwareFiles()\Required = #False ; V4 only
+AddElement(FirmwareFiles()) : FirmwareFiles()\File = "R_004.txt"            : FirmwareFiles()\Required = #True
+AddElement(FirmwareFiles()) : FirmwareFiles()\File = "R_104.txt"            : FirmwareFiles()\Required = #True
+; Telecommande
+AddElement(FirmwareFiles()) : FirmwareFiles()\File = "Restaure20130108.txt" : FirmwareFiles()\Required = #True
+AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T01.txt"              : FirmwareFiles()\Required = #True
+AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T02.txt"              : FirmwareFiles()\Required = #True
+AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T03.txt"              : FirmwareFiles()\Required = #True
+AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T04.txt"              : FirmwareFiles()\Required = #True
+AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T05.txt"              : FirmwareFiles()\Required = #True
+AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T06.txt"              : FirmwareFiles()\Required = #True
+AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T07.txt"              : FirmwareFiles()\Required = #True
+AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T08.txt"              : FirmwareFiles()\Required = #False ; VIP
+AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T09.txt"              : FirmwareFiles()\Required = #True
+AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T0A.txt"              : FirmwareFiles()\Required = #True
+AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T0B.txt"              : FirmwareFiles()\Required = #True
+AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T0C.txt"              : FirmwareFiles()\Required = #True
+AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T0D.txt"              : FirmwareFiles()\Required = #True
+AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T0E.txt"              : FirmwareFiles()\Required = #True
+AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T0F.txt"              : FirmwareFiles()\Required = #True
 
 ; Функция подсчета количества строк в файле
 Procedure.l CountFileStrings(FileName.s)
@@ -377,7 +379,7 @@ AddToLogFile(#NULL$, #False, #True, system_debug)
 End
 
 ; IDE Options = PureBasic 5.31 (Windows - x86)
-; CursorPosition = 304
+; CursorPosition = 13
 ; Folding = -
 ; EnableUnicode
 ; EnableThread
