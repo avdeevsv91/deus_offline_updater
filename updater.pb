@@ -91,6 +91,13 @@ If OpenPreferences("config.cfg", #PB_Preference_GroupSeparator)
 Else
   AddToLogFile("Updater started.", #True, #True, system_debug)
   AddToLogFile("Can`t open config file! Will be used default settings.", #True, #True, system_debug)
+  DisclaimerText$ = #NULL$
+  DisclaimerText$ + "Данная программа обновления НЕ ЯВЛЯЕТСЯ ОФИЦИАЛЬНОЙ и предназначена для использования исключительно в ознакомительных целях." + Chr(13)
+  DisclaimerText$ + Chr(13)
+  DisclaimerText$ + "Автор не несет ответственности за любой вред (материальный или моральный), причененный вам или третьим лицам, в результате использования данного программного обеспечения. " + Chr(13)
+  DisclaimerText$ + Chr(13)
+  DisclaimerText$ + "Все действия вы производите на свой страх и риск!" + Chr(13)
+  MessageRequester("Внимание!", DisclaimerText$, #MB_ICONWARNING)
 EndIf
 AddToLogFile("Current settings:", #True, #True, system_debug)
 AddToLogFile(LSet(#NULL$, 3, Chr(9))+"system_debug = "+Str(system_debug)+";", #False, #True, system_debug)
@@ -368,8 +375,8 @@ AddToLogFile(#NULL$, #False, #True, system_debug)
 End
 
 ; IDE Options = PureBasic 5.31 (Windows - x86)
-; CursorPosition = 333
-; FirstLine = 22
+; CursorPosition = 95
+; FirstLine = 72
 ; Folding = -
 ; EnableUnicode
 ; EnableThread
@@ -377,8 +384,8 @@ End
 ; EnableAdmin
 ; UseIcon = updater.ico
 ; Executable = updater.exe
-; EnableCompileCount = 4
-; EnableBuildCount = 4
+; EnableCompileCount = 9
+; EnableBuildCount = 5
 ; IncludeVersionInfo
 ; VersionField0 = 1.0.%BUILDCOUNT.%COMPILECOUNT
 ; VersionField1 = 1.0.%BUILDCOUNT.%COMPILECOUNT

@@ -47,4 +47,7 @@ Temporary Items
 .apdisk
 
 # User configure files
-config.cfg
+/config.cfg
+
+# Offline cache
+/updates/*
