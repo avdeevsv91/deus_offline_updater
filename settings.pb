@@ -63,14 +63,14 @@ End
 ; EnableAdmin
 ; UseIcon = settings.ico
 ; Executable = settings.exe
-; EnableCompileCount = 4
-; EnableBuildCount = 2
+; EnableCompileCount = 5
+; EnableBuildCount = 3
 ; IncludeVersionInfo
 ; VersionField0 = 1.0.%BUILDCOUNT.%COMPILECOUNT
-; VersionField1 = 1.0.8.12
+; VersionField1 = 1.0.9.15
 ; VersionField2 = TheSoulTaker48
 ; VersionField3 = Deus Offline Updater Settings
-; VersionField4 = 1.0.8.12
+; VersionField4 = 1.0.9.15
 ; VersionField5 = 1.0.%BUILDCOUNT.%COMPILECOUNT
 ; VersionField6 = Unofficial XP Deus update settings
 ; VersionField7 = deus_offline_updater_settings
