@@ -134,7 +134,7 @@ If FileSize("updates/cache_updates/DEUS_V4")=-1
 EndIf
 
 ; Обновление прошивок в локальном каталоге
-Global VersionsFileName$ = "X_X_XX" ;- FIXME
+Global VersionsFileName$ = "4_0_01" ;- FIXME: определить алгоритм формирования имени файла
 Global UpdateSuccess.b = #False
 Procedure UpdateCacheFirmware(hidden)
   If hidden>0
@@ -379,7 +379,8 @@ AddToLogFile(#NULL$, #False, #True, system_debug)
 End
 
 ; IDE Options = PureBasic 5.31 (Windows - x86)
-; CursorPosition = 13
+; CursorPosition = 136
+; FirstLine = 123
 ; Folding = -
 ; EnableUnicode
 ; EnableThread
