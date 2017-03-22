@@ -368,11 +368,29 @@ AddToLogFile(#NULL$, #False, #True, system_debug)
 End
 
 ; IDE Options = PureBasic 5.31 (Windows - x86)
-; CursorPosition = 365
-; FirstLine = 320
+; CursorPosition = 333
+; FirstLine = 22
 ; Folding = -
 ; EnableUnicode
 ; EnableThread
 ; EnableXP
+; EnableAdmin
 ; UseIcon = updater.ico
 ; Executable = updater.exe
+; EnableCompileCount = 4
+; EnableBuildCount = 4
+; IncludeVersionInfo
+; VersionField0 = 1.0.%BUILDCOUNT.%COMPILECOUNT
+; VersionField1 = 1.0.%BUILDCOUNT.%COMPILECOUNT
+; VersionField2 = TheSoulTaker48
+; VersionField3 = Deus Offline Updater
+; VersionField4 = 1.0.%BUILDCOUNT.%COMPILECOUNT
+; VersionField5 = 1.0.%BUILDCOUNT.%COMPILECOUNT
+; VersionField6 = Unofficial XP Deus update
+; VersionField7 = deus_offline_updater
+; VersionField8 = %EXECUTABLE
+; VersionField9 = TheSoulTaker48
+; VersionField13 = thesoultaker48@gmail.com
+; VersionField14 = http://deus.lipkop.club
+; VersionField15 = VOS_NT_WINDOWS32
+; VersionField16 = VFT_APP
