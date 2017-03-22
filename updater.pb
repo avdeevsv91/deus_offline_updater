@@ -380,8 +380,8 @@ AddToLogFile(#NULL$, #False, #True, system_debug)
 End
 
 ; IDE Options = PureBasic 5.31 (Windows - x86)
-; CursorPosition = 8
-; FirstLine = 332
+; CursorPosition = 98
+; FirstLine = 78
 ; Folding = -
 ; EnableUnicode
 ; EnableThread
@@ -389,7 +389,7 @@ End
 ; EnableAdmin
 ; UseIcon = updater.ico
 ; Executable = updater.exe
-; EnableCompileCount = 13
+; EnableCompileCount = 14
 ; EnableBuildCount = 9
 ; IncludeVersionInfo
 ; VersionField0 = 1.0.%BUILDCOUNT.%COMPILECOUNT
