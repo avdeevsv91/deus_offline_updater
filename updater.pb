@@ -153,8 +153,9 @@ Procedure UpdateCacheFirmware(hidden)
   Else
     versions_url$ = "http://deus.lipkop.club/Update/deus_updates/DEUS_V4/Versions_"+VersionsFileName$+".php"
   EndIf
-  AddToLogFile("Update url: "+versions_url$, #True, #True, system_debug)
+  AddToLogFile("Download file "+Chr(34)+versions_url$+Chr(34)+"... ", #True, #False, system_debug)
   If ReceiveHTTPFile(versions_url$, "updates/cache_updates/Versions_"+VersionsFileName$+".txt")
+    AddToLogFile("DONE!", #False, #True, system_debug)
     Count.l = CountFileStrings("updates/cache_updates/Versions_"+VersionsFileName$+".txt")
     If Count>0 And ReadFile(0, "updates/cache_updates/Versions_"+VersionsFileName$+".txt")
       SetGadgetAttribute(0, #PB_ProgressBar_Maximum, Count*ListSize(FirmwareFiles()))
@@ -215,7 +216,7 @@ Procedure UpdateCacheFirmware(hidden)
       AddToLogFile("ERROR!", #False, #True, system_debug)
     EndIf
   Else
-    AddToLogFile("Can`t get file "+Chr(34)+versions_url$+Chr(34)+"!", #True, #True, system_debug)
+    AddToLogFile("ERROR!", #False, #True, system_debug)
   EndIf
   UpdateSuccess = #True
   AddToLogFile("Update finished.", #True, #True, system_debug)
@@ -390,8 +391,7 @@ AddToLogFile(#NULL$, #False, #True, system_debug)
 End
 
 ; IDE Options = PureBasic 5.31 (Windows - x86)
-; CursorPosition = 107
-; FirstLine = 78
+; CursorPosition = 27
 ; Folding = -
 ; EnableUnicode
 ; EnableThread
@@ -399,8 +399,8 @@ End
 ; EnableAdmin
 ; UseIcon = updater.ico
 ; Executable = updater.exe
-; EnableCompileCount = 16
-; EnableBuildCount = 10
+; EnableCompileCount = 18
+; EnableBuildCount = 11
 ; IncludeVersionInfo
 ; VersionField0 = 1.0.%BUILDCOUNT.%COMPILECOUNT
 ; VersionField1 = 1.0.%BUILDCOUNT.%COMPILECOUNT
