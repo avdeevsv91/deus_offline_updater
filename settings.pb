@@ -56,21 +56,20 @@ End
 
 ; IDE Options = PureBasic 5.31 (Windows - x86)
 ; CursorPosition = 12
-; FirstLine = 7
+; FirstLine = 6
 ; EnableUnicode
 ; EnableThread
 ; EnableXP
-; EnableAdmin
 ; UseIcon = settings.ico
 ; Executable = settings.exe
-; EnableCompileCount = 5
-; EnableBuildCount = 3
+; EnableCompileCount = 6
+; EnableBuildCount = 4
 ; IncludeVersionInfo
 ; VersionField0 = 1.0.%BUILDCOUNT.%COMPILECOUNT
-; VersionField1 = 1.0.9.15
+; VersionField1 = 1.0.10.17
 ; VersionField2 = TheSoulTaker48
 ; VersionField3 = Deus Offline Updater Settings
-; VersionField4 = 1.0.9.15
+; VersionField4 = 1.0.10.17
 ; VersionField5 = 1.0.%BUILDCOUNT.%COMPILECOUNT
 ; VersionField6 = Unofficial XP Deus update settings
 ; VersionField7 = deus_offline_updater_settings
