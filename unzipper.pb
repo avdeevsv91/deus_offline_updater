@@ -43,25 +43,54 @@ ProgramFilename$ = ProgramFilename()
 UnzipperVersion$ = GetFileVersion(ProgramFilename$, #GFVI_FileVersion, #False)
 AddToLogFile("Unzipper started (version "+UnzipperVersion$+").", #True, #True, system_debug)
 
-If Not FileSize("updates/deus_offline_updater.zip")<>-1
-  AddToLogFile("Unpacking file "+Chr(34)+"updates/deus_offline_updater.zip"+Chr(34)+"... ", #True, #False, system_debug)
+; Ждем завершения работы dou.exe
+AddToLogFile("Waiting for the completion of the dou.exe program...", #True, #False, system_debug)
+WaitCounter.l = 0
+Repeat
+  UpdaterRunning.b = #False
+  EnumProcessInit()
+  Repeat
+    ProcessName.s = EnumProcess()
+    If LCase(ProcessName) = "dou.exe"
+      UpdaterRunning = #True
+    EndIf
+  Until ProcessName = ""
+  WaitCounter + 1
+  If WaitCounter>50 ; 5 second
+    AddToLogFile("ERROR!", #False, #True, system_debug)
+    AddToLogFile("Attempts to terminate the dou.exe process...", #True, #False, system_debug)
+    DOUPid.l = GetPidProcess("dou.exe")
+    If KillProcess(DOUPid)
+      UpdaterRunning = #False
+    Else
+      AddToLogFile("ERROR!", #False, #True, system_debug)
+      MessageRequester("Error", "Can`t terminate the dou.exe process!", #MB_ICONERROR)
+      End
+    EndIf
+  EndIf
+  Delay(100)
+Until (Not UpdaterRunning)
+AddToLogFile("DONE!", #False, #True, system_debug)
+
+; Устанавливаем обновления
+If FileSize("updates/deus_offline_updater.zip")<>-1
+  AddToLogFile("Unpacking file "+Chr(34)+"updates/deus_offline_updater.zip"+Chr(34)+"...", #True, #False, system_debug)
   ;- TODO: Избавиться от внешнего 7z.exe
   sZIP.l = RunProgram("7z.exe", "e -aoa -o./ -x!unzipper.exe -y updates/deus_offline_updater.zip", GetPathPart(ProgramFilename$), #PB_Program_Open|#PB_Program_Hide)
   If sZIP
     OpenWindow(0, #PB_Any, #PB_Any, 300, 35, "Updating", #PB_Window_ScreenCentered)
     TextGadget(0, 5, 5, 290, 25, "Please, wait...", #PB_Text_Center)
     Repeat
-      ;- TODO: окошко с сообщением подождать
       WaitWindowEvent(100)
     Until Not ProgramRunning(sZIP)
     CloseWindow(0)
     AddToLogFile("DONE!", #False, #True, system_debug)
-    AddToLogFile("Execute file "+Chr(34)+"updater.exe"+Chr(34)+"...", #True, #False, system_debug)
-    If RunProgram("updater.exe")
+    AddToLogFile("Execute file "+Chr(34)+"dou.exe"+Chr(34)+"...", #True, #False, system_debug)
+    If RunProgram("dou.exe")
       AddToLogFile("DONE!", #False, #True, system_debug)
     Else
       AddToLogFile("ERROR!", #False, #True, system_debug)
-      MessageRequester("Error", "Can`t execute the updater.exe file!", #MB_ICONERROR)
+      MessageRequester("Error", "Can`t execute the dou.exe file!", #MB_ICONERROR)
     EndIf
     End
   Else
@@ -74,8 +103,8 @@ EndIf
 End
 
 ; IDE Options = PureBasic 5.31 (Windows - x86)
-; CursorPosition = 40
-; FirstLine = 21
+; CursorPosition = 28
+; FirstLine = 55
 ; Folding = -
 ; EnableUnicode
 ; EnableThread
@@ -83,8 +112,8 @@ End
 ; EnableAdmin
 ; UseIcon = unzipper.ico
 ; Executable = unzipper.exe
-; EnableCompileCount = 5
-; EnableBuildCount = 2
+; EnableCompileCount = 13
+; EnableBuildCount = 3
 ; IncludeVersionInfo
 ; VersionField0 = 1.0.%BUILDCOUNT.%COMPILECOUNT
 ; VersionField1 = 1.0.10.17
