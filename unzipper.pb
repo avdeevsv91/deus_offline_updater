@@ -44,7 +44,7 @@ UnzipperVersion$ = GetFileVersion(ProgramFilename$, #GFVI_FileVersion, #False)
 AddToLogFile("Unzipper started (version "+UnzipperVersion$+").", #True, #True, system_debug)
 
 ; Ждем завершения работы dou.exe
-AddToLogFile("Waiting for the completion of the dou.exe program...", #True, #False, system_debug)
+AddToLogFile("Waiting for the completion of the dou.exe program... ", #True, #False, system_debug)
 WaitCounter.l = 0
 Repeat
   UpdaterRunning.b = #False
@@ -58,7 +58,7 @@ Repeat
   WaitCounter + 1
   If WaitCounter>50 ; 5 second
     AddToLogFile("ERROR!", #False, #True, system_debug)
-    AddToLogFile("Attempts to terminate the dou.exe process...", #True, #False, system_debug)
+    AddToLogFile("Attempts to terminate the dou.exe process... ", #True, #False, system_debug)
     DOUPid.l = GetPidProcess("dou.exe")
     If KillProcess(DOUPid)
       UpdaterRunning = #False
@@ -75,7 +75,7 @@ AddToLogFile("DONE!", #False, #True, system_debug)
 
 ; Устанавливаем обновления
 If FileSize("updates/deus_offline_updater.zip")<>-1
-  AddToLogFile("Unpacking file "+Chr(34)+"updates/deus_offline_updater.zip"+Chr(34)+"...", #True, #False, system_debug)
+  AddToLogFile("Unpacking file "+Chr(34)+"updates/deus_offline_updater.zip"+Chr(34)+"... ", #True, #False, system_debug)
   ;- TODO: Избавиться от внешнего 7z.exe
   sZIP.l = RunProgram("7z.exe", "e -aoa -o./ -x!unzipper.exe -y updates/deus_offline_updater.zip", GetPathPart(ProgramFilename$), #PB_Program_Open|#PB_Program_Hide)
   If sZIP
@@ -86,7 +86,7 @@ If FileSize("updates/deus_offline_updater.zip")<>-1
     Until Not ProgramRunning(sZIP)
     CloseWindow(0)
     AddToLogFile("DONE!", #False, #True, system_debug)
-    AddToLogFile("Execute file "+Chr(34)+"dou.exe"+Chr(34)+"...", #True, #False, system_debug)
+    AddToLogFile("Execute file "+Chr(34)+"dou.exe"+Chr(34)+"... ", #True, #False, system_debug)
     If RunProgram("dou.exe")
       AddToLogFile("DONE!", #False, #True, system_debug)
     Else
@@ -104,8 +104,8 @@ EndIf
 End
 
 ; IDE Options = PureBasic 5.31 (Windows - x86)
-; CursorPosition = 66
-; FirstLine = 56
+; CursorPosition = 46
+; FirstLine = 43
 ; Folding = -
 ; EnableUnicode
 ; EnableThread
@@ -113,8 +113,8 @@ End
 ; EnableAdmin
 ; UseIcon = unzipper.ico
 ; Executable = unzipper.exe
-; EnableCompileCount = 14
-; EnableBuildCount = 4
+; EnableCompileCount = 15
+; EnableBuildCount = 5
 ; IncludeVersionInfo
 ; VersionField0 = 1.0.%BUILDCOUNT.%COMPILECOUNT
 ; VersionField1 = 1.0.10.17
