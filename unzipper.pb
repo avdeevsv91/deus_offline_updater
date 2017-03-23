@@ -64,6 +64,7 @@ Repeat
       UpdaterRunning = #False
     Else
       AddToLogFile("ERROR!", #False, #True, system_debug)
+      AddToLogFile("Unpacking interrupted!", #True, #True, system_debug)
       MessageRequester("Error", "Can`t terminate the dou.exe process!", #MB_ICONERROR)
       End
     EndIf
@@ -103,8 +104,8 @@ EndIf
 End
 
 ; IDE Options = PureBasic 5.31 (Windows - x86)
-; CursorPosition = 28
-; FirstLine = 55
+; CursorPosition = 66
+; FirstLine = 56
 ; Folding = -
 ; EnableUnicode
 ; EnableThread
@@ -112,8 +113,8 @@ End
 ; EnableAdmin
 ; UseIcon = unzipper.ico
 ; Executable = unzipper.exe
-; EnableCompileCount = 13
-; EnableBuildCount = 3
+; EnableCompileCount = 14
+; EnableBuildCount = 4
 ; IncludeVersionInfo
 ; VersionField0 = 1.0.%BUILDCOUNT.%COMPILECOUNT
 ; VersionField1 = 1.0.10.17
