@@ -80,6 +80,10 @@ Procedure.l AddToLogFile(Message.s, DateTime.b=#True, NewLine.b=#True, Enable.b=
   EndIf
 EndProcedure
 
+; Получаем версию программы
+Global ProgramFilename$ = ProgramFilename()
+Global CurrentUpdaterVersion$ = GetFileVersion(ProgramFilename$, #GFVI_FileVersion, #False)
+
 ; Читаем настройки из файла
 Global system_debug.l = 0 ; Режим отладки
 cache_updates.l = 1 ; Обновлять кеш с сервера
@@ -91,9 +95,9 @@ If OpenPreferences("config.cfg", #PB_Preference_GroupSeparator)
   cache_updates = ReadPreferenceLong("updates", cache_updates)
   cache_hidden = ReadPreferenceLong("hidden", cache_hidden)
   ClosePreferences()
-  AddToLogFile("Updater started.", #True, #True, system_debug)
+  AddToLogFile("Updater started (version "+CurrentUpdaterVersion$+").", #True, #True, system_debug)
 Else
-  AddToLogFile("Updater started.", #True, #True, system_debug)
+  AddToLogFile("Updater started (version "+CurrentUpdaterVersion$+").", #True, #True, system_debug)
   AddToLogFile("Can`t open config file! Will be used default settings.", #True, #True, system_debug)
   DisclaimerTitle$ = #NULL$ : DisclaimerText$ = #NULL$
   If GetUserLanguage()="Russian"
@@ -144,10 +148,93 @@ If FileSize("updates/cache_updates/DEUS_V4")=-1
   EndIf
 EndIf
 
-; Обновление прошивок в локальном каталоге
+; Сравнивает два номера версий программ и возвращает True, если последняя новее
+Procedure CompareProgramsVersions(CurrentVersion.s, LatestVersion.s)
+  CVC.l = CountString(CurrentVersion, ".")
+  LVC.l = CountString(LatestVersion, ".")
+  If CVC>LVC : DVC.l = CVC : Else : DVC.l = LVC : EndIf
+  For i=1 To DVC+1
+    CVF$ = StringField(CurrentVersion, i, ".")
+    LVF$ = StringField(LatestVersion, i, ".")
+    If Val(LVF$)>Val(CVF$)
+      ProcedureReturn #True
+    ElseIf Val(LVF$)<Val(CVF$)
+      ProcedureReturn #False
+    EndIf
+  Next i
+  ProcedureReturn #False
+EndProcedure
+
+; Обновление программы и прошивок
 Global VersionsFileName$ = "4_0_01" ;- FIXME: определить алгоритм формирования имени файла
 Global UpdateSuccess.b = #False
-Procedure UpdateCacheFirmware(hidden)
+Procedure CheckForNewUpdates(hidden)
+  ; Обновление самой программы
+  AddToLogFile("Checking the program update...", #True, #True, system_debug)
+  ; Получаем информацию о последней версии
+  AddToLogFile("Download file "+Chr(34)+"http://deus.lipkop.club/Update/dou.php"+Chr(34)+"... ", #True, #False, system_debug)
+  LastUpdaterVersion$ = CurrentUpdaterVersion$
+  If ReceiveHTTPFile("http://deus.lipkop.club/Update/dou.php", "updates/dou.txt")
+    AddToLogFile("DONE!", #False, #True, system_debug)
+    AddToLogFile("Read last program version from file "+Chr(34)+"updates/dou.txt"+Chr(34)+"... ", #True, #False, system_debug)
+    If ReadFile(0, "updates/dou.txt")
+      AddToLogFile("DONE!", #False, #True, system_debug)
+      While Eof(0) = 0
+        LastUpdaterVersion$ + ReadString(0)
+      Wend
+      LastUpdaterVersion$ = Trim(LastUpdaterVersion$)
+      CloseFile(0)
+    Else
+      AddToLogFile("ERROR!", #False, #True, system_debug)
+    EndIf
+  Else
+    AddToLogFile("ERROR!", #False, #True, system_debug)
+  EndIf
+  ; Если есть новая версия программы
+  If CompareProgramsVersions(CurrentUpdaterVersion$, LastUpdaterVersion$)
+    AddToLogFile("A new version "+LastUpdaterVersion$+" of the program is available.", #True, #True, system_debug)
+    ;- TODO: Установка новой версии из SFX архива
+    AddToLogFile("Download file "+Chr(34)+"http://deus.lipkop.club/Update/deus_offline_updater.zip"+Chr(34)+"... ", #True, #False, system_debug)
+    If ReceiveHTTPFile("http://deus.lipkop.club/Update/deus_offline_updater.zip", "updates/deus_offline_updater.zip")
+      AddToLogFile("DONE!", #False, #True, system_debug)
+      ;- TODO: Избавиться от внешнего 7z.exe
+      sZIP.l = RunProgram("7z.exe", "e -aoa -o./ -i!unzipper.exe -y updates/deus_offline_updater.zip", GetPathPart(ProgramFilename$), #PB_Program_Open|#PB_Program_Hide)
+      If sZIP
+        Repeat
+          Delay(100)
+        Until Not ProgramRunning(sZIP)
+        AddToLogFile("DONE!", #False, #True, system_debug)
+        AddToLogFile("Execute file "+Chr(34)+"unzipper.exe"+Chr(34)+"... ", #True, #False, system_debug)
+        If RunProgram("unzipper.exe")
+          AddToLogFile("DONE!", #False, #True, system_debug)
+          End
+        Else
+          AddToLogFile("ERROR!", #False, #True, system_debug)
+        EndIf
+      Else
+        AddToLogFile("ERROR!", #False, #True, system_debug)
+      EndIf
+    Else
+      AddToLogFile("ERROR!", #False, #True, system_debug)
+    EndIf
+  Else ; Если новой версии нет, то проверим, возможно мы только что обновились и надо подчистить за собой
+    AddToLogFile("There are no updates available.", #True, #True, system_debug)
+    If FileSize("updates/deus_offline_updater.zip")<>-1
+      AddToLogFile("Delete file "+Chr(34)+"updates/deus_offline_updater.zip"+Chr(34)+"... ", #True, #False, system_debug)
+      If DeleteFile("updates/deus_offline_updater.zip", #PB_FileSystem_Force)
+        AddToLogFile("DONE!", #False, #True, system_debug)
+      Else
+        AddToLogFile("ERROR!", #False, #True, system_debug)
+      EndIf
+      AddToLogFile("Software update finished.", #True, #True, system_debug)
+    EndIf
+  EndIf
+  DeleteFile("updates/dou.txt", #PB_FileSystem_Force)
+  ; Обновление прошивок в локальном каталоге
+  ;- TODO: Обновление отдельных файлов по MD5 хешу
+  ;- TODO: Сократить пути на сервере обновлений
+  HideGadget(1, #True) : HideGadget(0, #False)
+  AddToLogFile("Checking the firmware update ...", #True, #True, system_debug)
   If hidden>0
     versions_url$ = "http://deus.lipkop.club/Update/deus_updates/DEUS_V4/Versions_"+VersionsFileName$+".php?show=all"
   Else
@@ -226,10 +313,11 @@ EndProcedure
 If cache_updates>0
   If CheckInternetConnection()
     Exit.b = #False
-    OpenWindow(0, #PB_Any, #PB_Any, 300, 35, "Updating...", #PB_Window_ScreenCentered)
-    ProgressBarGadget(0, 5, 5, 290, 25, 0, 1)
-    AddToLogFile("Updating local cache...", #True, #True, system_debug)
-    CreateThread(@UpdateCacheFirmware(), cache_hidden)
+    OpenWindow(0, #PB_Any, #PB_Any, 300, 35, "Updating", #PB_Window_ScreenCentered)
+    ProgressBarGadget(0, 5, 5, 290, 25, 0, 1) : HideGadget(0, #True)
+    TextGadget(1, 5, 5, 290, 25, "Please, wait...", #PB_Text_Center) : HideGadget(1, #False)
+    AddToLogFile("Check for new updates...", #True, #True, system_debug)
+    CreateThread(@CheckForNewUpdates(), cache_hidden)
     Repeat
       WaitWindowEvent(100)
     Until UpdateSuccess
@@ -391,27 +479,28 @@ AddToLogFile(#NULL$, #False, #True, system_debug)
 End
 
 ; IDE Options = PureBasic 5.31 (Windows - x86)
-; CursorPosition = 27
+; CursorPosition = 195
+; FirstLine = 182
 ; Folding = -
 ; EnableUnicode
 ; EnableThread
 ; EnableXP
 ; EnableAdmin
-; UseIcon = updater.ico
-; Executable = updater.exe
-; EnableCompileCount = 18
-; EnableBuildCount = 11
+; UseIcon = dou.ico
+; Executable = dou.exe
+; EnableCompileCount = 21
+; EnableBuildCount = 13
 ; IncludeVersionInfo
 ; VersionField0 = 1.0.%BUILDCOUNT.%COMPILECOUNT
 ; VersionField1 = 1.0.%BUILDCOUNT.%COMPILECOUNT
-; VersionField2 = TheSoulTaker48
-; VersionField3 = Deus Offline Updater
+; VersionField2 = LipKop.club
+; VersionField3 = Updater
 ; VersionField4 = 1.0.%BUILDCOUNT.%COMPILECOUNT
 ; VersionField5 = 1.0.%BUILDCOUNT.%COMPILECOUNT
-; VersionField6 = Unofficial XP Deus update
+; VersionField6 = Unofficial XP Deus updater
 ; VersionField7 = deus_offline_updater
 ; VersionField8 = %EXECUTABLE
-; VersionField9 = TheSoulTaker48
+; VersionField9 = SoulTaker
 ; VersionField13 = thesoultaker48@gmail.com
 ; VersionField14 = http://deus.lipkop.club
 ; VersionField15 = VOS_NT_WINDOWS32

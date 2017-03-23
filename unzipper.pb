@@ -77,6 +77,7 @@ AddToLogFile("DONE!", #False, #True, system_debug)
 If FileSize("updates/deus_offline_updater.zip")<>-1
   AddToLogFile("Unpacking file "+Chr(34)+"updates/deus_offline_updater.zip"+Chr(34)+"... ", #True, #False, system_debug)
   ;- TODO: Избавиться от внешнего 7z.exe
+  ;- TODO: Установка новой версии из SFX архива
   sZIP.l = RunProgram("7z.exe", "e -aoa -o./ -x!unzipper.exe -y updates/deus_offline_updater.zip", GetPathPart(ProgramFilename$), #PB_Program_Open|#PB_Program_Hide)
   If sZIP
     OpenWindow(0, #PB_Any, #PB_Any, 300, 35, "Updating", #PB_Window_ScreenCentered)
@@ -104,8 +105,8 @@ EndIf
 End
 
 ; IDE Options = PureBasic 5.31 (Windows - x86)
-; CursorPosition = 46
-; FirstLine = 43
+; CursorPosition = 76
+; FirstLine = 59
 ; Folding = -
 ; EnableUnicode
 ; EnableThread
