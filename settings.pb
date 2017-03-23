@@ -55,26 +55,27 @@ ClosePreferences()
 End
 
 ; IDE Options = PureBasic 5.31 (Windows - x86)
-; CursorPosition = 12
+; CursorPosition = 14
 ; FirstLine = 6
 ; EnableUnicode
 ; EnableThread
 ; EnableXP
+; EnableAdmin
 ; UseIcon = settings.ico
 ; Executable = settings.exe
-; EnableCompileCount = 6
-; EnableBuildCount = 4
+; EnableCompileCount = 7
+; EnableBuildCount = 5
 ; IncludeVersionInfo
 ; VersionField0 = 1.0.%BUILDCOUNT.%COMPILECOUNT
 ; VersionField1 = 1.0.10.17
-; VersionField2 = TheSoulTaker48
-; VersionField3 = Deus Offline Updater Settings
+; VersionField2 = LipKop.club
+; VersionField3 = Settings
 ; VersionField4 = 1.0.10.17
 ; VersionField5 = 1.0.%BUILDCOUNT.%COMPILECOUNT
-; VersionField6 = Unofficial XP Deus update settings
+; VersionField6 = Unofficial XP Deus updater: settings
 ; VersionField7 = deus_offline_updater_settings
 ; VersionField8 = %EXECUTABLE
-; VersionField9 = TheSoulTaker48
+; VersionField9 = SoulTaker
 ; VersionField13 = thesoultaker48@gmail.com
 ; VersionField14 = http://deus.lipkop.club
 ; VersionField15 = VOS_NT_WINDOWS32
