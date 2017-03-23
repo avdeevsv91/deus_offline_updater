@@ -104,7 +104,7 @@ Else
     DisclaimerTitle$ = "Внимание!"
     DisclaimerText$ + "Данная программа обновления НЕ ЯВЛЯЕТСЯ ОФИЦИАЛЬНОЙ и предназначена для использования исключительно в ознакомительных целях." + Chr(13)
     DisclaimerText$ + Chr(13)
-    DisclaimerText$ + "Автор не несет ответственности за любой вред (материальный или моральный), причененный вам или третьим лицам, в результате использования данного программного обеспечения. " + Chr(13)
+    DisclaimerText$ + "Автор не несет ответственности за любой вред (материальный или моральный), причененный вам или третьим лицам, в результате использования данного программного обеспечения." + Chr(13)
     DisclaimerText$ + Chr(13)
     DisclaimerText$ + "Все действия вы производите на свой страх и риск!" + Chr(13)
   Else
@@ -485,8 +485,8 @@ AddToLogFile(#NULL$, #False, #True, system_debug)
 End
 
 ; IDE Options = PureBasic 5.31 (Windows - x86)
-; CursorPosition = 241
-; FirstLine = 232
+; CursorPosition = 108
+; FirstLine = 88
 ; Folding = -
 ; EnableUnicode
 ; EnableThread
