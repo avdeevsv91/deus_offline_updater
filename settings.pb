@@ -62,14 +62,14 @@ End
 ; EnableAdmin
 ; UseIcon = settings.ico
 ; Executable = settings.exe
-; EnableCompileCount = 8
-; EnableBuildCount = 6
+; EnableCompileCount = 10
+; EnableBuildCount = 8
 ; IncludeVersionInfo
 ; VersionField0 = 1.0.%BUILDCOUNT.%COMPILECOUNT
-; VersionField1 = 1.0.13.21
+; VersionField1 = 1.0.15.28
 ; VersionField2 = LipKop.club
 ; VersionField3 = Settings
-; VersionField4 = 1.0.13.21
+; VersionField4 = 1.0.15.28
 ; VersionField5 = 1.0.%BUILDCOUNT.%COMPILECOUNT
 ; VersionField6 = Unofficial XP Deus updater: settings
 ; VersionField7 = deus_offline_updater_settings

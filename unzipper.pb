@@ -81,7 +81,7 @@ If FileSize("updates/deus_offline_updater.zip")<>-1
   sZIP.l = RunProgram("7z.exe", "e -aoa -o./ -x!unzipper.exe -y updates/deus_offline_updater.zip", GetPathPart(ProgramFilename$), #PB_Program_Open|#PB_Program_Hide)
   If sZIP
     OpenWindow(0, #PB_Any, #PB_Any, 300, 35, "Updating", #PB_Window_ScreenCentered)
-    TextGadget(0, 5, 5, 290, 25, "Please, wait...", #PB_Text_Center)
+    TextGadget(0, 5, 10, 290, 25, "Please, wait...", #PB_Text_Center)
     Repeat
       WaitWindowEvent(100)
     Until Not ProgramRunning(sZIP)
@@ -105,8 +105,8 @@ EndIf
 End
 
 ; IDE Options = PureBasic 5.31 (Windows - x86)
-; CursorPosition = 76
-; FirstLine = 60
+; CursorPosition = 83
+; FirstLine = 57
 ; Folding = -
 ; EnableUnicode
 ; EnableThread
@@ -114,14 +114,14 @@ End
 ; EnableAdmin
 ; UseIcon = unzipper.ico
 ; Executable = unzipper.exe
-; EnableCompileCount = 16
-; EnableBuildCount = 6
+; EnableCompileCount = 18
+; EnableBuildCount = 8
 ; IncludeVersionInfo
 ; VersionField0 = 1.0.%BUILDCOUNT.%COMPILECOUNT
-; VersionField1 = 1.0.13.21
+; VersionField1 = 1.0.15.28
 ; VersionField2 = LipKop.club
 ; VersionField3 = Unzipper
-; VersionField4 = 1.0.13.21
+; VersionField4 = 1.0.15.28
 ; VersionField5 = 1.0.%BUILDCOUNT.%COMPILECOUNT
 ; VersionField6 = Unofficial XP Deus updater: unzipper
 ; VersionField7 = deus_offline_updater_unzipper

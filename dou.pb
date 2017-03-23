@@ -178,6 +178,7 @@ Procedure CheckForNewUpdates(hidden)
     AddToLogFile("DONE!", #False, #True, system_debug)
     AddToLogFile("Read last program version from file "+Chr(34)+"updates/dou.txt"+Chr(34)+"... ", #True, #False, system_debug)
     If ReadFile(0, "updates/dou.txt")
+      LastUpdaterVersion$ = #NULL$
       AddToLogFile("DONE!", #False, #True, system_debug)
       While Eof(0) = 0
         LastUpdaterVersion$ + ReadString(0)
@@ -229,7 +230,12 @@ Procedure CheckForNewUpdates(hidden)
       AddToLogFile("Software update finished.", #True, #True, system_debug)
     EndIf
   EndIf
-  DeleteFile("updates/dou.txt", #PB_FileSystem_Force)
+  AddToLogFile("Delete file "+Chr(34)+"updates/dou.txt"+Chr(34)+"... ", #True, #False, system_debug)
+  If DeleteFile("updates/dou.txt", #PB_FileSystem_Force)
+    AddToLogFile("DONE!", #False, #True, system_debug)
+  Else
+    AddToLogFile("ERROR!", #False, #True, system_debug)
+  EndIf
   ; Обновление прошивок в локальном каталоге
   ;- TODO: Обновление отдельных файлов по MD5 хешу
   ;- TODO: Сократить пути на сервере обновлений
@@ -315,7 +321,7 @@ If cache_updates>0
     Exit.b = #False
     OpenWindow(0, #PB_Any, #PB_Any, 300, 35, "Updating", #PB_Window_ScreenCentered)
     ProgressBarGadget(0, 5, 5, 290, 25, 0, 1) : HideGadget(0, #True)
-    TextGadget(1, 5, 5, 290, 25, "Please, wait...", #PB_Text_Center) : HideGadget(1, #False)
+    TextGadget(1, 5, 10, 290, 25, "Please, wait...", #PB_Text_Center) : HideGadget(1, #False)
     AddToLogFile("Check for new updates...", #True, #True, system_debug)
     CreateThread(@CheckForNewUpdates(), cache_hidden)
     Repeat
@@ -479,8 +485,8 @@ AddToLogFile(#NULL$, #False, #True, system_debug)
 End
 
 ; IDE Options = PureBasic 5.31 (Windows - x86)
-; CursorPosition = 190
-; FirstLine = 182
+; CursorPosition = 241
+; FirstLine = 232
 ; Folding = -
 ; EnableUnicode
 ; EnableThread
@@ -488,8 +494,8 @@ End
 ; EnableAdmin
 ; UseIcon = dou.ico
 ; Executable = dou.exe
-; EnableCompileCount = 22
-; EnableBuildCount = 14
+; EnableCompileCount = 29
+; EnableBuildCount = 16
 ; IncludeVersionInfo
 ; VersionField0 = 1.0.%BUILDCOUNT.%COMPILECOUNT
 ; VersionField1 = 1.0.%BUILDCOUNT.%COMPILECOUNT
