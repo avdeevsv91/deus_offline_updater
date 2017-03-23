@@ -106,7 +106,7 @@ End
 
 ; IDE Options = PureBasic 5.31 (Windows - x86)
 ; CursorPosition = 76
-; FirstLine = 59
+; FirstLine = 60
 ; Folding = -
 ; EnableUnicode
 ; EnableThread
@@ -114,14 +114,14 @@ End
 ; EnableAdmin
 ; UseIcon = unzipper.ico
 ; Executable = unzipper.exe
-; EnableCompileCount = 15
-; EnableBuildCount = 5
+; EnableCompileCount = 16
+; EnableBuildCount = 6
 ; IncludeVersionInfo
 ; VersionField0 = 1.0.%BUILDCOUNT.%COMPILECOUNT
-; VersionField1 = 1.0.10.17
+; VersionField1 = 1.0.13.21
 ; VersionField2 = LipKop.club
 ; VersionField3 = Unzipper
-; VersionField4 = 1.0.10.17
+; VersionField4 = 1.0.13.21
 ; VersionField5 = 1.0.%BUILDCOUNT.%COMPILECOUNT
 ; VersionField6 = Unofficial XP Deus updater: unzipper
 ; VersionField7 = deus_offline_updater_unzipper

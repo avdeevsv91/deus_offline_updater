@@ -479,7 +479,7 @@ AddToLogFile(#NULL$, #False, #True, system_debug)
 End
 
 ; IDE Options = PureBasic 5.31 (Windows - x86)
-; CursorPosition = 195
+; CursorPosition = 190
 ; FirstLine = 182
 ; Folding = -
 ; EnableUnicode
@@ -488,8 +488,8 @@ End
 ; EnableAdmin
 ; UseIcon = dou.ico
 ; Executable = dou.exe
-; EnableCompileCount = 21
-; EnableBuildCount = 13
+; EnableCompileCount = 22
+; EnableBuildCount = 14
 ; IncludeVersionInfo
 ; VersionField0 = 1.0.%BUILDCOUNT.%COMPILECOUNT
 ; VersionField1 = 1.0.%BUILDCOUNT.%COMPILECOUNT
