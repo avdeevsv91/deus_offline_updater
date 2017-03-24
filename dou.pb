@@ -26,6 +26,7 @@ AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T06.txt"              : Fi
 AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T07.txt"              : FirmwareFiles()\Required = #True
 AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T08.txt"              : FirmwareFiles()\Required = #False ; VIP
 AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T09.txt"              : FirmwareFiles()\Required = #True
+AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T15.txt"              : FirmwareFiles()\Required = #False ; V4 only
 AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T0A.txt"              : FirmwareFiles()\Required = #True
 AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T0B.txt"              : FirmwareFiles()\Required = #True
 AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T0C.txt"              : FirmwareFiles()\Required = #True
@@ -485,8 +486,7 @@ AddToLogFile(#NULL$, #False, #True, system_debug)
 End
 
 ; IDE Options = PureBasic 5.31 (Windows - x86)
-; CursorPosition = 108
-; FirstLine = 88
+; CursorPosition = 28
 ; Folding = -
 ; EnableUnicode
 ; EnableThread
@@ -494,8 +494,8 @@ End
 ; EnableAdmin
 ; UseIcon = dou.ico
 ; Executable = dou.exe
-; EnableCompileCount = 29
-; EnableBuildCount = 16
+; EnableCompileCount = 30
+; EnableBuildCount = 17
 ; IncludeVersionInfo
 ; VersionField0 = 1.0.%BUILDCOUNT.%COMPILECOUNT
 ; VersionField1 = 1.0.%BUILDCOUNT.%COMPILECOUNT
