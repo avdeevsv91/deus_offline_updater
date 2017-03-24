@@ -1,4 +1,4 @@
-XP Deus Offline Updater (version: 1.0.15.28)
+﻿XP Deus Offline Updater (version: 1.0.16.29)
 
 ============================================
 Author: SoulTaker
@@ -33,6 +33,9 @@ How to Use
 ============================================
 Changelog
 ============================================
+
+Version 1.0.16.29 (24.03.2017):
+  * Add T15.txt to list of firmware files.
 
 Version 1.0.15.28 (23.03.2017):
   * Implemented automatic software updates.
