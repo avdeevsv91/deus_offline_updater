@@ -30,17 +30,12 @@ echo.
 echo Build done!
 echo.
 
-echo Please, edit info.txt and only then continue...
-pause
-echo.
-
 echo The current version of the product is %VERSION_STRING%
 echo.
 
 echo Create an readme.txt file...
 copy /y "info.txt" "readme.txt"
 rplstr -s:"{VERSION_STRING}" -r:"%VERSION_STRING%" "readme.txt"
-rplstr -s:"{DATE_STRING}" -r:"%DATE%" "readme.txt"
 
 echo Create an SFX script file...
 echo ;Расположенный ниже комментарий содержит команды SFX-сценария>sfx.opt
