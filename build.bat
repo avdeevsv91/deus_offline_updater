@@ -24,6 +24,7 @@ for /f "tokens=1,2 delims=	" %%i in ('filever /v "dou.exe"^|find /i "FileVersion
 echo Build main.pbp (target: settings)...
 rplstr -s:"{VERSION_STRING}" -r:"%VERSION_STRING%" "main.pbp"
 purebasic /quiet /build "main.pbp" /target "settings"
+rplstr -s:"%VERSION_STRING%" -r:"{VERSION_STRING}" "main.pbp"
 
 echo.
 echo Build done!
@@ -68,8 +69,8 @@ echo Shortcut=P, dou.exe, "Deus Offline Updater", , "Deus Offline Updater", >>sf
 echo Shortcut=P, settings.exe, "Deus Offline Updater", , Settings, >>sfx.opt
 
 echo Create an SFX archive...
-del /q "sfx.exe"
-winrar a -ibck -iadm -inul -sfx -iiconsfx.ico -iimgsfx.bmp -zsfx.opt sfx @sfx.lst
+del /q "deus_offline_updater.exe"
+winrar a -ibck -iadm -inul -sfx -iiconsfx.ico -iimgsfx.bmp -zsfx.opt deus_offline_updater @sfx.lst
 del /q "readme.txt"
 del /q "sfx.opt"
 echo.

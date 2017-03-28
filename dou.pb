@@ -149,6 +149,20 @@ If FileSize("updates/cache_updates/DEUS_V4")=-1
   EndIf
 EndIf
 
+; Обработка внешних ключей запуска
+For i=0 To CountProgramParameters()-1
+  CurrentParemeter$ = ProgramParameter(i)
+  CurrentParemeter$ = Trim(CurrentParemeter$)
+  CurrentParemeter$ = LCase(CurrentParemeter$)
+  Select CurrentParemeter$
+    Case "/installed":
+      MessageRequester("Information", "The program was successfully installed!", #MB_ICONINFORMATION)
+      End
+    Default:
+      AddToLogFile("Unsupported startup key: "+CurrentParemeter$, #True, #True, system_debug)
+  EndSelect
+Next i
+
 ; Сравнивает два номера версий программ и возвращает True, если последняя новее
 Procedure CompareProgramsVersions(CurrentVersion.s, LatestVersion.s)
   CVC.l = CountString(CurrentVersion, ".")
@@ -195,24 +209,15 @@ Procedure CheckForNewUpdates(hidden)
   ; Если есть новая версия программы
   If CompareProgramsVersions(CurrentUpdaterVersion$, LastUpdaterVersion$)
     AddToLogFile("A new version "+LastUpdaterVersion$+" of the program is available.", #True, #True, system_debug)
-    ;- TODO: Установка новой версии из SFX архива
-    AddToLogFile("Download file "+Chr(34)+"http://deus.lipkop.club/Update/deus_offline_updater.zip"+Chr(34)+"... ", #True, #False, system_debug)
-    If ReceiveHTTPFile("http://deus.lipkop.club/Update/deus_offline_updater.zip", "updates/deus_offline_updater.zip")
+    AddToLogFile("Download file "+Chr(34)+"http://deus.lipkop.club/Update/deus_offline_updater.exe"+Chr(34)+"... ", #True, #False, system_debug)
+    If ReceiveHTTPFile("http://deus.lipkop.club/Update/deus_offline_updater.exe", "updates/deus_offline_updater.exe")
       AddToLogFile("DONE!", #False, #True, system_debug)
-      ;- TODO: Избавиться от внешнего 7z.exe
-      sZIP.l = RunProgram("7z.exe", "e -aoa -o./ -i!unzipper.exe -y updates/deus_offline_updater.zip", GetPathPart(ProgramFilename$), #PB_Program_Open|#PB_Program_Hide)
-      If sZIP
-        Repeat
-          Delay(100)
-        Until Not ProgramRunning(sZIP)
+      ; Запускаем установщик обновлений
+      AddToLogFile("Execute file "+Chr(34)+"updates/deus_offline_updater.exe"+Chr(34)+"... ", #True, #False, system_debug)
+      hSFX.l = RunProgram("updates/deus_offline_updater.exe", "-s", GetPathPart(ProgramFilename$), #PB_Program_Open|#PB_Program_Hide)
+      If hSFX
         AddToLogFile("DONE!", #False, #True, system_debug)
-        AddToLogFile("Execute file "+Chr(34)+"unzipper.exe"+Chr(34)+"... ", #True, #False, system_debug)
-        If RunProgram("unzipper.exe")
-          AddToLogFile("DONE!", #False, #True, system_debug)
-          End
-        Else
-          AddToLogFile("ERROR!", #False, #True, system_debug)
-        EndIf
+        End
       Else
         AddToLogFile("ERROR!", #False, #True, system_debug)
       EndIf
@@ -221,9 +226,9 @@ Procedure CheckForNewUpdates(hidden)
     EndIf
   Else ; Если новой версии нет, то проверим, возможно мы только что обновились и надо подчистить за собой
     AddToLogFile("There are no updates available.", #True, #True, system_debug)
-    If FileSize("updates/deus_offline_updater.zip")<>-1
-      AddToLogFile("Delete file "+Chr(34)+"updates/deus_offline_updater.zip"+Chr(34)+"... ", #True, #False, system_debug)
-      If DeleteFile("updates/deus_offline_updater.zip", #PB_FileSystem_Force)
+    If FileSize("updates/deus_offline_updater.exe")<>-1
+      AddToLogFile("Delete file "+Chr(34)+"updates/deus_offline_updater.exe"+Chr(34)+"... ", #True, #False, system_debug)
+      If DeleteFile("updates/deus_offline_updater.exe", #PB_FileSystem_Force)
         AddToLogFile("DONE!", #False, #True, system_debug)
       Else
         AddToLogFile("ERROR!", #False, #True, system_debug)
@@ -486,7 +491,8 @@ AddToLogFile(#NULL$, #False, #True, system_debug)
 End
 
 ; IDE Options = PureBasic 5.31 (Windows - x86)
-; CursorPosition = 28
+; CursorPosition = 148
+; FirstLine = 261
 ; Folding = -
 ; EnableUnicode
 ; EnableThread
