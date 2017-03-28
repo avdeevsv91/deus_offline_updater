@@ -494,8 +494,8 @@ End
 ; EnableAdmin
 ; UseIcon = dou.ico
 ; Executable = dou.exe
-; EnableCompileCount = 30
-; EnableBuildCount = 17
+; EnableCompileCount = 33
+; EnableBuildCount = 18
 ; IncludeVersionInfo
 ; VersionField0 = 1.0.%BUILDCOUNT.%COMPILECOUNT
 ; VersionField1 = 1.0.%BUILDCOUNT.%COMPILECOUNT

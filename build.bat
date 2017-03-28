@@ -2,10 +2,37 @@
 
 set PATH=%PATH%;%CD%\utilities
 set PATH=%PATH%;%ProgramFiles%\WinRar
+set PATH=%PATH%;%ProgramFiles%\PureBasic 5.31
 
+echo ****************************************
+echo Deus Offline Updater (build.bat)
+echo.
+echo Author: SoulTaker
+echo URL: http://deus.lipkop.club
+echo E-Mail: thesoultaker48@gmail.com
+echo ****************************************
+echo.
+echo With this tool, you can build a project from the source code.
+pause
+echo.
+
+echo Build main.pbp (target: dou)...
+purebasic /quiet /build "main.pbp" /target "dou"
 for /f "tokens=1,2 delims=	" %%i in ('filever /v "dou.exe"^|find /i "FileVersion"') do (
 	set VERSION_STRING=%%j
 )
+echo Build main.pbp (target: settings)...
+rplstr -s:"{VERSION_STRING}" -r:"%VERSION_STRING%" "main.pbp"
+purebasic /quiet /build "main.pbp" /target "settings"
+
+echo.
+echo Build done!
+echo.
+
+echo Please, edit info.txt and only then continue...
+pause
+echo.
+
 echo The current version of the product is %VERSION_STRING%
 echo.
 
@@ -47,5 +74,6 @@ del /q "readme.txt"
 del /q "sfx.opt"
 echo.
 
-echo Done!
+echo SFX done!
+
 pause
