@@ -157,6 +157,7 @@ For i=0 To CountProgramParameters()-1
   Select CurrentParemeter$
     Case "/installed":
       MessageRequester("Information", "The program was successfully installed!", #MB_ICONINFORMATION)
+      Goto ProgramEndPoint
       End
     Default:
       AddToLogFile("Unsupported startup key: "+CurrentParemeter$, #True, #True, system_debug)
@@ -214,7 +215,8 @@ Procedure CheckForNewUpdates(hidden)
       AddToLogFile("DONE!", #False, #True, system_debug)
       ; Запускаем установщик обновлений
       AddToLogFile("Execute file "+Chr(34)+"updates/deus_offline_updater.exe"+Chr(34)+"... ", #True, #False, system_debug)
-      hSFX.l = RunProgram("updates/deus_offline_updater.exe", "-s", GetPathPart(ProgramFilename$), #PB_Program_Open|#PB_Program_Hide)
+      ProgramPathPart$ = GetPathPart(ProgramFilename$)
+      hSFX.l = RunProgram("updates/deus_offline_updater.exe", "-s -d"+Chr(34)+ProgramPathPart$+Chr(34), ProgramPathPart$, #PB_Program_Open|#PB_Program_Hide)
       If hSFX
         AddToLogFile("DONE!", #False, #True, system_debug)
         End
@@ -468,6 +470,8 @@ Else
   MessageRequester("Error", "Can`t create the http server on port 8080!", #MB_ICONERROR)
 EndIf
 
+ProgramEndPoint:
+
 ; Сохраняем настройки в файл
 If Not OpenPreferences("config.cfg", #PB_Preference_GroupSeparator)
   AddToLogFile("Can`t open config file! Try to create it...", #True, #True, system_debug)
@@ -491,8 +495,8 @@ AddToLogFile(#NULL$, #False, #True, system_debug)
 End
 
 ; IDE Options = PureBasic 5.31 (Windows - x86)
-; CursorPosition = 148
-; FirstLine = 261
+; CursorPosition = 160
+; FirstLine = 135
 ; Folding = -
 ; EnableUnicode
 ; EnableThread
