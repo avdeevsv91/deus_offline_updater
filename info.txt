@@ -1,41 +1,44 @@
-ï»¿XP Deus Offline Updater (version: 1.0.16.29)
-
+XP Deus Offline Updater (version: {VERSION_STRING})
+ 
 ============================================
 Author: SoulTaker
 E-Mail: thesoultaker48@gmail.com
 Home Page: http://deus.lipkop.club/Update/
 ============================================
-
-
+ 
+ 
 Warning!
 This program update IS NOT OFFICIAL and is intended for use solely for informational purposes.
 The author is not responsible for any damage (material or moral) caused to you or third parties resulting from the use of this software.
 All the steps you are at your own risk!
-
-Ð’Ð½Ð¸Ð¼Ð°Ð½Ð¸Ðµ!
-Ð”Ð°Ð½Ð½Ð°Ñ Ð¿Ñ€Ð¾Ð³Ñ€Ð°Ð¼Ð¼Ð° Ð¾Ð±Ð½Ð¾Ð²Ð»ÐµÐ½Ð¸Ñ ÐÐ• Ð¯Ð’Ð›Ð¯Ð•Ð¢Ð¡Ð¯ ÐžÐ¤Ð˜Ð¦Ð˜ÐÐ›Ð¬ÐÐžÐ™ Ð¸ Ð¿Ñ€ÐµÐ´Ð½Ð°Ð·Ð½Ð°Ñ‡ÐµÐ½Ð° Ð´Ð»Ñ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ð½Ð¸Ñ Ð¸ÑÐºÐ»ÑŽÑ‡Ð¸Ñ‚ÐµÐ»ÑŒÐ½Ð¾ Ð² Ð¾Ð·Ð½Ð°ÐºÐ¾Ð¼Ð¸Ñ‚ÐµÐ»ÑŒÐ½Ñ‹Ñ… Ñ†ÐµÐ»ÑÑ….
-ÐÐ²Ñ‚Ð¾Ñ€ Ð½Ðµ Ð½ÐµÑÐµÑ‚ Ð¾Ñ‚Ð²ÐµÑ‚ÑÑ‚Ð²ÐµÐ½Ð½Ð¾ÑÑ‚Ð¸ Ð·Ð° Ð»ÑŽÐ±Ð¾Ð¹ Ð²Ñ€ÐµÐ´ (Ð¼Ð°Ñ‚ÐµÑ€Ð¸Ð°Ð»ÑŒÐ½Ñ‹Ð¹ Ð¸Ð»Ð¸ Ð¼Ð¾Ñ€Ð°Ð»ÑŒÐ½Ñ‹Ð¹), Ð¿Ñ€Ð¸Ñ‡ÐµÐ½ÐµÐ½Ð½Ñ‹Ð¹ Ð²Ð°Ð¼ Ð¸Ð»Ð¸ Ñ‚Ñ€ÐµÑ‚ÑŒÐ¸Ð¼ Ð»Ð¸Ñ†Ð°Ð¼, Ð² Ñ€ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚Ðµ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ð½Ð¸Ñ Ð´Ð°Ð½Ð½Ð¾Ð³Ð¾ Ð¿Ñ€Ð¾Ð³Ñ€Ð°Ð¼Ð¼Ð½Ð¾Ð³Ð¾ Ð¾Ð±ÐµÑÐ¿ÐµÑ‡ÐµÐ½Ð¸Ñ.
-Ð’ÑÐµ Ð´ÐµÐ¹ÑÑ‚Ð²Ð¸Ñ Ð²Ñ‹ Ð¿Ñ€Ð¾Ð¸Ð·Ð²Ð¾Ð´Ð¸Ñ‚Ðµ Ð½Ð° ÑÐ²Ð¾Ð¹ ÑÑ‚Ñ€Ð°Ñ… Ð¸ Ñ€Ð¸ÑÐº!
-
-
+ 
+Âíèìàíèå!
+Äàííàÿ ïðîãðàììà îáíîâëåíèÿ ÍÅ ßÂËßÅÒÑß ÎÔÈÖÈÀËÜÍÎÉ è ïðåäíàçíà÷åíà äëÿ èñïîëüçîâàíèÿ èñêëþ÷èòåëüíî â îçíàêîìèòåëüíûõ öåëÿõ.
+Àâòîð íå íåñåò îòâåòñòâåííîñòè çà ëþáîé âðåä (ìàòåðèàëüíûé èëè ìîðàëüíûé), ïðè÷åíåííûé âàì èëè òðåòüèì ëèöàì, â ðåçóëüòàòå èñïîëüçîâàíèÿ äàííîãî ïðîãðàììíîãî îáåñïå÷åíèÿ.
+Âñå äåéñòâèÿ âû ïðîèçâîäèòå íà ñâîé ñòðàõ è ðèñê!
+ 
 ============================================
 How to Use
 ============================================
-
+ 
 1. Run the file dou.exe and wait for the update (internet connection must be available).
 2. Turn off all you headphones.
 3. Turn on the remote control WITHOUT the USB cable.
 4. Go to update mode (Option > Configuration > Update > Confirm).
 5. Connect the single USB cable between your PC and the remote control (don`t use the recharge cable with 3 mini USB).
 6. Follow the further prompts of the program.
-
-
+ 
+ 
 ============================================
 Changelog
 ============================================
-
+ 
+Version {VERSION_STRING} ({DATE_STRING}):
+  * some text...
+ 
 Version 1.0.16.29 (24.03.2017):
   * Add T15.txt to list of firmware files.
-
+ 
 Version 1.0.15.28 (23.03.2017):
   * Implemented automatic software updates.
+ 
