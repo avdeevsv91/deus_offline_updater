@@ -19,23 +19,23 @@ echo.
 echo Build main.pbp (target: dou)...
 purebasic /quiet /build "main.pbp" /target "dou"
 for /f "tokens=1,2 delims=	" %%i in ('filever /v "dou.exe"^|find /i "FileVersion"') do (
-	set VERSION_STRING=%%j
+	set PRODUCT_VERSION=%%j
 )
 echo Build main.pbp (target: settings)...
-rplstr -s:"{VERSION_STRING}" -r:"%VERSION_STRING%" "main.pbp"
+rplstr -s:"{PRODUCT_VERSION}" -r:"%PRODUCT_VERSION%" "main.pbp"
 purebasic /quiet /build "main.pbp" /target "settings"
-rplstr -s:"%VERSION_STRING%" -r:"{VERSION_STRING}" "main.pbp"
+rplstr -s:"%PRODUCT_VERSION%" -r:"{PRODUCT_VERSION}" "main.pbp"
 
 echo.
 echo Build done!
 echo.
 
-echo The current version of the product is %VERSION_STRING%
+echo The current version of the product is %PRODUCT_VERSION%
 echo.
 
 echo Create an readme.txt file...
 copy /y "info.txt" "readme.txt"
-rplstr -s:"{VERSION_STRING}" -r:"%VERSION_STRING%" "readme.txt"
+rplstr -s:"{PRODUCT_VERSION}" -r:"%PRODUCT_VERSION%" "readme.txt"
 
 echo Create an SFX script file...
 echo ;Расположенный ниже комментарий содержит команды SFX-сценария>sfx.opt
@@ -45,7 +45,7 @@ echo Presetup=taskkill /im dou.exe /f>>sfx.opt
 echo Setup=dou.exe /installed>>sfx.opt
 echo SetupCode>>sfx.opt
 echo Overwrite=^1>>sfx.opt
-echo Title=Deus Offline Updater v%VERSION_STRING%>>sfx.opt
+echo Title=Deus Offline Updater v%PRODUCT_VERSION%>>sfx.opt
 echo Text>>sfx.opt
 echo {>>sfx.opt
 setlocal EnableDelayedExpansion
@@ -64,8 +64,10 @@ echo Shortcut=P, dou.exe, "Deus Offline Updater", , "Deus Offline Updater", >>sf
 echo Shortcut=P, settings.exe, "Deus Offline Updater", , Settings, >>sfx.opt
 
 echo Create an SFX archive...
-del /q "deus_offline_updater.exe"
-winrar a -ibck -iadm -inul -sfx -iiconsfx.ico -iimgsfx.bmp -zsfx.opt deus_offline_updater @sfx.lst
+del /q "output\deus_offline_updater.exe"
+winrar a -ibck -iadm -inul -sfx -iiconsfx.ico -iimgsfx.bmp -zsfx.opt output\deus_offline_updater @sfx.lst
+del /q "output\deus_offline_updater.zip"
+winrar a -ibck -iadm -inul -afzip output\deus_offline_updater @sfx.lst
 del /q "readme.txt"
 del /q "sfx.opt"
 echo.

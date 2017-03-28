@@ -7,7 +7,7 @@
   <section name="data">
     <explorer view="" pattern="0"/>
     <log show="1"/>
-    <lastopen date="2017-03-28 15:06" user="sozan" host="WORKPLACE-15"/>
+    <lastopen date="2017-03-28 15:31" user="sozan" host="WORKPLACE-15"/>
   </section>
   <section name="files">
     <file name="dou.pb">
@@ -26,8 +26,8 @@
       <executable value="dou.exe"/>
       <options unicode="1" thread="1" xpskin="1" admin="1"/>
       <icon enable="1">dou.ico</icon>
-      <compilecount enable="1" value="4"/>
-      <buildcount enable="1" value="3"/>
+      <compilecount enable="1" value="10"/>
+      <buildcount enable="1" value="9"/>
       <versioninfo enable="1">
         <field0 value="1.1.%BUILDCOUNT.%COMPILECOUNT"/>
         <field1 value="1.1.%BUILDCOUNT.%COMPILECOUNT"/>
@@ -51,14 +51,14 @@
       <executable value="settings.exe"/>
       <options unicode="1" thread="1" xpskin="1"/>
       <icon enable="1">settings.ico</icon>
-      <compilecount enable="1" value="3"/>
-      <buildcount enable="1" value="3"/>
+      <compilecount enable="1" value="9"/>
+      <buildcount enable="1" value="9"/>
       <versioninfo enable="1">
         <field0 value="1.1.%BUILDCOUNT.%COMPILECOUNT"/>
-        <field1 value="{VERSION_STRING}"/>
+        <field1 value="{PRODUCT_VERSION}"/>
         <field2 value="LipKop.club"/>
         <field3 value="Settings"/>
-        <field4 value="{VERSION_STRING}"/>
+        <field4 value="{PRODUCT_VERSION}"/>
         <field5 value="1.1.%BUILDCOUNT.%COMPILECOUNT"/>
         <field6 value="Unofficial XP Deus updater: settings"/>
         <field7 value="deus_offline_updater_settings"/>
