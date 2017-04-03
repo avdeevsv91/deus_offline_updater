@@ -1,4 +1,6 @@
-﻿system_debug.l = 0 ; Режим отладки
+﻿UsePNGImageDecoder() ; Для иконок
+
+system_debug.l = 0 ; Режим отладки
 cache_updates.l = 1 ; Обновлять кеш с сервера
 cache_hidden.l = 0  ; Загружать скрытые обновления
 
@@ -12,15 +14,19 @@ If OpenPreferences("config.cfg", #PB_Preference_GroupSeparator)
   ClosePreferences()
 EndIf
 
+; Получаем версию программы
+CurrentUpdaterVersion$ = GetFileVersion("dou.exe", #GFVI_FileVersion, #False)
+
 ; Окно настроек
 Exit.b = #False
-If OpenWindow(0, #PB_Any, #PB_Any, 230, 160, "Settings", #PB_Window_ScreenCentered)
+If OpenWindow(0, #PB_Any, #PB_Any, 230, 160, "DOU Settings (version "+CurrentUpdaterVersion$+")", #PB_Window_ScreenCentered)
   FrameGadget(0, 5, 5, 220, 80, " Online updates ")
   CheckBoxGadget(1, 15, 25, 200, 25, "Download new updates") : If cache_updates : SetGadgetState(1, #PB_Checkbox_Checked) : Else : SetGadgetState(1, #PB_Checkbox_Unchecked) : EndIf
   CheckBoxGadget(2, 15, 50, 200, 25, "Show hidden updates") : If cache_hidden : SetGadgetState(2, #PB_Checkbox_Checked) : Else : SetGadgetState(2, #PB_Checkbox_Unchecked) : EndIf
   CheckBoxGadget(3, 15, 90, 200, 25, "Enable debug mode") : If system_debug : SetGadgetState(3, #PB_Checkbox_Checked) : Else : SetGadgetState(3, #PB_Checkbox_Unchecked) : EndIf
-  ButtonGadget(4, 10, 125, 100, 25, "Cancel")
-  ButtonGadget(5, 120, 125, 100, 25, "Save")
+  ButtonGadget(4, 10, 125, 85, 25, "Cancel")
+  ButtonGadget(5, 100, 125, 85, 25, "Save")
+  ButtonImageGadget(6, 195, 125, 25, 25, ImageID(CatchImage(#PB_Any, ?HelpButton))) : GadgetToolTip(6, "Help")
   Repeat
     Select WaitWindowEvent(100)
       Case #PB_Event_Gadget
@@ -32,6 +38,8 @@ If OpenWindow(0, #PB_Any, #PB_Any, 230, 160, "Settings", #PB_Window_ScreenCenter
             cache_hidden  = GetGadgetState(2)
             system_debug  = GetGadgetState(3)
             Exit = #True
+          Case 6 ; Help
+            RunProgram("http://deus.lipkop.club/wiki/Альтернативный_сервер_обновлений")
         EndSelect
     EndSelect
   Until Exit
@@ -54,8 +62,15 @@ ClosePreferences()
 
 End
 
+DataSection
+  HelpButton:
+  IncludeBinary "help_button.png"
+EndDataSection
+
+
 ; IDE Options = PureBasic 5.31 (Windows - x86)
-; CursorPosition = 30
+; CursorPosition = 28
+; FirstLine = 6
 ; EnableUnicode
 ; EnableThread
 ; EnableXP
