@@ -156,7 +156,11 @@ For i=0 To CountProgramParameters()-1
   CurrentParemeter$ = LCase(CurrentParemeter$)
   Select CurrentParemeter$
     Case "/installed":
-      MessageRequester("Information", "The program was successfully installed!", #MB_ICONINFORMATION)
+      If FileSize("updates/deus_offline_updater.exe")<>-1
+        MessageRequester("Information", "The program was successfully updated!", #MB_ICONINFORMATION)
+      Else
+        MessageRequester("Information", "The program was successfully installed!", #MB_ICONINFORMATION)
+      EndIf
       Goto ProgramEndPoint
       End
     Default:
@@ -495,8 +499,8 @@ AddToLogFile(#NULL$, #False, #True, system_debug)
 End
 
 ; IDE Options = PureBasic 5.31 (Windows - x86)
-; CursorPosition = 160
-; FirstLine = 135
+; CursorPosition = 158
+; FirstLine = 146
 ; Folding = -
 ; EnableUnicode
 ; EnableThread
