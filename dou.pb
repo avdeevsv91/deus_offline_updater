@@ -192,9 +192,9 @@ Procedure CheckForNewUpdates(hidden)
   ; Обновление самой программы
   AddToLogFile("Checking the program update...", #True, #True, system_debug)
   ; Получаем информацию о последней версии
-  AddToLogFile("Download file "+Chr(34)+"http://deus.lipkop.club/Update/dou.php"+Chr(34)+"... ", #True, #False, system_debug)
+  AddToLogFile("Download file "+Chr(34)+"http://deus.lipkop.club/dou/index.php"+Chr(34)+"... ", #True, #False, system_debug)
   LastUpdaterVersion$ = CurrentUpdaterVersion$
-  If ReceiveHTTPFile("http://deus.lipkop.club/Update/dou.php", "updates/dou.txt")
+  If ReceiveHTTPFile("http://deus.lipkop.club/dou/index.php", "updates/dou.txt")
     AddToLogFile("DONE!", #False, #True, system_debug)
     AddToLogFile("Read last program version from file "+Chr(34)+"updates/dou.txt"+Chr(34)+"... ", #True, #False, system_debug)
     If ReadFile(0, "updates/dou.txt")
@@ -214,8 +214,8 @@ Procedure CheckForNewUpdates(hidden)
   ; Если есть новая версия программы
   If CompareProgramsVersions(CurrentUpdaterVersion$, LastUpdaterVersion$)
     AddToLogFile("A new version "+LastUpdaterVersion$+" of the program is available.", #True, #True, system_debug)
-    AddToLogFile("Download file "+Chr(34)+"http://deus.lipkop.club/Update/deus_offline_updater.exe"+Chr(34)+"... ", #True, #False, system_debug)
-    If ReceiveHTTPFile("http://deus.lipkop.club/Update/deus_offline_updater.exe", "updates/deus_offline_updater.exe")
+    AddToLogFile("Download file "+Chr(34)+"http://deus.lipkop.club/dou/deus_offline_updater.exe"+Chr(34)+"... ", #True, #False, system_debug)
+    If ReceiveHTTPFile("http://deus.lipkop.club/dou/deus_offline_updater.exe", "updates/deus_offline_updater.exe")
       AddToLogFile("DONE!", #False, #True, system_debug)
       ; Запускаем установщик обновлений
       AddToLogFile("Execute file "+Chr(34)+"updates/deus_offline_updater.exe"+Chr(34)+"... ", #True, #False, system_debug)
@@ -250,13 +250,12 @@ Procedure CheckForNewUpdates(hidden)
   EndIf
   ; Обновление прошивок в локальном каталоге
   ;- TODO: Обновление отдельных файлов по MD5 хешу
-  ;- TODO: Сократить пути на сервере обновлений
   HideGadget(1, #True) : HideGadget(0, #False)
   AddToLogFile("Checking the firmware update ...", #True, #True, system_debug)
   If hidden>0
-    versions_url$ = "http://deus.lipkop.club/Update/deus_updates/DEUS_V4/Versions_"+VersionsFileName$+".php?show=all"
+    versions_url$ = "http://deus.lipkop.club/dou/updates/versions.php?show=all"
   Else
-    versions_url$ = "http://deus.lipkop.club/Update/deus_updates/DEUS_V4/Versions_"+VersionsFileName$+".php"
+    versions_url$ = "http://deus.lipkop.club/dou/updates/versions.php"
   EndIf
   AddToLogFile("Download file "+Chr(34)+versions_url$+Chr(34)+"... ", #True, #False, system_debug)
   If ReceiveHTTPFile(versions_url$, "updates/cache_updates/Versions_"+VersionsFileName$+".txt")
@@ -279,8 +278,8 @@ Procedure CheckForNewUpdates(hidden)
             EndIf
             ResetList(FirmwareFiles())
             While NextElement(FirmwareFiles())
-              AddToLogFile("Download file "+Chr(34)+"http://deus.lipkop.club/Update/deus_updates/DEUS_V4/"+version$+"/"+FirmwareFiles()\File+Chr(34)+"... ", #True, #False, system_debug)
-              If Not ReceiveHTTPFile("http://deus.lipkop.club/Update/deus_updates/DEUS_V4/"+version$+"/"+FirmwareFiles()\File, "updates/cache_updates/"+version$+"/"+FirmwareFiles()\File) And FirmwareFiles()\Required = #True
+              AddToLogFile("Download file "+Chr(34)+"http://deus.lipkop.club/dou/updates/"+version$+"/"+FirmwareFiles()\File+Chr(34)+"... ", #True, #False, system_debug)
+              If Not ReceiveHTTPFile("http://deus.lipkop.club/dou/updates/"+version$+"/"+FirmwareFiles()\File, "updates/cache_updates/"+version$+"/"+FirmwareFiles()\File) And FirmwareFiles()\Required = #True
                 DownloadOfSuccessful.b = #False
                 SetGadgetState(0, GetGadgetState(0)+ListSize(FirmwareFiles())-ListIndex(FirmwareFiles()))
                 AddToLogFile("ERROR!", #False, #True, system_debug)
@@ -420,9 +419,9 @@ Procedure RequestProcess(ClientID.l)
         SendNetworkString(ClientID, #CR$+#LF$)
         SendNetworkString(ClientID, Answer$)
       Else
-        AddToLogFile("ERROR-404 (header location http://deus.lipkop.club/Update/)!", #False, #True, system_debug)
+        AddToLogFile("ERROR-404 (header location http://deus.lipkop.club/wiki/Альтернативный_сервер_обновлений)!", #False, #True, system_debug)
         SendNetworkString(ClientID, "HTTP/1.1 302 Moved Temporarily"+#CR$+#LF$)
-        SendNetworkString(ClientID, "Location: http://deus.lipkop.club/Update/"+#CR$+#LF$)
+        SendNetworkString(ClientID, "Location: http://deus.lipkop.club/wiki/Альтернативный_сервер_обновлений"+#CR$+#LF$)
         SendNetworkString(ClientID, "Content-Length: 0"+#CR$+#LF$)
         SendNetworkString(ClientID, "Content-Type: text/html"+#CR$+#LF$)
         SendNetworkString(ClientID, "Connection: close"+#CR$+#LF$)
@@ -499,8 +498,8 @@ AddToLogFile(#NULL$, #False, #True, system_debug)
 End
 
 ; IDE Options = PureBasic 5.31 (Windows - x86)
-; CursorPosition = 158
-; FirstLine = 146
+; CursorPosition = 423
+; FirstLine = 420
 ; Folding = -
 ; EnableUnicode
 ; EnableThread
