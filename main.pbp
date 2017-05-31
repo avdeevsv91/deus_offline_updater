@@ -7,12 +7,12 @@
   <section name="data">
     <explorer view="" pattern="0"/>
     <log show="1"/>
-    <lastopen date="2017-04-03 14:31" user="sozan" host="WORKPLACE-15"/>
+    <lastopen date="2017-05-31 08:10" user="sozan" host="WORKPLACE-15"/>
   </section>
   <section name="files">
     <file name="dou.pb">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="5c5994dc02991246ca1c35b68a20dabb"/>
+      <fingerprint md5="3f0c54f061b81c2bfc834f4440e5ee57"/>
     </file>
     <file name="settings.pb">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
@@ -26,8 +26,8 @@
       <executable value="dou.exe"/>
       <options unicode="1" thread="1" xpskin="1" admin="1"/>
       <icon enable="1">dou.ico</icon>
-      <compilecount enable="1" value="12"/>
-      <buildcount enable="1" value="10"/>
+      <compilecount enable="1" value="13"/>
+      <buildcount enable="1" value="11"/>
       <versioninfo enable="1">
         <field0 value="1.1.%BUILDCOUNT.%COMPILECOUNT"/>
         <field1 value="1.1.%BUILDCOUNT.%COMPILECOUNT"/>
@@ -51,8 +51,8 @@
       <executable value="settings.exe"/>
       <options unicode="1" thread="1" xpskin="1"/>
       <icon enable="1">settings.ico</icon>
-      <compilecount enable="1" value="31"/>
-      <buildcount enable="1" value="10"/>
+      <compilecount enable="1" value="32"/>
+      <buildcount enable="1" value="11"/>
       <versioninfo enable="1">
         <field0 value="1.1.%BUILDCOUNT.%COMPILECOUNT"/>
         <field1 value="{PRODUCT_VERSION}"/>
