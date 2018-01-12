@@ -140,12 +140,21 @@ If FileSize("updates/cache_updates")=-1
     AddToLogFile("ERROR!", #False, #True, system_debug)
   EndIf
 EndIf
-If FileSize("updates/cache_updates/DEUS_V4")=-1
-  AddToLogFile("The directory "+Chr(34)+"updates/cache_updates/DEUS_V4"+Chr(34)+" does not exist! Create it... ", #True, #False, system_debug)
-  If CreateDirectory("updates/cache_updates/DEUS_V4")
-    AddToLogFile("DONE!", #False, #True, system_debug)
+If FileSize("updates/cache_updates/DEUS_V4.1")=-1
+  If FileSize("updates/cache_updates/DEUS_V4")=-2
+    AddToLogFile("Rename the directory with cache (DEUS_V4 to DEUS_V4.1)... ", #True, #False, system_debug)
+    If RenameFile("updates/cache_updates/DEUS_V4", "updates/cache_updates/DEUS_V4.1")
+      AddToLogFile("DONE!", #False, #True, system_debug)
+    Else
+      AddToLogFile("ERROR!", #False, #True, system_debug)
+    EndIf
   Else
-    AddToLogFile("ERROR!", #False, #True, system_debug)
+    AddToLogFile("The directory "+Chr(34)+"updates/cache_updates/DEUS_V4.1"+Chr(34)+" does not exist! Create it... ", #True, #False, system_debug)
+    If CreateDirectory("updates/cache_updates/DEUS_V4.1")
+      AddToLogFile("DONE!", #False, #True, system_debug)
+    Else
+      AddToLogFile("ERROR!", #False, #True, system_debug)
+    EndIf
   EndIf
 EndIf
 
@@ -157,8 +166,10 @@ For i=0 To CountProgramParameters()-1
   Select CurrentParemeter$
     Case "/installed":
       If FileSize("updates/deus_offline_updater.exe")<>-1
+        AddToLogFile("The program was successfully updated!", #True, #True, system_debug)
         MessageRequester("Information", "The program was successfully updated!", #MB_ICONINFORMATION)
       Else
+        AddToLogFile("The program was successfully installed!", #True, #True, system_debug)
         MessageRequester("Information", "The program was successfully installed!", #MB_ICONINFORMATION)
       EndIf
       Goto ProgramEndPoint
@@ -186,7 +197,7 @@ Procedure CompareProgramsVersions(CurrentVersion.s, LatestVersion.s)
 EndProcedure
 
 ; Обновление программы и прошивок
-Global VersionsFileName$ = "4_0_01" ;- FIXME: определить алгоритм формирования имени файла
+Global VersionsFileName$ = "4_1_04" ;- FIXME: определить алгоритм формирования имени файла
 Global UpdateSuccess.b = #False
 Procedure CheckForNewUpdates(hidden)
   ; Обновление самой программы
@@ -266,7 +277,7 @@ Procedure CheckForNewUpdates(hidden)
       While Eof(0) = 0
         version$ = Trim(ReadString(0))
         If Len(version$)>0
-          If FileSize("updates/cache_updates/DEUS_V4/"+version$) = -1 ; Если в локальном кеше такой прошивки нету
+          If FileSize("updates/cache_updates/DEUS_V4.1/"+version$) = -1 ; Если в локальном кеше такой прошивки нету
             AddToLogFile("Get firmware "+Chr(34)+version$+Chr(34)+"...", #True, #True, system_debug)
             ; Качаем ее во временный каталог
             DownloadOfSuccessful.b = #True
@@ -290,8 +301,8 @@ Procedure CheckForNewUpdates(hidden)
               EndIf
             Wend
             If DownloadOfSuccessful ; Если прошивка скачалась успешно
-              AddToLogFile("Copy directory "+Chr(34)+"updates/cache_updates/"+version$+Chr(34)+" to "+Chr(34)+"updates/cache_updates/DEUS_V4/"+version$+Chr(34)+"... ", #True, #False, system_debug)
-              If CopyDirectory("updates/cache_updates/"+version$, "updates/cache_updates/DEUS_V4/"+version$, "", #PB_FileSystem_Recursive | #PB_FileSystem_Force)
+              AddToLogFile("Copy directory "+Chr(34)+"updates/cache_updates/"+version$+Chr(34)+" to "+Chr(34)+"updates/cache_updates/DEUS_V4.1/"+version$+Chr(34)+"... ", #True, #False, system_debug)
+              If CopyDirectory("updates/cache_updates/"+version$, "updates/cache_updates/DEUS_V4.1/"+version$, "", #PB_FileSystem_Recursive | #PB_FileSystem_Force)
                 AddToLogFile("DONE!", #False, #True, system_debug)
               Else
                 AddToLogFile("ERROR!", #False, #True, system_debug)
@@ -347,10 +358,10 @@ Else
 EndIf
 
 ; Обновление versions.txt
-AddToLogFile("Updating file "+Chr(34)+"updates/cache_updates/DEUS_V4/Versions_"+VersionsFileName$+".txt"+Chr(34)+"...", #True, #True, system_debug)
-If OpenFile(1, "updates/cache_updates/DEUS_V4/Versions_"+VersionsFileName$+".txt") Or CreateFile(1, "updates/cache_updates/DEUS_V4/Versions_"+VersionsFileName$+".txt")
+AddToLogFile("Updating file "+Chr(34)+"updates/cache_updates/DEUS_V4.1/Versions_"+VersionsFileName$+".txt"+Chr(34)+"...", #True, #True, system_debug)
+If OpenFile(1, "updates/cache_updates/DEUS_V4.1/Versions_"+VersionsFileName$+".txt") Or CreateFile(1, "updates/cache_updates/DEUS_V4.1/Versions_"+VersionsFileName$+".txt")
   TruncateFile(1)
-  If ExamineDirectory(0, "updates/cache_updates/DEUS_V4/", "")
+  If ExamineDirectory(0, "updates/cache_updates/DEUS_V4.1/", "")
     While NextDirectoryEntry(0)
       If DirectoryEntryType(0) = #PB_DirectoryEntry_Directory
         DirectoryName$ = DirectoryEntryName(0)
@@ -362,11 +373,11 @@ If OpenFile(1, "updates/cache_updates/DEUS_V4/Versions_"+VersionsFileName$+".txt
     Wend
     FinishDirectory(0)
   Else
-    AddToLogFile("Can`t examine directory "+Chr(34)+"updates/cache_updates/DEUS_V4/"+Chr(34)+"!", #True, #True, system_debug)
+    AddToLogFile("Can`t examine directory "+Chr(34)+"updates/cache_updates/DEUS_V4.1/"+Chr(34)+"!", #True, #True, system_debug)
   EndIf
   CloseFile(1)
 Else
-  AddToLogFile("Can`t open file "+Chr(34)+"updates/cache_updates/DEUS_V4/Versions_"+VersionsFileName$+".txt"+Chr(34)+"!", #True, #True, system_debug)
+  AddToLogFile("Can`t open file "+Chr(34)+"updates/cache_updates/DEUS_V4.1/Versions_"+VersionsFileName$+".txt"+Chr(34)+"!", #True, #True, system_debug)
 EndIf
 
 ; Процедура обработки запроса для HTTP сервера
@@ -498,7 +509,8 @@ AddToLogFile(#NULL$, #False, #True, system_debug)
 End
 
 ; IDE Options = PureBasic 5.31 (Windows - x86)
-; CursorPosition = 32
+; CursorPosition = 142
+; FirstLine = 139
 ; Folding = -
 ; EnableUnicode
 ; EnableThread

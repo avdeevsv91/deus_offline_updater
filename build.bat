@@ -1,8 +1,8 @@
 @echo off
 
 set PATH=%PATH%;%CD%\utilities
-set PATH=%PATH%;%ProgramFiles%\WinRar
-set PATH=%PATH%;%ProgramFiles%\PureBasic 5.31
+set PATH=%PATH%;D:\Program Files\WinRar
+set PATH=%PATH%;D:\Program Files\PureBasic x86
 
 echo ****************************************
 echo Deus Offline Updater (build.bat)
