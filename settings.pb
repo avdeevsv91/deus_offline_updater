@@ -1,4 +1,8 @@
-﻿UsePNGImageDecoder() ; Для иконок
+﻿; Зависимости
+XIncludeFile #PB_Compiler_Home+"hmod\DroopyLib.pbi"
+UseModule DroopyLib
+
+UsePNGImageDecoder() ; Для иконок
 
 system_debug.l = 0 ; Режим отладки
 cache_updates.l = 1 ; Обновлять кеш с сервера
@@ -69,6 +73,7 @@ EndDataSection
 
 
 ; IDE Options = PureBasic 5.60 (Windows - x86)
+; CursorPosition = 3
 ; EnableThread
 ; EnableXP
 ; EnableAdmin
