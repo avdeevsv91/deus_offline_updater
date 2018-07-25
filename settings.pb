@@ -2,6 +2,10 @@
 XIncludeFile #PB_Compiler_Home+"hmod\DroopyLib.pbi"
 UseModule DroopyLib
 
+; Инициализация перевода
+XIncludeFile #PB_Compiler_FilePath+"includes\i18n\i18n.pbi"
+Translator_init("languages", #Null$)
+
 UsePNGImageDecoder() ; Для иконок
 
 system_debug.l = 0 ; Режим отладки
@@ -23,14 +27,14 @@ CurrentUpdaterVersion$ = GetFileVersion("dou.exe", #GFVI_FileVersion, #False)
 
 ; Окно настроек
 Exit.b = #False
-If OpenWindow(0, #PB_Any, #PB_Any, 230, 160, "DOU Settings (version "+CurrentUpdaterVersion$+")", #PB_Window_ScreenCentered)
-  FrameGadget(0, 5, 5, 220, 80, " Online updates ")
-  CheckBoxGadget(1, 15, 25, 200, 25, "Download new updates") : If cache_updates : SetGadgetState(1, #PB_Checkbox_Checked) : Else : SetGadgetState(1, #PB_Checkbox_Unchecked) : EndIf
-  CheckBoxGadget(2, 15, 50, 200, 25, "Show hidden updates") : If cache_hidden : SetGadgetState(2, #PB_Checkbox_Checked) : Else : SetGadgetState(2, #PB_Checkbox_Unchecked) : EndIf
-  CheckBoxGadget(3, 15, 90, 200, 25, "Enable debug mode") : If system_debug : SetGadgetState(3, #PB_Checkbox_Checked) : Else : SetGadgetState(3, #PB_Checkbox_Unchecked) : EndIf
-  ButtonGadget(4, 10, 125, 85, 25, "Cancel")
-  ButtonGadget(5, 100, 125, 85, 25, "Save")
-  ButtonImageGadget(6, 195, 125, 25, 25, ImageID(CatchImage(#PB_Any, ?HelpButton))) : GadgetToolTip(6, "Help")
+If OpenWindow(0, #PB_Any, #PB_Any, 230, 160, FormatStr(__("DOU Settings (version %1)"), CurrentUpdaterVersion$), #PB_Window_ScreenCentered)
+  FrameGadget(0, 5, 5, 220, 80, " "+__("Online updates")+" ")
+  CheckBoxGadget(1, 15, 25, 200, 25, __("Download new updates")) : If cache_updates : SetGadgetState(1, #PB_Checkbox_Checked) : Else : SetGadgetState(1, #PB_Checkbox_Unchecked) : EndIf
+  CheckBoxGadget(2, 15, 50, 200, 25, __("Show hidden updates")) : If cache_hidden : SetGadgetState(2, #PB_Checkbox_Checked) : Else : SetGadgetState(2, #PB_Checkbox_Unchecked) : EndIf
+  CheckBoxGadget(3, 15, 90, 200, 25, __("Enable debug mode")) : If system_debug : SetGadgetState(3, #PB_Checkbox_Checked) : Else : SetGadgetState(3, #PB_Checkbox_Unchecked) : EndIf
+  ButtonGadget(4, 10, 125, 85, 25, __("Cancel"))
+  ButtonGadget(5, 100, 125, 85, 25, __("Save"))
+  ButtonImageGadget(6, 195, 125, 25, 25, ImageID(CatchImage(#PB_Any, ?HelpButton))) : GadgetToolTip(6, __("Help"))
   Repeat
     Select WaitWindowEvent(100)
       Case #PB_Event_Gadget
@@ -53,7 +57,7 @@ EndIf
 ; Сохраняем настройки в файл
 If Not OpenPreferences("config.cfg", #PB_Preference_GroupSeparator)
   If Not CreatePreferences("config.cfg", #PB_Preference_GroupSeparator)
-    MessageRequester("Error", "Can`t create config file! The current settings will be lost.", #MB_ICONERROR)
+    MessageRequester(__("Error"), __("Can`t create config file! The current settings will be lost."), #MB_ICONERROR)
     End
   EndIf
 EndIf
@@ -73,7 +77,8 @@ EndDataSection
 
 
 ; IDE Options = PureBasic 5.60 (Windows - x86)
-; CursorPosition = 3
+; CursorPosition = 59
+; FirstLine = 32
 ; EnableThread
 ; EnableXP
 ; EnableAdmin
