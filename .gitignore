@@ -54,3 +54,6 @@ Temporary Items
 
 # Updater log
 /updater.log
+
+#Notepad++ backups
+/nppBackup/*

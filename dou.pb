@@ -1,4 +1,8 @@
-﻿InitNetwork()
+﻿; Зависимости
+XIncludeFile #PB_Compiler_Home+"hmod\DroopyLib.pbi"
+UseModule DroopyLib
+
+InitNetwork()
 
 ; Список файлов, из которых состоит прошивка
 Structure FirmwareFile
@@ -8,17 +12,24 @@ EndStructure
 Global NewList FirmwareFiles.FirmwareFile()
 AddElement(FirmwareFiles()) : FirmwareFiles()\File = "md5sums.txt"          : FirmwareFiles()\Required = #False
 ; Casque
+AddElement(FirmwareFiles()) : FirmwareFiles()\File = "Casque.txt"           : FirmwareFiles()\Required = #False ; ???
+AddElement(FirmwareFiles()) : FirmwareFiles()\File = "Casque_B.txt"         : FirmwareFiles()\Required = #False ; ???
 AddElement(FirmwareFiles()) : FirmwareFiles()\File = "C01.txt"              : FirmwareFiles()\Required = #True
 ; Disques
 AddElement(FirmwareFiles()) : FirmwareFiles()\File = "004.txt"              : FirmwareFiles()\Required = #True
+AddElement(FirmwareFiles()) : FirmwareFiles()\File = "004_R.txt"            : FirmwareFiles()\Required = #False ; ???
 AddElement(FirmwareFiles()) : FirmwareFiles()\File = "104.txt"              : FirmwareFiles()\Required = #True
+AddElement(FirmwareFiles()) : FirmwareFiles()\File = "104_R.txt"            : FirmwareFiles()\Required = #False ; ???
 AddElement(FirmwareFiles()) : FirmwareFiles()\File = "104_7.txt"            : FirmwareFiles()\Required = #False ; V4 only
 AddElement(FirmwareFiles()) : FirmwareFiles()\File = "R_004.txt"            : FirmwareFiles()\Required = #True
 AddElement(FirmwareFiles()) : FirmwareFiles()\File = "R_104.txt"            : FirmwareFiles()\Required = #True
+AddElement(FirmwareFiles()) : FirmwareFiles()\File = "coil_hf_22.txt"       : FirmwareFiles()\Required = #False ; ???
 ; Telecommande
+AddElement(FirmwareFiles()) : FirmwareFiles()\File = "Telecommande.txt"     : FirmwareFiles()\Required = #False ; ???
+AddElement(FirmwareFiles()) : FirmwareFiles()\File = "Restaure.txt"         : FirmwareFiles()\Required = #False
 AddElement(FirmwareFiles()) : FirmwareFiles()\File = "Restaure20130108.txt" : FirmwareFiles()\Required = #True
 AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T01.txt"              : FirmwareFiles()\Required = #False
-AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T02.txt"              : FirmwareFiles()\Required = #False
+AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T02.txt"              : FirmwareFiles()\Required = #False ; English
 AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T03.txt"              : FirmwareFiles()\Required = #False
 AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T04.txt"              : FirmwareFiles()\Required = #False
 AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T05.txt"              : FirmwareFiles()\Required = #False
@@ -30,9 +41,14 @@ AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T15.txt"              : Fi
 AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T0A.txt"              : FirmwareFiles()\Required = #False
 AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T0B.txt"              : FirmwareFiles()\Required = #False
 AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T0C.txt"              : FirmwareFiles()\Required = #False
-AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T0D.txt"              : FirmwareFiles()\Required = #False
+AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T0D.txt"              : FirmwareFiles()\Required = #False ; Russian
 AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T0E.txt"              : FirmwareFiles()\Required = #False
 AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T0F.txt"              : FirmwareFiles()\Required = #False
+; Other
+AddElement(FirmwareFiles()) : FirmwareFiles()\File = "Release.txt"          : FirmwareFiles()\Required = #False ; ???
+AddElement(FirmwareFiles()) : FirmwareFiles()\File = "soft.txt"             : FirmwareFiles()\Required = #False    ; ???
+AddElement(FirmwareFiles()) : FirmwareFiles()\File = "PinpointerMI6.txt"    : FirmwareFiles()\Required = #False ; ???
+
 
 ; Функция подсчета количества строк в файле
 Procedure.l CountFileStrings(FileName.s)
@@ -100,7 +116,7 @@ If OpenPreferences("config.cfg", #PB_Preference_GroupSeparator)
 Else
   AddToLogFile("Updater started (version "+CurrentUpdaterVersion$+").", #True, #True, system_debug)
   AddToLogFile("Can`t open config file! Will be used default settings.", #True, #True, system_debug)
-  DisclaimerTitle$ = #NULL$ : DisclaimerText$ = #NULL$
+  DisclaimerTitle$ = #Null$ : DisclaimerText$ = #Null$
   If GetUserLanguage()="Russian"
     DisclaimerTitle$ = "Внимание!"
     DisclaimerText$ + "Данная программа обновления НЕ ЯВЛЯЕТСЯ ОФИЦИАЛЬНОЙ и предназначена для использования исключительно в ознакомительных целях." + Chr(13)
@@ -119,9 +135,9 @@ Else
   MessageRequester(DisclaimerTitle$, DisclaimerText$, #MB_ICONWARNING)
 EndIf
 AddToLogFile("Current settings:", #True, #True, system_debug)
-AddToLogFile(LSet(#NULL$, 3, Chr(9))+"system_debug = "+Str(system_debug)+";", #False, #True, system_debug)
-AddToLogFile(LSet(#NULL$, 3, Chr(9))+"cache_updates = "+Str(cache_updates)+";", #False, #True, system_debug)
-AddToLogFile(LSet(#NULL$, 3, Chr(9))+"cache_hidden = "+Str(cache_hidden)+";", #False, #True, system_debug)
+AddToLogFile(LSet(#Null$, 3, Chr(9))+"system_debug = "+Str(system_debug)+";", #False, #True, system_debug)
+AddToLogFile(LSet(#Null$, 3, Chr(9))+"cache_updates = "+Str(cache_updates)+";", #False, #True, system_debug)
+AddToLogFile(LSet(#Null$, 3, Chr(9))+"cache_hidden = "+Str(cache_hidden)+";", #False, #True, system_debug)
 
 ; Создаем дирректории
 If FileSize("updates")=-1
@@ -140,6 +156,7 @@ If FileSize("updates/cache_updates")=-1
     AddToLogFile("ERROR!", #False, #True, system_debug)
   EndIf
 EndIf
+; Update: 4.0 -> 4.1
 If FileSize("updates/cache_updates/DEUS_V4.1")=-1
   If FileSize("updates/cache_updates/DEUS_V4")=-2
     AddToLogFile("Rename the directory with cache (DEUS_V4 to DEUS_V4.1)... ", #True, #False, system_debug)
@@ -155,6 +172,32 @@ If FileSize("updates/cache_updates/DEUS_V4.1")=-1
     Else
       AddToLogFile("ERROR!", #False, #True, system_debug)
     EndIf
+  EndIf
+Else
+  If FileSize("updates/cache_updates/DEUS_V4")=-2
+    DeleteDirectory("updates/cache_updates/DEUS_V4", "", #PB_FileSystem_Recursive | #PB_FileSystem_Force)
+  EndIf
+EndIf
+; Update: 4.1 -> 5.0
+If FileSize("updates/cache_updates/DEUS_V5.0")=-1
+  If FileSize("updates/cache_updates/DEUS_V4.1")=-2
+    AddToLogFile("Rename the directory with cache (DEUS_V4.1 to DEUS_V5.0)... ", #True, #False, system_debug)
+    If RenameFile("updates/cache_updates/DEUS_V4.1", "updates/cache_updates/DEUS_V5.0")
+      AddToLogFile("DONE!", #False, #True, system_debug)
+    Else
+      AddToLogFile("ERROR!", #False, #True, system_debug)
+    EndIf
+  Else
+    AddToLogFile("The directory "+Chr(34)+"updates/cache_updates/DEUS_V5.0"+Chr(34)+" does not exist! Create it... ", #True, #False, system_debug)
+    If CreateDirectory("updates/cache_updates/DEUS_V5.0")
+      AddToLogFile("DONE!", #False, #True, system_debug)
+    Else
+      AddToLogFile("ERROR!", #False, #True, system_debug)
+    EndIf
+  EndIf
+Else
+  If FileSize("updates/cache_updates/DEUS_V4.1")=-2
+    DeleteDirectory("updates/cache_updates/DEUS_V4.1", "", #PB_FileSystem_Recursive | #PB_FileSystem_Force)
   EndIf
 EndIf
 
@@ -197,7 +240,7 @@ Procedure CompareProgramsVersions(CurrentVersion.s, LatestVersion.s)
 EndProcedure
 
 ; Обновление программы и прошивок
-Global VersionsFileName$ = "4_1_04" ;- FIXME: определить алгоритм формирования имени файла
+Global VersionsFileName$ = "5_0_01" ;- FIXME: определить алгоритм формирования имени файла
 Global UpdateSuccess.b = #False
 Procedure CheckForNewUpdates(hidden)
   ; Обновление самой программы
@@ -209,7 +252,7 @@ Procedure CheckForNewUpdates(hidden)
     AddToLogFile("DONE!", #False, #True, system_debug)
     AddToLogFile("Read last program version from file "+Chr(34)+"updates/dou.txt"+Chr(34)+"... ", #True, #False, system_debug)
     If ReadFile(0, "updates/dou.txt")
-      LastUpdaterVersion$ = #NULL$
+      LastUpdaterVersion$ = #Null$
       AddToLogFile("DONE!", #False, #True, system_debug)
       While Eof(0) = 0
         LastUpdaterVersion$ + ReadString(0)
@@ -277,7 +320,7 @@ Procedure CheckForNewUpdates(hidden)
       While Eof(0) = 0
         version$ = Trim(ReadString(0))
         If Len(version$)>0
-          If FileSize("updates/cache_updates/DEUS_V4.1/"+version$) = -1 ; Если в локальном кеше такой прошивки нету
+          If FileSize("updates/cache_updates/DEUS_V5.0/"+version$) = -1 ; Если в локальном кеше такой прошивки нету
             AddToLogFile("Get firmware "+Chr(34)+version$+Chr(34)+"...", #True, #True, system_debug)
             ; Качаем ее во временный каталог
             DownloadOfSuccessful.b = #True
@@ -301,8 +344,8 @@ Procedure CheckForNewUpdates(hidden)
               EndIf
             Wend
             If DownloadOfSuccessful ; Если прошивка скачалась успешно
-              AddToLogFile("Copy directory "+Chr(34)+"updates/cache_updates/"+version$+Chr(34)+" to "+Chr(34)+"updates/cache_updates/DEUS_V4.1/"+version$+Chr(34)+"... ", #True, #False, system_debug)
-              If CopyDirectory("updates/cache_updates/"+version$, "updates/cache_updates/DEUS_V4.1/"+version$, "", #PB_FileSystem_Recursive | #PB_FileSystem_Force)
+              AddToLogFile("Copy directory "+Chr(34)+"updates/cache_updates/"+version$+Chr(34)+" to "+Chr(34)+"updates/cache_updates/DEUS_V5.0/"+version$+Chr(34)+"... ", #True, #False, system_debug)
+              If CopyDirectory("updates/cache_updates/"+version$, "updates/cache_updates/DEUS_V5.0/"+version$, "", #PB_FileSystem_Recursive | #PB_FileSystem_Force)
                 AddToLogFile("DONE!", #False, #True, system_debug)
               Else
                 AddToLogFile("ERROR!", #False, #True, system_debug)
@@ -358,26 +401,26 @@ Else
 EndIf
 
 ; Обновление versions.txt
-AddToLogFile("Updating file "+Chr(34)+"updates/cache_updates/DEUS_V4.1/Versions_"+VersionsFileName$+".txt"+Chr(34)+"...", #True, #True, system_debug)
-If OpenFile(1, "updates/cache_updates/DEUS_V4.1/Versions_"+VersionsFileName$+".txt") Or CreateFile(1, "updates/cache_updates/DEUS_V4.1/Versions_"+VersionsFileName$+".txt")
+AddToLogFile("Updating file "+Chr(34)+"updates/cache_updates/DEUS_V5.0/Versions_"+VersionsFileName$+".txt"+Chr(34)+"...", #True, #True, system_debug)
+If OpenFile(1, "updates/cache_updates/DEUS_V5.0/Versions_"+VersionsFileName$+".txt") Or CreateFile(1, "updates/cache_updates/DEUS_V5.0/Versions_"+VersionsFileName$+".txt")
   TruncateFile(1)
-  If ExamineDirectory(0, "updates/cache_updates/DEUS_V4.1/", "")
+  If ExamineDirectory(0, "updates/cache_updates/DEUS_V5.0/", "")
     While NextDirectoryEntry(0)
       If DirectoryEntryType(0) = #PB_DirectoryEntry_Directory
         DirectoryName$ = DirectoryEntryName(0)
         If DirectoryName$<>"." And DirectoryName$<>".."
           WriteStringN(1, DirectoryName$)
-          AddToLogFile(LSet(#NULL$, 3, Chr(9))+"Add version string "+Chr(34)+DirectoryName$+Chr(34)+";", #False, #True, system_debug)
+          AddToLogFile(LSet(#Null$, 3, Chr(9))+"Add version string "+Chr(34)+DirectoryName$+Chr(34)+";", #False, #True, system_debug)
         EndIf
       EndIf
     Wend
     FinishDirectory(0)
   Else
-    AddToLogFile("Can`t examine directory "+Chr(34)+"updates/cache_updates/DEUS_V4.1/"+Chr(34)+"!", #True, #True, system_debug)
+    AddToLogFile("Can`t examine directory "+Chr(34)+"updates/cache_updates/DEUS_V5.0/"+Chr(34)+"!", #True, #True, system_debug)
   EndIf
   CloseFile(1)
 Else
-  AddToLogFile("Can`t open file "+Chr(34)+"updates/cache_updates/DEUS_V4.1/Versions_"+VersionsFileName$+".txt"+Chr(34)+"!", #True, #True, system_debug)
+  AddToLogFile("Can`t open file "+Chr(34)+"updates/cache_updates/DEUS_V5.0/Versions_"+VersionsFileName$+".txt"+Chr(34)+"!", #True, #True, system_debug)
 EndIf
 
 ; Процедура обработки запроса для HTTP сервера
@@ -414,7 +457,7 @@ Procedure RequestProcess(ClientID.l)
     Else ; Ошибка 404
       If Len(RequestFile$)>0
         AddToLogFile("ERROR-404!", #False, #True, system_debug)
-        Answer$ = #NULL$
+        Answer$ = #Null$
         Answer$ + "<!DOCTYPE HTML PUBLIC "+Chr(34)+"-//IETF//DTD HTML 2.0//EN"+Chr(34)+">"+#CR$+#LF$
         Answer$ + "<html><head>"+#CR$+#LF$
         Answer$ + "<title>404 Not Found</title>"+#CR$+#LF$
@@ -445,7 +488,7 @@ Procedure RequestProcess(ClientID.l)
       AddToLogFile("HTTP/UNKNOWN request... ", #True, #False, system_debug)
     EndIf
     AddToLogFile("ERROR-400!", #False, #True, system_debug)
-    Answer$ = #NULL$
+    Answer$ = #Null$
     Answer$ + "<!DOCTYPE HTML PUBLIC "+Chr(34)+"-//IETF//DTD HTML 2.0//EN"+Chr(34)+">"+#CR$+#LF$
     Answer$ + "<html><head>"+#CR$+#LF$
     Answer$ + "<title>400 Bad Request</title>"+#CR$+#LF$
@@ -491,8 +534,8 @@ If Not OpenPreferences("config.cfg", #PB_Preference_GroupSeparator)
   AddToLogFile("Can`t open config file! Try to create it...", #True, #True, system_debug)
   If Not CreatePreferences("config.cfg", #PB_Preference_GroupSeparator)
     AddToLogFile("Can`t create config file! The current settings will be lost.", #True, #True, system_debug)
-    AddToLogFile(LSet(#NULL$, 64, Chr(45)), #False, #True, system_debug)
-    AddToLogFile(#NULL$, #False, #True, system_debug)
+    AddToLogFile(LSet(#Null$, 64, Chr(45)), #False, #True, system_debug)
+    AddToLogFile(#Null$, #False, #True, system_debug)
     End
   EndIf
 EndIf
@@ -503,16 +546,15 @@ WritePreferenceLong("updates", cache_updates)
 WritePreferenceLong("hidden", cache_hidden)
 ClosePreferences()
 AddToLogFile("ALL DONE.", #True, #True, system_debug)
-AddToLogFile(LSet(#NULL$, 64, Chr(45)), #False, #True, system_debug)
-AddToLogFile(#NULL$, #False, #True, system_debug)
+AddToLogFile(LSet(#Null$, 64, Chr(45)), #False, #True, system_debug)
+AddToLogFile(#Null$, #False, #True, system_debug)
 
 End
 
-; IDE Options = PureBasic 5.31 (Windows - x86)
-; CursorPosition = 142
-; FirstLine = 139
+; IDE Options = PureBasic 5.60 (Windows - x86)
+; CursorPosition = 197
+; FirstLine = 170
 ; Folding = -
-; EnableUnicode
 ; EnableThread
 ; EnableXP
 ; EnableAdmin
@@ -535,3 +577,4 @@ End
 ; VersionField14 = http://deus.lipkop.club
 ; VersionField15 = VOS_NT_WINDOWS32
 ; VersionField16 = VFT_APP
+; EnableUnicode

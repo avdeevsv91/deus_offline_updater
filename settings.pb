@@ -68,10 +68,7 @@ DataSection
 EndDataSection
 
 
-; IDE Options = PureBasic 5.31 (Windows - x86)
-; CursorPosition = 28
-; FirstLine = 6
-; EnableUnicode
+; IDE Options = PureBasic 5.60 (Windows - x86)
 ; EnableThread
 ; EnableXP
 ; EnableAdmin
@@ -94,3 +91,4 @@ EndDataSection
 ; VersionField14 = http://deus.lipkop.club
 ; VersionField15 = VOS_NT_WINDOWS32
 ; VersionField16 = VFT_APP
+; EnableUnicode
