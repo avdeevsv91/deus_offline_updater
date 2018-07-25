@@ -533,23 +533,6 @@ Else
 EndIf
 
 ProgramEndPoint:
-
-; Сохраняем настройки в файл
-If Not OpenPreferences("config.cfg", #PB_Preference_GroupSeparator)
-  AddToLogFile(__("Can`t open config file! Try to create it..."), #True, #True, system_debug)
-  If Not CreatePreferences("config.cfg", #PB_Preference_GroupSeparator)
-    AddToLogFile(__("Can`t create config file! The current settings will be lost."), #True, #True, system_debug)
-    AddToLogFile(LSet(#Null$, 64, Chr(45)), #False, #True, system_debug)
-    AddToLogFile(#Null$, #False, #True, system_debug)
-    End
-  EndIf
-EndIf
-PreferenceGroup("system")
-WritePreferenceLong("debug", system_debug)
-PreferenceGroup("cache")
-WritePreferenceLong("updates", cache_updates)
-WritePreferenceLong("hidden", cache_hidden)
-ClosePreferences()
 AddToLogFile(__("ALL DONE."), #True, #True, system_debug)
 AddToLogFile(LSet(#Null$, 64, Chr(45)), #False, #True, system_debug)
 AddToLogFile(#Null$, #False, #True, system_debug)
@@ -557,7 +540,8 @@ AddToLogFile(#Null$, #False, #True, system_debug)
 End
 
 ; IDE Options = PureBasic 5.60 (Windows - x86)
-; CursorPosition = 6
+; CursorPosition = 534
+; FirstLine = 495
 ; Folding = -
 ; EnableThread
 ; EnableXP
