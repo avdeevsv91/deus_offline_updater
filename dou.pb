@@ -121,13 +121,7 @@ If OpenPreferences("config.cfg", #PB_Preference_GroupSeparator)
 Else
   AddToLogFile(FormatStr(__("Updater started (version %1)."), CurrentUpdaterVersion$), #True, #True, system_debug)
   AddToLogFile(__("Can`t open config file! Will be used default settings."), #True, #True, system_debug)
-  DisclaimerTitle$ = "Warning!"
-  DisclaimerText$ = "This program update IS NOT OFFICIAL and is intended for use solely for informational purposes." + Chr(13)
-  DisclaimerText$ + Chr(13)
-  DisclaimerText$ + "The author is not responsible for any damage (material or moral) caused to you or third parties resulting from the use of this software." + Chr(13)
-  DisclaimerText$ + Chr(13)
-  DisclaimerText$ + "All the steps you are at your own risk!" + Chr(13)
-  MessageRequester(__(DisclaimerTitle$), __(DisclaimerText$), #MB_ICONWARNING)
+  MessageRequester(__("Warning!"), __("This program update IS NOT OFFICIAL and is intended for use solely for informational purposes.\n\nThe author is not responsible for any damage (material or moral) caused to you or third parties resulting from the use of this software.\n\nAll the steps you are at your own risk!\n"), #MB_ICONWARNING)
 EndIf
 AddToLogFile(__("Current settings:"), #True, #True, system_debug)
 AddToLogFile(LSet(#Null$, 3, Chr(9))+FormatStr(__("system_debug = %1;"), Str(system_debug)), #False, #True, system_debug)
@@ -136,7 +130,7 @@ AddToLogFile(LSet(#Null$, 3, Chr(9))+FormatStr(__("cache_hidden = %1;"), Str(cac
 
 ; Создаем дирректории
 If FileSize("updates")=-1
-  AddToLogFile(FormatStr(__("The directory "+Chr(34)+"%1"+Chr(34)+" does Not exist! Create it..."), "updates")+" ", #True, #False, system_debug)
+  AddToLogFile(FormatStr(__("The directory &#34;%1&#34; does Not exist! Create it..."), "updates")+" ", #True, #False, system_debug)
   If CreateDirectory("updates")
     AddToLogFile(__("DONE!"), #False, #True, system_debug)
   Else
@@ -144,7 +138,7 @@ If FileSize("updates")=-1
   EndIf
 EndIf
 If FileSize("updates/cache_updates")=-1
-  AddToLogFile(FormatStr(__("The directory "+Chr(34)+"%1"+Chr(34)+" does not exist! Create it..."), "updates/cache_updates")+" ", #True, #False, system_debug)
+  AddToLogFile(FormatStr(__("The directory &#34;%1&#34; does not exist! Create it..."), "updates/cache_updates")+" ", #True, #False, system_debug)
   If CreateDirectory("updates/cache_updates")
     AddToLogFile(__("DONE!"), #False, #True, system_debug)
   Else
@@ -161,7 +155,7 @@ If FileSize("updates/cache_updates/DEUS_V4.1")=-1
       AddToLogFile(__("ERROR!"), #False, #True, system_debug)
     EndIf
   Else
-    AddToLogFile(FormatStr(__("The directory "+Chr(34)+"%1"+Chr(34)+" does not exist! Create it..."), "updates/cache_updates/DEUS_V4.1")+" ", #True, #False, system_debug)
+    AddToLogFile(FormatStr(__("The directory &#34;%1&#34; does not exist! Create it..."), "updates/cache_updates/DEUS_V4.1")+" ", #True, #False, system_debug)
     If CreateDirectory("updates/cache_updates/DEUS_V4.1")
       AddToLogFile(__("DONE!"), #False, #True, system_debug)
     Else
@@ -170,7 +164,7 @@ If FileSize("updates/cache_updates/DEUS_V4.1")=-1
   EndIf
 Else
   If FileSize("updates/cache_updates/DEUS_V4")=-2
-    AddToLogFile(FormatStr(__("Delete directory "+Chr(34)+"%1"+version$+Chr(34)+"..."), "updates/cache_updates/DEUS_V4")+" ", #True, #False, system_debug)
+    AddToLogFile(FormatStr(__("Delete directory &#34;%1&#34;..."), "updates/cache_updates/DEUS_V4")+" ", #True, #False, system_debug)
     If DeleteDirectory("updates/cache_updates/DEUS_V4", "", #PB_FileSystem_Recursive | #PB_FileSystem_Force)
       AddToLogFile(__("DONE!"), #False, #True, system_debug)
     Else
@@ -188,7 +182,7 @@ If FileSize("updates/cache_updates/DEUS_V5.0")=-1
       AddToLogFile(__("ERROR!"), #False, #True, system_debug)
     EndIf
   Else
-    AddToLogFile(FormatStr(__("The directory "+Chr(34)+"%1"+Chr(34)+" does not exist! Create it..."), "updates/cache_updates/DEUS_V5.0")+" ", #True, #False, system_debug)
+    AddToLogFile(FormatStr(__("The directory &#34;%1&#34; does not exist! Create it..."), "updates/cache_updates/DEUS_V5.0")+" ", #True, #False, system_debug)
     If CreateDirectory("updates/cache_updates/DEUS_V5.0")
       AddToLogFile(__("DONE!"), #False, #True, system_debug)
     Else
@@ -197,7 +191,7 @@ If FileSize("updates/cache_updates/DEUS_V5.0")=-1
   EndIf
 Else
   If FileSize("updates/cache_updates/DEUS_V4.1")=-2
-    AddToLogFile(FormatStr(__("Delete directory "+Chr(34)+"%1"+version$+Chr(34)+"..."), "updates/cache_updates/DEUS_V4.1")+" ", #True, #False, system_debug)
+    AddToLogFile(FormatStr(__("Delete directory &#34;%1&#34;..."), "updates/cache_updates/DEUS_V4.1")+" ", #True, #False, system_debug)
     If DeleteDirectory("updates/cache_updates/DEUS_V4.1", "", #PB_FileSystem_Recursive | #PB_FileSystem_Force)
       AddToLogFile(__("DONE!"), #False, #True, system_debug)
     Else
@@ -251,11 +245,11 @@ Procedure CheckForNewUpdates(hidden)
   ; Обновление самой программы
   AddToLogFile(__("Checking the program update..."), #True, #True, system_debug)
   ; Получаем информацию о последней версии
-  AddToLogFile(FormatStr(__("Download file "+Chr(34)+"%1"+Chr(34)+"..."), "http://deus.lipkop.club/dou/index.php")+" ", #True, #False, system_debug)
+  AddToLogFile(FormatStr(__("Download file &#34;%1&#34;..."), "http://deus.lipkop.club/dou/index.php")+" ", #True, #False, system_debug)
   LastUpdaterVersion$ = CurrentUpdaterVersion$
   If ReceiveHTTPFile("http://deus.lipkop.club/dou/index.php", "updates/dou.txt")
     AddToLogFile(__("DONE!"), #False, #True, system_debug)
-    AddToLogFile(FormatStr(__("Read last program version from file "+Chr(34)+"%1"+Chr(34)+"..."), "updates/dou.txt")+" ", #True, #False, system_debug)
+    AddToLogFile(FormatStr(__("Read last program version from file &#34;%1&#34;..."), "updates/dou.txt")+" ", #True, #False, system_debug)
     If ReadFile(0, "updates/dou.txt")
       LastUpdaterVersion$ = #Null$
       AddToLogFile(__("DONE!"), #False, #True, system_debug)
@@ -273,11 +267,11 @@ Procedure CheckForNewUpdates(hidden)
   ; Если есть новая версия программы
   If CompareProgramsVersions(CurrentUpdaterVersion$, LastUpdaterVersion$)
     AddToLogFile(FormatStr(__("A new version %1 of the program is available."), LastUpdaterVersion$), #True, #True, system_debug)
-    AddToLogFile(FormatStr(__("Download file "+Chr(34)+"%1"+Chr(34)+"..."), "http://deus.lipkop.club/dou/deus_offline_updater.exe")+" ", #True, #False, system_debug)
+    AddToLogFile(FormatStr(__("Download file &#34;%1&#34;..."), "http://deus.lipkop.club/dou/deus_offline_updater.exe")+" ", #True, #False, system_debug)
     If ReceiveHTTPFile("http://deus.lipkop.club/dou/deus_offline_updater.exe", "updates/deus_offline_updater.exe")
       AddToLogFile(__("DONE!"), #False, #True, system_debug)
       ; Запускаем установщик обновлений
-      AddToLogFile(FormatStr(__("Execute file "+Chr(34)+"%1"+Chr(34)+"..."), "updates/deus_offline_updater.exe")+" ", #True, #False, system_debug)
+      AddToLogFile(FormatStr(__("Execute file &#34;%1&#34;..."), "updates/deus_offline_updater.exe")+" ", #True, #False, system_debug)
       ProgramPathPart$ = GetPathPart(ProgramFilename$)
       hSFX.l = RunProgram("updates/deus_offline_updater.exe", "-s -d"+Chr(34)+ProgramPathPart$+Chr(34), ProgramPathPart$, #PB_Program_Open|#PB_Program_Hide)
       If hSFX
@@ -292,7 +286,7 @@ Procedure CheckForNewUpdates(hidden)
   Else ; Если новой версии нет, то проверим, возможно мы только что обновились и надо подчистить за собой
     AddToLogFile(__("There are no updates available."), #True, #True, system_debug)
     If FileSize("updates/deus_offline_updater.exe")<>-1
-      AddToLogFile(FormatStr(__("Delete file "+Chr(34)+"updates/deus_offline_updater.exe"+Chr(34)+"..."), "")+" ", #True, #False, system_debug)
+      AddToLogFile(FormatStr(__("Delete file &#34;updates/deus_offline_updater.exe&#34;..."), "")+" ", #True, #False, system_debug)
       If DeleteFile("updates/deus_offline_updater.exe", #PB_FileSystem_Force)
         AddToLogFile(__("DONE!"), #False, #True, system_debug)
       Else
@@ -301,7 +295,7 @@ Procedure CheckForNewUpdates(hidden)
       AddToLogFile(__("Software update finished."), #True, #True, system_debug)
     EndIf
   EndIf
-  AddToLogFile(FormatStr(__("Delete file "+Chr(34)+"%1"+Chr(34)+"..."), "updates/dou.txt")+" ", #True, #False, system_debug)
+  AddToLogFile(FormatStr(__("Delete file &#34;%1&#34;..."), "updates/dou.txt")+" ", #True, #False, system_debug)
   If DeleteFile("updates/dou.txt", #PB_FileSystem_Force)
     AddToLogFile(__("DONE!"), #False, #True, system_debug)
   Else
@@ -316,7 +310,7 @@ Procedure CheckForNewUpdates(hidden)
   Else
     versions_url$ = "http://deus.lipkop.club/dou/updates/versions.php"
   EndIf
-  AddToLogFile(FormatStr(__("Download file "+Chr(34)+"%1"+Chr(34)+"..."), versions_url$)+" ", #True, #False, system_debug)
+  AddToLogFile(FormatStr(__("Download file &#34;%1&#34;..."), versions_url$)+" ", #True, #False, system_debug)
   If ReceiveHTTPFile(versions_url$, "updates/cache_updates/Versions_"+VersionsFileName$+".txt")
     AddToLogFile(__("DONE!"), #False, #True, system_debug)
     Count.l = CountFileStrings("updates/cache_updates/Versions_"+VersionsFileName$+".txt")
@@ -326,10 +320,10 @@ Procedure CheckForNewUpdates(hidden)
         version$ = Trim(ReadString(0))
         If Len(version$)>0
           If FileSize("updates/cache_updates/DEUS_V5.0/"+version$) = -1 ; Если в локальном кеше такой прошивки нету
-            AddToLogFile(FormatStr(__("Get firmware "+Chr(34)+"%1"+Chr(34)+"..."), version$), #True, #True, system_debug)
+            AddToLogFile(FormatStr(__("Get firmware &#34;%1&#34;..."), version$), #True, #True, system_debug)
             ; Качаем ее во временный каталог
             DownloadOfSuccessful.b = #True
-            AddToLogFile(FormatStr(__("Create directory "+Chr(34)+"%1"+version$+Chr(34)+"..."), "updates/cache_updates/")+" ", #True, #False, system_debug)
+            AddToLogFile(FormatStr(__("Create directory &#34;%1&#34;..."), "updates/cache_updates/")+" ", #True, #False, system_debug)
             If CreateDirectory("updates/cache_updates/"+version$)
               AddToLogFile(__("DONE!"), #False, #True, system_debug)
             Else
@@ -337,7 +331,7 @@ Procedure CheckForNewUpdates(hidden)
             EndIf
             ResetList(FirmwareFiles())
             While NextElement(FirmwareFiles())
-              AddToLogFile(FormatStr(__("Download file "+Chr(34)+"%1"+Chr(34)+"..."), "http://deus.lipkop.club/dou/updates/"+version$+"/"+FirmwareFiles()\File)+" ", #True, #False, system_debug)
+              AddToLogFile(FormatStr(__("Download file &#34;%1&#34;..."), "http://deus.lipkop.club/dou/updates/"+version$+"/"+FirmwareFiles()\File)+" ", #True, #False, system_debug)
               If Not ReceiveHTTPFile("http://deus.lipkop.club/dou/updates/"+version$+"/"+FirmwareFiles()\File, "updates/cache_updates/"+version$+"/"+FirmwareFiles()\File) And FirmwareFiles()\Required = #True
                 DownloadOfSuccessful.b = #False
                 SetGadgetState(0, GetGadgetState(0)+ListSize(FirmwareFiles())-ListIndex(FirmwareFiles()))
@@ -349,14 +343,14 @@ Procedure CheckForNewUpdates(hidden)
               EndIf
             Wend
             If DownloadOfSuccessful ; Если прошивка скачалась успешно
-              AddToLogFile(FormatStr(__("Copy directory "+Chr(34)+"%1"+Chr(34)+" to "+Chr(34)+"%2"+Chr(34)+"..."), "updates/cache_updates/"+version$, "updates/cache_updates/DEUS_V5.0/"+version$)+" ", #True, #False, system_debug)
+              AddToLogFile(FormatStr(__("Copy directory &#34;%1&#34; to &#34;%2&#34;..."), "updates/cache_updates/"+version$, "updates/cache_updates/DEUS_V5.0/"+version$)+" ", #True, #False, system_debug)
               If CopyDirectory("updates/cache_updates/"+version$, "updates/cache_updates/DEUS_V5.0/"+version$, "", #PB_FileSystem_Recursive | #PB_FileSystem_Force)
                 AddToLogFile(__("DONE!"), #False, #True, system_debug)
               Else
                 AddToLogFile(__("ERROR!"), #False, #True, system_debug)
               EndIf
             EndIf
-            AddToLogFile(FormatStr(__("Delete directory "+Chr(34)+"%1"+version$+Chr(34)+"..."), "updates/cache_updates/")+" ", #True, #False, system_debug)
+            AddToLogFile(FormatStr(__("Delete directory &#34;%1&#34;..."), "updates/cache_updates/")+" ", #True, #False, system_debug)
             If DeleteDirectory("updates/cache_updates/"+version$, "", #PB_FileSystem_Recursive | #PB_FileSystem_Force)
               AddToLogFile(__("DONE!"), #False, #True, system_debug)
             Else
@@ -370,9 +364,9 @@ Procedure CheckForNewUpdates(hidden)
       CloseFile(0)
     Else
       SetGadgetState(0, 1)
-      AddToLogFile(FormatStr(__("Can`t open file "+Chr(34)+"%1"+Chr(34)+"!"), "updates/cache_updates/Versions_"+VersionsFileName$+".txt"), #True, #True, system_debug)
+      AddToLogFile(FormatStr(__("Can`t open file &#34;%1&#34;!"), "updates/cache_updates/Versions_"+VersionsFileName$+".txt"), #True, #True, system_debug)
     EndIf
-    AddToLogFile(FormatStr(__("Delete file "+Chr(34)+"%1"+Chr(34)+"..."), "updates/cache_updates/Versions_"+VersionsFileName$+".txt")+" ", #True, #False, system_debug)
+    AddToLogFile(FormatStr(__("Delete file &#34;%1&#34;..."), "updates/cache_updates/Versions_"+VersionsFileName$+".txt")+" ", #True, #False, system_debug)
     If DeleteFile("updates/cache_updates/Versions_"+VersionsFileName$+".txt", #PB_FileSystem_Force)
       AddToLogFile(__("DONE!"), #False, #True, system_debug)
     Else
@@ -406,7 +400,7 @@ Else
 EndIf
 
 ; Обновление versions.txt
-AddToLogFile(FormatStr(__("Updating file "+Chr(34)+"%1"+Chr(34)+"..."), "updates/cache_updates/DEUS_V5.0/Versions_"+VersionsFileName$+".txt"), #True, #True, system_debug)
+AddToLogFile(FormatStr(__("Updating file &#34;%1&#34;..."), "updates/cache_updates/DEUS_V5.0/Versions_"+VersionsFileName$+".txt"), #True, #True, system_debug)
 If OpenFile(1, "updates/cache_updates/DEUS_V5.0/Versions_"+VersionsFileName$+".txt") Or CreateFile(1, "updates/cache_updates/DEUS_V5.0/Versions_"+VersionsFileName$+".txt")
   TruncateFile(1)
   If ExamineDirectory(0, "updates/cache_updates/DEUS_V5.0/", "")
@@ -415,17 +409,17 @@ If OpenFile(1, "updates/cache_updates/DEUS_V5.0/Versions_"+VersionsFileName$+".t
         DirectoryName$ = DirectoryEntryName(0)
         If DirectoryName$<>"." And DirectoryName$<>".."
           WriteStringN(1, DirectoryName$)
-          AddToLogFile(LSet(#Null$, 3, Chr(9))+FormatStr(__("Add version string "+Chr(34)+"%1"+Chr(34)+";"), DirectoryName$), #False, #True, system_debug)
+          AddToLogFile(LSet(#Null$, 3, Chr(9))+FormatStr(__("Add version string &#34;%1&#34;;"), DirectoryName$), #False, #True, system_debug)
         EndIf
       EndIf
     Wend
     FinishDirectory(0)
   Else
-    AddToLogFile(FormatStr(__("Can`t examine directory "+Chr(34)+"%1"+Chr(34)+"!"), "updates/cache_updates/DEUS_V5.0/"), #True, #True, system_debug)
+    AddToLogFile(FormatStr(__("Can`t examine directory &#34;%1&#34;!"), "updates/cache_updates/DEUS_V5.0/"), #True, #True, system_debug)
   EndIf
   CloseFile(1)
 Else
-  AddToLogFile(FormatStr(__("Can`t open file "+Chr(34)+"%1"+Chr(34)+"!"), "updates/cache_updates/DEUS_V5.0/Versions_"+VersionsFileName$+".txt"), #True, #True, system_debug)
+  AddToLogFile(FormatStr(__("Can`t open file &#34;%1&#34;!"), "updates/cache_updates/DEUS_V5.0/Versions_"+VersionsFileName$+".txt"), #True, #True, system_debug)
 EndIf
 
 ; Процедура обработки запроса для HTTP сервера
@@ -439,7 +433,7 @@ Procedure RequestProcess(ClientID.l)
     RequestLine$ = Trim(StringField(ClientRequest$, i, #LF$))
     If Left(RequestLine$, 3) = "GET"
       RequestFile$ = Trim(StringField(RequestLine$, 2, " "))
-      AddToLogFile(FormatStr(__("HTTP/GET file "+Chr(34)+"%1"+Chr(34)+"..."), RequestFile$)+" ", #True, #False, system_debug)
+      AddToLogFile(FormatStr(__("HTTP/GET file &#34;%1&#34;..."), RequestFile$)+" ", #True, #False, system_debug)
     EndIf
   Next i
   ; Читаем запрошенный файл с диска
@@ -463,7 +457,7 @@ Procedure RequestProcess(ClientID.l)
       If Len(RequestFile$)>0
         AddToLogFile(__("ERROR-404!"), #False, #True, system_debug)
         Answer$ = #Null$
-        Answer$ + "<!DOCTYPE HTML PUBLIC "+Chr(34)+"-//IETF//DTD HTML 2.0//EN"+Chr(34)+">"+#CR$+#LF$
+        Answer$ + "<!DOCTYPE HTML PUBLIC &#34;-//IETF//DTD HTML 2.0//EN&#34;>"+#CR$+#LF$
         Answer$ + "<html><head>"+#CR$+#LF$
         Answer$ + "<title>"+__("404 Not Found")+"</title>"+#CR$+#LF$
         Answer$ + "</head><body>"+#CR$+#LF$
@@ -494,7 +488,7 @@ Procedure RequestProcess(ClientID.l)
     EndIf
     AddToLogFile(__("ERROR-400!"), #False, #True, system_debug)
     Answer$ = #Null$
-    Answer$ + "<!DOCTYPE HTML PUBLIC "+Chr(34)+"-//IETF//DTD HTML 2.0//EN"+Chr(34)+">"+#CR$+#LF$
+    Answer$ + "<!DOCTYPE HTML PUBLIC &#34;-//IETF//DTD HTML 2.0//EN&#34;>"+#CR$+#LF$
     Answer$ + "<html><head>"+#CR$+#LF$
     Answer$ + "<title>"+__("400 Bad Request")+"</title>"+#CR$+#LF$
     Answer$ + "</head><body>"+#CR$+#LF$
@@ -540,8 +534,8 @@ AddToLogFile(#Null$, #False, #True, system_debug)
 End
 
 ; IDE Options = PureBasic 5.60 (Windows - x86)
-; CursorPosition = 534
-; FirstLine = 495
+; CursorPosition = 126
+; FirstLine = 123
 ; Folding = -
 ; EnableThread
 ; EnableXP

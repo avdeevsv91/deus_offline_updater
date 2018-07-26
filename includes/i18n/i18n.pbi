@@ -95,6 +95,26 @@ Procedure Translator(FileName.s)
   FreeMemory(*Translator_MemoryID)
 EndProcedure
 
+Procedure.s Translator_fixMsg(msg.s)
+  ; EOL
+  msg = ReplaceString(msg, "\n",  #LF$)
+  msg = ReplaceString(msg, "\r",  #CR$)
+  ; HTML symbols
+  msg_temp.s = msg
+  RegExpHtml = CreateRegularExpression(#PB_Any, "&#([0-9]{1,4});")
+  If RegExpHtml
+    If ExamineRegularExpression(RegExpHtml, msg)
+      While NextRegularExpressionMatch(RegExpHtml)
+        chr = Val(Mid(msg, RegularExpressionMatchPosition(RegExpHtml)+2, RegularExpressionMatchLength(RegExpHtml)-3))
+        msg_temp = ReplaceString(msg_temp, RegularExpressionMatchString(RegExpHtml),  Chr(chr))
+      Wend
+    EndIf
+    FreeRegularExpression(RegExpHtml)
+  EndIf
+  msg = msg_temp
+  ProcedureReturn msg
+EndProcedure
+
 Procedure.s t(msg.s=#Null$)
   Protected out.s
   If msg = #Null$
@@ -104,7 +124,7 @@ Procedure.s t(msg.s=#Null$)
   If out = #Null$
     out = msg
   EndIf
-  ProcedureReturn out
+  ProcedureReturn Translator_fixMsg(out)
 EndProcedure
 
 Macro __(msg=#Null$)
@@ -127,7 +147,6 @@ Procedure.s FormatStr(Text.s, s1.s=#Null$, s2.s=#Null$, s3.s=#Null$, s4.s=#Null$
 EndProcedure
 
 ; IDE Options = PureBasic 5.60 (Windows - x86)
-; CursorPosition = 127
-; FirstLine = 82
+; CursorPosition = 98
+; FirstLine = 83
 ; Folding = --
-; UseMainFile = ..\..\main.pb
