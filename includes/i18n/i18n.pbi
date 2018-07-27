@@ -53,7 +53,11 @@ Procedure.s Translator_getOrigMessage(index.l)
   Protected len.l, msgOffset.l
   len       = PeekL(*Translator_MemoryID + origTableOffset + index * 8)
   msgOffset = PeekL(*Translator_MemoryID + origTableOffset + index * 8 + 4)
-  ProcedureReturn PeekS(*Translator_MemoryID + msgOffset, len, #PB_Ascii)
+  msg.s = PeekS(*Translator_MemoryID + msgOffset, len, #PB_Ascii)
+  ; fix EOLs
+  msg = ReplaceString(msg, #LF$, "\n")
+  msg = ReplaceString(msg, #CR$, "\r")
+  ProcedureReturn msg
 EndProcedure
 
 Procedure.s Translator_getTranslationMessage(index.l)
@@ -147,6 +151,6 @@ Procedure.s FormatStr(Text.s, s1.s=#Null$, s2.s=#Null$, s3.s=#Null$, s4.s=#Null$
 EndProcedure
 
 ; IDE Options = PureBasic 5.60 (Windows - x86)
-; CursorPosition = 62
-; FirstLine = 27
+; CursorPosition = 56
+; FirstLine = 33
 ; Folding = --

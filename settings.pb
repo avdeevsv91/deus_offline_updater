@@ -8,17 +8,19 @@ Translator_init("languages/", #Null$)
 
 UsePNGImageDecoder() ; Для иконок
 
-system_debug.l = 0 ; Режим отладки
-cache_updates.l = 1 ; Обновлять кеш с сервера
-cache_hidden.l = 0  ; Загружать скрытые обновления
+system_updates.l = 1 ; Проверять обновления программы
+system_debug.l   = 0 ; Режим отладки
+cache_updates.l  = 1 ; Обновлять прошивки с сервера
+cache_beta.l   = 0   ; Загружать бета версии прошивок
 
 ; Читаем настройки из файла
 If OpenPreferences("config.cfg", #PB_Preference_GroupSeparator)
   PreferenceGroup("system")
-  system_debug = ReadPreferenceLong("debug", system_debug)
+  system_updates = ReadPreferenceLong("updates", system_updates)
+  system_debug   = ReadPreferenceLong("debug",   system_debug)
   PreferenceGroup("cache")
-  cache_updates = ReadPreferenceLong("updates", cache_updates)
-  cache_hidden = ReadPreferenceLong("hidden", cache_hidden)
+  cache_updates = ReadPreferenceLong("updates",  cache_updates)
+  cache_beta    = ReadPreferenceLong("beta",     cache_beta)
   ClosePreferences()
 EndIf
 
@@ -27,14 +29,15 @@ CurrentUpdaterVersion$ = GetFileVersion("dou.exe", #GFVI_FileVersion, #False)
 
 ; Окно настроек
 Exit.b = #False
-If OpenWindow(0, #PB_Any, #PB_Any, 230, 160, FormatStr(__("DOU Settings (version %1)"), CurrentUpdaterVersion$), #PB_Window_ScreenCentered)
-  FrameGadget(0, 5, 5, 220, 80, " "+__("Online updates")+" ")
-  CheckBoxGadget(1, 15, 25, 200, 25, __("Download new updates")) : If cache_updates : SetGadgetState(1, #PB_Checkbox_Checked) : Else : SetGadgetState(1, #PB_Checkbox_Unchecked) : EndIf
-  CheckBoxGadget(2, 15, 50, 200, 25, __("Show hidden updates")) : If cache_hidden : SetGadgetState(2, #PB_Checkbox_Checked) : Else : SetGadgetState(2, #PB_Checkbox_Unchecked) : EndIf
-  CheckBoxGadget(3, 15, 90, 200, 25, __("Enable debug mode")) : If system_debug : SetGadgetState(3, #PB_Checkbox_Checked) : Else : SetGadgetState(3, #PB_Checkbox_Unchecked) : EndIf
-  ButtonGadget(4, 10, 125, 85, 25, __("Cancel"))
-  ButtonGadget(5, 100, 125, 85, 25, __("Save"))
-  ButtonImageGadget(6, 195, 125, 25, 25, ImageID(CatchImage(#PB_Any, ?HelpButton))) : GadgetToolTip(6, __("Help"))
+If OpenWindow(0, #PB_Any, #PB_Any, 230, 185, FormatStr(__("DOU: Settings (version %1)"), CurrentUpdaterVersion$), #PB_Window_ScreenCentered)
+  FrameGadget(0, 5, 5, 220, 105, " "+__("Online updates")+" ")
+  CheckBoxGadget(7, 15, 25, 200, 25, __("Check for software updates")) : If system_updates : SetGadgetState(7, #PB_Checkbox_Checked) : Else : SetGadgetState(7, #PB_Checkbox_Unchecked) : EndIf
+  CheckBoxGadget(1, 15, 50, 200, 25, __("Download firmware updates")) : If cache_updates : SetGadgetState(1, #PB_Checkbox_Checked) : Else : SetGadgetState(1, #PB_Checkbox_Unchecked) : EndIf
+  CheckBoxGadget(2, 15, 75, 200, 25, __("Including beta versions")) : If cache_beta : SetGadgetState(2, #PB_Checkbox_Checked) : Else : SetGadgetState(2, #PB_Checkbox_Unchecked) : EndIf
+  CheckBoxGadget(3, 15, 115, 200, 25, __("Enable debug mode")) : If system_debug : SetGadgetState(3, #PB_Checkbox_Checked) : Else : SetGadgetState(3, #PB_Checkbox_Unchecked) : EndIf
+  ButtonGadget(4, 10, 150, 85, 25, __("Cancel"))
+  ButtonGadget(5, 100, 150, 85, 25, __("Save"))
+  ButtonImageGadget(6, 195, 150, 25, 25, ImageID(CatchImage(#PB_Any, ?HelpButton))) : GadgetToolTip(6, __("Help"))
   Repeat
     Select WaitWindowEvent(100)
       Case #PB_Event_Gadget
@@ -42,9 +45,10 @@ If OpenWindow(0, #PB_Any, #PB_Any, 230, 160, FormatStr(__("DOU Settings (version
           Case 4 ; Cancel
             Exit = #True
           Case 5 ; Save
-            cache_updates = GetGadgetState(1)
-            cache_hidden  = GetGadgetState(2)
-            system_debug  = GetGadgetState(3)
+            cache_updates   = GetGadgetState(1)
+            cache_beta      = GetGadgetState(2)
+            system_updates  = GetGadgetState(7)
+            system_debug    = GetGadgetState(3)
             Exit = #True
           Case 6 ; Help
             RunProgram("http://deus.lipkop.club/wiki/Альтернативный_сервер_обновлений")
@@ -62,13 +66,14 @@ If Not OpenPreferences("config.cfg", #PB_Preference_GroupSeparator)
   EndIf
 EndIf
 PreferenceGroup("system")
-WritePreferenceLong("debug", system_debug)
+WritePreferenceLong("updates", system_updates)
+WritePreferenceLong("debug",   system_debug)
 PreferenceGroup("cache")
 WritePreferenceLong("updates", cache_updates)
-WritePreferenceLong("hidden", cache_hidden)
+WritePreferenceLong("hidden",  cache_beta)
 ClosePreferences()
 
-End
+End 0
 
 DataSection
   HelpButton:
@@ -77,7 +82,8 @@ EndDataSection
 
 
 ; IDE Options = PureBasic 5.60 (Windows - x86)
-; CursorPosition = 6
+; CursorPosition = 31
+; FirstLine = 18
 ; EnableThread
 ; EnableXP
 ; EnableAdmin
