@@ -7,7 +7,7 @@
   <section name="data">
     <explorer view="" pattern="0"/>
     <log show="1"/>
-    <lastopen date="2018-07-27 13:50" user="Пользователь" host="WORKPLACE-15"/>
+    <lastopen date="2018-07-27 13:55" user="Пользователь" host="WORKPLACE-15"/>
   </section>
   <section name="files">
     <file name="dou.pb">
@@ -27,8 +27,8 @@
       <executable value="dou.exe"/>
       <options unicode="1" thread="1" xpskin="1" admin="1"/>
       <icon enable="1">dou.ico</icon>
-      <compilecount enable="1" value="17"/>
-      <buildcount enable="1" value="3"/>
+      <compilecount enable="1" value="18"/>
+      <buildcount enable="1" value="4"/>
       <versioninfo enable="1">
         <field0 value="1.3.%BUILDCOUNT.%COMPILECOUNT"/>
         <field1 value="1.3.%BUILDCOUNT.%COMPILECOUNT"/>
@@ -52,8 +52,8 @@
       <executable value="settings.exe"/>
       <options unicode="1" thread="1" xpskin="1"/>
       <icon enable="1">settings.ico</icon>
-      <compilecount enable="1" value="5"/>
-      <buildcount enable="1" value="3"/>
+      <compilecount enable="1" value="6"/>
+      <buildcount enable="1" value="4"/>
       <versioninfo enable="1">
         <field0 value="1.3.%BUILDCOUNT.%COMPILECOUNT"/>
         <field2 value="LipKop.club"/>
