@@ -4,7 +4,7 @@ UseModule DroopyLib
 
 ; Инициализация перевода
 XIncludeFile #PB_Compiler_FilePath+"includes\i18n\i18n.pbi"
-Translator_init("languages", #Null$)
+Translator_init("languages/", #Null$)
 
 UsePNGImageDecoder() ; Для иконок
 
@@ -77,8 +77,7 @@ EndDataSection
 
 
 ; IDE Options = PureBasic 5.60 (Windows - x86)
-; CursorPosition = 59
-; FirstLine = 32
+; CursorPosition = 6
 ; EnableThread
 ; EnableXP
 ; EnableAdmin

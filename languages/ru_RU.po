@@ -1,0 +1,307 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: XP Deus Offline Updater\n"
+"POT-Creation-Date: 2018-07-26 15:52+0300\n"
+"PO-Revision-Date: 2018-07-27 09:25+0300\n"
+"Last-Translator: SoulTaker <thesoultaker48@gmail.com>\n"
+"Language-Team: http://deus.lipkop.club\n"
+"Language: ru_RU\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CP1251\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.1\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+"X-Poedit-KeywordsList: ;__;t\n"
+"X-Poedit-SourceCharset: CP1251\n"
+"X-Poedit-SearchPath-0: dou.pb\n"
+"X-Poedit-SearchPath-1: settings.pb\n"
+
+#: dou.pb:120 dou.pb:122
+msgid "Updater started (version %1)."
+msgstr "Прошивальщик запущен (версия %1)."
+
+#: dou.pb:123
+msgid "Can`t open config file! Will be used default settings."
+msgstr ""
+"Невозможно открыть файл конфигурации! Будут использованы настройки по-"
+"умолчанию."
+
+#: dou.pb:124
+msgid "Warning!"
+msgstr "Предупреждение!"
+
+#: dou.pb:124
+msgid ""
+"This program update IS NOT OFFICIAL and is intended for use solely for "
+"informational purposes.\n"
+"\n"
+"The author is not responsible for any damage (material or moral) caused to "
+"you or third parties resulting from the use of this software.\n"
+"\n"
+"All the steps you are at your own risk!\n"
+msgstr ""
+"Внимание!\n"
+"\n"
+"Данная программа обновления НЕ ЯВЛЯЕТСЯ ОФИЦИАЛЬНОЙ и предназначена для "
+"использования исключительно в ознакомительных целях.\n"
+"\n"
+"Автор не несет ответственности за любой вред (материальный или моральный), "
+"причененный вам или третьим лицам, в результате использования данного "
+"программного обеспечения.\n"
+"\n"
+"Все действия вы производите на свой страх и риск!\n"
+
+#: dou.pb:126
+msgid "Current settings:"
+msgstr "Текущие настройки:"
+
+#: dou.pb:127
+msgid "system_debug = %1;"
+msgstr ""
+
+#: dou.pb:128
+msgid "cache_updates = %1;"
+msgstr ""
+
+#: dou.pb:129
+msgid "cache_hidden = %1;"
+msgstr ""
+
+#: dou.pb:133 dou.pb:141 dou.pb:158 dou.pb:185
+msgid "The directory &#34;%1&#34; does not exist! Create it..."
+msgstr "Директория &#34;%1&#34; не существует! Создаем ее..."
+
+#: dou.pb:135 dou.pb:143 dou.pb:153 dou.pb:160 dou.pb:169 dou.pb:180 dou.pb:187
+#: dou.pb:196 dou.pb:251 dou.pb:255 dou.pb:272 dou.pb:278 dou.pb:291 dou.pb:300
+#: dou.pb:315 dou.pb:328 dou.pb:342 dou.pb:348 dou.pb:355 dou.pb:371
+msgid "DONE!"
+msgstr "ГОТОВО!"
+
+#: dou.pb:137 dou.pb:145 dou.pb:155 dou.pb:162 dou.pb:171 dou.pb:182 dou.pb:189
+#: dou.pb:198 dou.pb:262 dou.pb:265 dou.pb:281 dou.pb:284 dou.pb:293 dou.pb:302
+#: dou.pb:330 dou.pb:338 dou.pb:350 dou.pb:357 dou.pb:373 dou.pb:376
+msgid "ERROR!"
+msgstr "ОШИБКА!"
+
+#: dou.pb:151 dou.pb:178
+msgid "Rename the directory with cache (%1 to %2)..."
+msgstr "Переименовываем каталог с кешем (%1 в %2)..."
+
+#: dou.pb:167 dou.pb:194 dou.pb:353
+msgid "Delete directory &#34;%1&#34;..."
+msgstr "Удаляем директорию &#34;%1&#34;..."
+
+#: dou.pb:211 dou.pb:212
+msgid "The program was successfully updated!"
+msgstr "Программа была успешно обновлена!"
+
+#: dou.pb:212 dou.pb:215
+msgid "Information"
+msgstr "Информация"
+
+#: dou.pb:214 dou.pb:215
+msgid "The program was successfully installed!"
+msgstr "Программа была успешно установлена!"
+
+#: dou.pb:220
+msgid "Unsupported startup key: %1"
+msgstr "Неподдерживаемый ключ запуска: %1"
+
+#: dou.pb:246
+msgid "Checking the program update..."
+msgstr "Проверка обновлений программы..."
+
+#: dou.pb:248 dou.pb:270 dou.pb:313 dou.pb:334
+msgid "Download file &#34;%1&#34;..."
+msgstr "Загрузка файла &#34;%1&#34;..."
+
+#: dou.pb:252
+msgid "Read last program version from file &#34;%1&#34;..."
+msgstr "Получаем номер последней версии программы из файла &#34;%1&#34;..."
+
+#: dou.pb:269
+msgid "A new version %1 of the program is available."
+msgstr "Доступна новая версия программы (%1)."
+
+#: dou.pb:274
+msgid "Execute file &#34;%1&#34;..."
+msgstr "Выполняем файл &#34;%1&#34;..."
+
+#: dou.pb:287
+msgid "There are no updates available."
+msgstr "Нет доступных обновлений."
+
+#: dou.pb:289 dou.pb:298 dou.pb:369
+msgid "Delete file &#34;%1&#34;..."
+msgstr "Удаляем файл &#34;%1&#34;..."
+
+#: dou.pb:295
+msgid "Software update finished."
+msgstr "Обновление программы завершено."
+
+#: dou.pb:307
+msgid "Checking the firmware update..."
+msgstr "Проверка обновлений прошивок..."
+
+#: dou.pb:323
+msgid "Get firmware &#34;%1&#34;..."
+msgstr "Получаем прошивку &#34;%1&#34;..."
+
+#: dou.pb:326
+msgid "Create directory &#34;%1&#34;..."
+msgstr "Создаем директорию &#34;%1&#34;..."
+
+#: dou.pb:346
+msgid "Copy directory &#34;%1&#34; to &#34;%2&#34;..."
+msgstr "Копируем директорию &#34;%1&#34; в &#34;%2&#34;..."
+
+#: dou.pb:367 dou.pb:422
+msgid "Can`t open file &#34;%1&#34;!"
+msgstr "Невозможно открыть файл &#34;%1&#34;!"
+
+#: dou.pb:379
+msgid "Update finished."
+msgstr "Обновление завершено."
+
+#: dou.pb:386
+msgid "Updating"
+msgstr "Обновление"
+
+#: dou.pb:388
+msgid "Please, wait..."
+msgstr "Пожалуйста, подождите..."
+
+#: dou.pb:389
+msgid "Check for new updates..."
+msgstr "Проверка новых обновлений..."
+
+#: dou.pb:396
+msgid "Updating the cache is impossible: no network connection."
+msgstr "Обновление кеша невозможно: отсутствует подключение к сети."
+
+#: dou.pb:399
+msgid "Updating the cache is disabled in settings."
+msgstr "Обновление кеша отключено в настройках."
+
+#: dou.pb:403
+msgid "Updating file &#34;%1&#34;..."
+msgstr "Обновление файла &#34;%1&#34;..."
+
+#: dou.pb:412
+msgid "Add version string &#34;%1&#34;;"
+msgstr "Добавляем строку с версией &#34;%1&#34;;"
+
+#: dou.pb:418
+msgid "Can`t examine directory &#34;%1&#34;!"
+msgstr "Не удалось прочитать директорию &#34;%1&#34;!"
+
+#: dou.pb:436
+msgid "HTTP/GET file &#34;%1&#34;..."
+msgstr "HTTP/GET файл &#34;%1&#34;..."
+
+#: dou.pb:455
+msgid "OK-200 (%1 bytes)!"
+msgstr "OK-200 (%1 байт)!"
+
+#: dou.pb:458
+msgid "ERROR-404!"
+msgstr "ОШИБКА-404!"
+
+#: dou.pb:462 dou.pb:466
+msgid "404 Not Found"
+msgstr "404 Не найдено"
+
+#: dou.pb:464
+msgid "Not Found"
+msgstr "Не найдено"
+
+#: dou.pb:465
+msgid "The requested URL %1 was not found on this server."
+msgstr "Запрошенный URL %1 недоступен."
+
+#: dou.pb:466 dou.pb:497
+msgid ""
+"Additionally, a %1 error was encountered while trying to use an "
+"ErrorDocument to handle the request."
+msgstr ""
+"Кроме того, произошла ошибка %1 при попытке использовать ErrorDocument для "
+"обработки запроса."
+
+#: dou.pb:475
+msgid "ERROR-404 (header location %1)!"
+msgstr "ОШИБКА-404 (перенаправляем на %1)!"
+
+#: dou.pb:487
+msgid "HTTP/UNKNOWN request..."
+msgstr "HTTP/НЕИЗВЕСТНЫЙ запрос..."
+
+#: dou.pb:489
+msgid "ERROR-400!"
+msgstr "ОШИБКА-400!"
+
+#: dou.pb:493 dou.pb:497
+msgid "400 Bad Request"
+msgstr "400 Неверный запрос"
+
+#: dou.pb:495
+msgid "Bad Request"
+msgstr "Неверный запрос"
+
+#: dou.pb:496
+msgid "Your browser sent a request that this server could not understand."
+msgstr "Ваш браузер послал запрос, который сервер не смог обработать."
+
+#: dou.pb:521 dou.pb:522
+msgid "Can`t execute the %1 file!"
+msgstr "Невозможно запустить файл %1!"
+
+#: dou.pb:522 dou.pb:526 settings.pb:60
+msgid "Error"
+msgstr "Ошибка"
+
+#: dou.pb:525 dou.pb:526
+msgid "Can`t create the http server on port %1!"
+msgstr "Невозможно запустить HTTP сервер на порту %1!"
+
+#: dou.pb:530
+msgid "ALL DONE."
+msgstr "ВСЕ СДЕЛАНО."
+
+#: settings.pb:30
+msgid "DOU Settings (version %1)"
+msgstr "DOU Настройки (версия %1)"
+
+#: settings.pb:31
+msgid "Online updates"
+msgstr "Онлайн обновления"
+
+#: settings.pb:32
+msgid "Download new updates"
+msgstr "Загружать обновления"
+
+#: settings.pb:33
+msgid "Show hidden updates"
+msgstr "Показывать скрытые обновления"
+
+#: settings.pb:34
+msgid "Enable debug mode"
+msgstr "Включить режим отладки"
+
+#: settings.pb:35
+msgid "Cancel"
+msgstr "Отмена"
+
+#: settings.pb:36
+msgid "Save"
+msgstr "Сохранить"
+
+#: settings.pb:37
+msgid "Help"
+msgstr "Помощь"
+
+#: settings.pb:60
+msgid "Can`t create config file! The current settings will be lost."
+msgstr ""
+"Невозможно создать файл конфигурации! Текущие настройки будут потеряны."

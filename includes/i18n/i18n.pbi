@@ -53,14 +53,14 @@ Procedure.s Translator_getOrigMessage(index.l)
   Protected len.l, msgOffset.l
   len       = PeekL(*Translator_MemoryID + origTableOffset + index * 8)
   msgOffset = PeekL(*Translator_MemoryID + origTableOffset + index * 8 + 4)
-  ProcedureReturn PeekS(*Translator_MemoryID + msgOffset, len)
+  ProcedureReturn PeekS(*Translator_MemoryID + msgOffset, len, #PB_Ascii)
 EndProcedure
 
 Procedure.s Translator_getTranslationMessage(index.l)
   Protected len.l, msgOffset.l
   len       = PeekL(*Translator_MemoryID + translationTableOffset + index * 8)
   msgOffset = PeekL(*Translator_MemoryID + translationTableOffset + index * 8 + 4)
-  ProcedureReturn PeekS(*Translator_MemoryID + msgOffset, len)
+  ProcedureReturn PeekS(*Translator_MemoryID + msgOffset, len, #PB_Ascii)
 EndProcedure
 
 Procedure Translator(FileName.s)
@@ -147,6 +147,6 @@ Procedure.s FormatStr(Text.s, s1.s=#Null$, s2.s=#Null$, s3.s=#Null$, s4.s=#Null$
 EndProcedure
 
 ; IDE Options = PureBasic 5.60 (Windows - x86)
-; CursorPosition = 98
-; FirstLine = 83
+; CursorPosition = 62
+; FirstLine = 27
 ; Folding = --

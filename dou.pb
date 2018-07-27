@@ -4,7 +4,7 @@ UseModule DroopyLib
 
 ; Инициализация перевода
 XIncludeFile #PB_Compiler_FilePath+"includes\i18n\i18n.pbi"
-Translator_init("languages", #Null$)
+Translator_init("languages/", #Null$)
 
 ; Инициализация сети
 InitNetwork()
@@ -130,7 +130,7 @@ AddToLogFile(LSet(#Null$, 3, Chr(9))+FormatStr(__("cache_hidden = %1;"), Str(cac
 
 ; Создаем дирректории
 If FileSize("updates")=-1
-  AddToLogFile(FormatStr(__("The directory &#34;%1&#34; does Not exist! Create it..."), "updates")+" ", #True, #False, system_debug)
+  AddToLogFile(FormatStr(__("The directory &#34;%1&#34; does not exist! Create it..."), "updates")+" ", #True, #False, system_debug)
   If CreateDirectory("updates")
     AddToLogFile(__("DONE!"), #False, #True, system_debug)
   Else
@@ -286,7 +286,7 @@ Procedure CheckForNewUpdates(hidden)
   Else ; Если новой версии нет, то проверим, возможно мы только что обновились и надо подчистить за собой
     AddToLogFile(__("There are no updates available."), #True, #True, system_debug)
     If FileSize("updates/deus_offline_updater.exe")<>-1
-      AddToLogFile(FormatStr(__("Delete file &#34;updates/deus_offline_updater.exe&#34;..."), "")+" ", #True, #False, system_debug)
+      AddToLogFile(FormatStr(__("Delete file &#34;%1&#34;..."), "updates/deus_offline_updater.exe")+" ", #True, #False, system_debug)
       If DeleteFile("updates/deus_offline_updater.exe", #PB_FileSystem_Force)
         AddToLogFile(__("DONE!"), #False, #True, system_debug)
       Else
@@ -534,8 +534,7 @@ AddToLogFile(#Null$, #False, #True, system_debug)
 End
 
 ; IDE Options = PureBasic 5.60 (Windows - x86)
-; CursorPosition = 126
-; FirstLine = 123
+; CursorPosition = 7
 ; Folding = -
 ; EnableThread
 ; EnableXP
