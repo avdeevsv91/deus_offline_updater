@@ -6,63 +6,21 @@ UseModule DroopyLib
 XIncludeFile #PB_Compiler_FilePath+"includes\i18n\i18n.pbi"
 Translator_init("languages/", #Null$)
 
-; Инициализация сети
+; Инициализация подсистем
 InitNetwork()
-
-; Список файлов, из которых состоит прошивка
-Structure FirmwareFile
-  File.s      ; Имя файла прошивки
-  Required.b  ; Этот файл обязателен или нет
-EndStructure
-Global NewList FirmwareFiles.FirmwareFile()
-AddElement(FirmwareFiles()) : FirmwareFiles()\File = "md5sums.txt"          : FirmwareFiles()\Required = #False
-; Casque
-AddElement(FirmwareFiles()) : FirmwareFiles()\File = "Casque.txt"           : FirmwareFiles()\Required = #False ; ???
-AddElement(FirmwareFiles()) : FirmwareFiles()\File = "Casque_B.txt"         : FirmwareFiles()\Required = #False ; ???
-AddElement(FirmwareFiles()) : FirmwareFiles()\File = "C01.txt"              : FirmwareFiles()\Required = #True
-; Disques
-AddElement(FirmwareFiles()) : FirmwareFiles()\File = "004.txt"              : FirmwareFiles()\Required = #True
-AddElement(FirmwareFiles()) : FirmwareFiles()\File = "004_R.txt"            : FirmwareFiles()\Required = #False ; ???
-AddElement(FirmwareFiles()) : FirmwareFiles()\File = "104.txt"              : FirmwareFiles()\Required = #True
-AddElement(FirmwareFiles()) : FirmwareFiles()\File = "104_R.txt"            : FirmwareFiles()\Required = #False ; ???
-AddElement(FirmwareFiles()) : FirmwareFiles()\File = "104_7.txt"            : FirmwareFiles()\Required = #False ; V4 only
-AddElement(FirmwareFiles()) : FirmwareFiles()\File = "R_004.txt"            : FirmwareFiles()\Required = #True
-AddElement(FirmwareFiles()) : FirmwareFiles()\File = "R_104.txt"            : FirmwareFiles()\Required = #True
-AddElement(FirmwareFiles()) : FirmwareFiles()\File = "coil_hf_22.txt"       : FirmwareFiles()\Required = #False ; ???
-; Telecommande
-AddElement(FirmwareFiles()) : FirmwareFiles()\File = "Telecommande.txt"     : FirmwareFiles()\Required = #False ; ???
-AddElement(FirmwareFiles()) : FirmwareFiles()\File = "Restaure.txt"         : FirmwareFiles()\Required = #False
-AddElement(FirmwareFiles()) : FirmwareFiles()\File = "Restaure20130108.txt" : FirmwareFiles()\Required = #True
-AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T01.txt"              : FirmwareFiles()\Required = #False
-AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T02.txt"              : FirmwareFiles()\Required = #False ; English
-AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T03.txt"              : FirmwareFiles()\Required = #False
-AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T04.txt"              : FirmwareFiles()\Required = #False
-AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T05.txt"              : FirmwareFiles()\Required = #False
-AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T06.txt"              : FirmwareFiles()\Required = #False
-AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T07.txt"              : FirmwareFiles()\Required = #False
-AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T08.txt"              : FirmwareFiles()\Required = #False ; VIP
-AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T09.txt"              : FirmwareFiles()\Required = #False
-AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T15.txt"              : FirmwareFiles()\Required = #False
-AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T0A.txt"              : FirmwareFiles()\Required = #False
-AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T0B.txt"              : FirmwareFiles()\Required = #False
-AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T0C.txt"              : FirmwareFiles()\Required = #False
-AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T0D.txt"              : FirmwareFiles()\Required = #False ; Russian
-AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T0E.txt"              : FirmwareFiles()\Required = #False
-AddElement(FirmwareFiles()) : FirmwareFiles()\File = "T0F.txt"              : FirmwareFiles()\Required = #False
-; Other
-AddElement(FirmwareFiles()) : FirmwareFiles()\File = "Release.txt"          : FirmwareFiles()\Required = #False ; ???
-AddElement(FirmwareFiles()) : FirmwareFiles()\File = "soft.txt"             : FirmwareFiles()\Required = #False    ; ???
-AddElement(FirmwareFiles()) : FirmwareFiles()\File = "PinpointerMI6.txt"    : FirmwareFiles()\Required = #False ; ???
-
+UseMD5Fingerprint()
 
 ; Функция подсчета количества строк в файле
-Procedure.l CountFileStrings(FileName.s)
+Procedure.l CountFileStrings(FileName.s, CountEmpty.b=#True)
   File.l = ReadFile(#PB_Any, FileName)
   If File
     Count.l = 0
     While Eof(File) = 0
-      ReadString(File)
-      Count + 1
+      str$ = ReadString(File)
+      str$ = Trim(str$)
+      If Len(str$) > 0 Or CountEmpty = #True
+        Count = Count + 1
+      EndIf
     Wend
     CloseFile(File)
     ProcedureReturn Count
@@ -100,6 +58,23 @@ Procedure.l AddToLogFile(Message.s, DateTime.b=#True, NewLine.b=#True, Enable.b=
   Else
     ProcedureReturn -1
   EndIf
+EndProcedure
+
+; Сравнивает два номера версий программ и возвращает True, если последняя новее
+Procedure CompareProgramsVersions(CurrentVersion.s, LatestVersion.s)
+  CVC.l = CountString(CurrentVersion, ".")
+  LVC.l = CountString(LatestVersion, ".")
+  If CVC>LVC : DVC.l = CVC : Else : DVC.l = LVC : EndIf
+  For i=1 To DVC+1
+    CVF$ = StringField(CurrentVersion, i, ".")
+    LVF$ = StringField(LatestVersion, i, ".")
+    If Val(LVF$)>Val(CVF$)
+      ProcedureReturn #True
+    ElseIf Val(LVF$)<Val(CVF$)
+      ProcedureReturn #False
+    EndIf
+  Next i
+  ProcedureReturn #False
 EndProcedure
 
 ; Получаем версию программы
@@ -148,58 +123,129 @@ If FileSize("updates/cache_updates")=-1
     AddToLogFile(__("ERROR!"), #False, #True, system_debug)
   EndIf
 EndIf
-; Update: 4.0 -> 4.1
-If FileSize("updates/cache_updates/DEUS_V4.1")=-1
-  If FileSize("updates/cache_updates/DEUS_V4")=-2
-    AddToLogFile(FormatStr(__("Rename the directory with cache (&#34;%1&#34; to &#34;%2&#34;)..."), "DEUS_V4", "DEUS_V4.1"), #True, #False, system_debug)
-    If RenameFile("updates/cache_updates/DEUS_V4", "updates/cache_updates/DEUS_V4.1")
+
+; Update: 3.2 -> 4.0 (с версии 1.0.5.9)
+If CompareProgramsVersions(CurrentUpdaterVersion$, "1.1.14.16") ; DEUS_UPDATE.exe <= 4.1
+  If FileSize("updates/cache_updates/DEUS_V4")=-1
+    If FileSize("updates/cache_updates/versions.txt") >= 0
+      AddToLogFile(FormatStr(__("Clear directory &#34;%1&#34;..."), "updates/cache_updates"), #True, #False, system_debug)
+      If DeleteDirectory("updates/cache_updates", "", #PB_FileSystem_Recursive | #PB_FileSystem_Force) And CreateDirectory("updates/cache_updates")
+        AddToLogFile(__("DONE!"), #False, #True, system_debug)
+      Else
+        AddToLogFile(__("ERROR!"), #False, #True, system_debug)
+      EndIf
+    EndIf
+    AddToLogFile(FormatStr(__("The directory &#34;%1&#34; does not exist! Create it..."), "updates/cache_updates/DEUS_V4"), #True, #False, system_debug)
+    If CreateDirectory("updates/cache_updates/DEUS_V4")
       AddToLogFile(__("DONE!"), #False, #True, system_debug)
     Else
       AddToLogFile(__("ERROR!"), #False, #True, system_debug)
     EndIf
   Else
-    AddToLogFile(FormatStr(__("The directory &#34;%1&#34; does not exist! Create it..."), "updates/cache_updates/DEUS_V4.1"), #True, #False, system_debug)
-    If CreateDirectory("updates/cache_updates/DEUS_V4.1")
-      AddToLogFile(__("DONE!"), #False, #True, system_debug)
-    Else
-      AddToLogFile(__("ERROR!"), #False, #True, system_debug)
+    If FileSize("updates/cache_updates/versions.txt") >= 0
+      AddToLogFile(FormatStr(__("Clear directory &#34;%1&#34;..."), "updates/cache_updates"), #True, #False, system_debug)
+      If ReadFile(0, "updates/cache_updates/versions.txt")
+        AddToLogFile("", #False, #True, system_debug)
+        While Eof(0) = 0
+          file$ = ReadString(0)
+          file$ = Trim(file$)
+          If Len(file$) > 0
+            AddToLogFile(FormatStr(__("Delete directory &#34;%1&#34;..."), "updates/cache_updates/"+file$), #True, #False, system_debug)
+            If DeleteDirectory("updates/cache_updates/"+file$, "", #PB_FileSystem_Recursive | #PB_FileSystem_Force)
+              AddToLogFile(__("DONE!"), #False, #True, system_debug)
+            Else
+              AddToLogFile(__("ERROR!"), #False, #True, system_debug)
+            EndIf
+          EndIf
+        Wend
+        CloseFile(0)
+        AddToLogFile(FormatStr(__("Delete file &#34;%1&#34;..."), "updates/cache_updates/versions.txt"), #True, #False, system_debug)
+        If DeleteFile("updates/cache_updates/versions.txt", #PB_FileSystem_Force)
+          AddToLogFile(__("DONE!"), #False, #True, system_debug)
+        Else
+          AddToLogFile(__("ERROR!"), #False, #True, system_debug)
+        EndIf
+      Else
+        AddToLogFile(__("ERROR!"), #False, #True, system_debug)
+      EndIf
     EndIf
-  EndIf
-Else
-  If FileSize("updates/cache_updates/DEUS_V4")=-2
-    AddToLogFile(FormatStr(__("Delete directory &#34;%1&#34;..."), "updates/cache_updates/DEUS_V4"), #True, #False, system_debug)
-    If DeleteDirectory("updates/cache_updates/DEUS_V4", "", #PB_FileSystem_Recursive | #PB_FileSystem_Force)
-      AddToLogFile(__("DONE!"), #False, #True, system_debug)
-    Else
-      AddToLogFile(__("ERROR!"), #False, #True, system_debug)
-    EndIf      
   EndIf
 EndIf
-; Update: 4.1 -> 5.0
-If FileSize("updates/cache_updates/DEUS_V5.0")=-1
-  If FileSize("updates/cache_updates/DEUS_V4.1")=-2
-    AddToLogFile(FormatStr(__("Rename the directory with cache (&#34;%1&#34; to &#34;%2&#34;)..."), "DEUS_V4.1", "DEUS_V5.0"), #True, #False, system_debug)
-    If RenameFile("updates/cache_updates/DEUS_V4.1", "updates/cache_updates/DEUS_V5.0")
-      AddToLogFile(__("DONE!"), #False, #True, system_debug)
+
+; Update: 4.0 -> 4.1 (с версии 1.1.14.16)
+If CompareProgramsVersions(CurrentUpdaterVersion$, "1.1.16.31") ; DEUS_UPDATE.exe <= 4.1
+  If FileSize("updates/cache_updates/DEUS_V4.1")=-1
+    If FileSize("updates/cache_updates/DEUS_V4")=-2
+      AddToLogFile(FormatStr(__("Rename the directory with cache &#34;%1&#34; to &#34;%2&#34;..."), "DEUS_V4", "DEUS_V4.1"), #True, #False, system_debug)
+      If RenameFile("updates/cache_updates/DEUS_V4", "updates/cache_updates/DEUS_V4.1")
+        AddToLogFile(__("DONE!"), #False, #True, system_debug)
+        If FileSize("updates/cache_updates/DEUS_V4.1/Versions_4_0_01.txt") >= 0
+          AddToLogFile(FormatStr(__("Delete file &#34;%1&#34;..."), "updates/cache_updates/DEUS_V4.1/Versions_4_0_01.txt"), #True, #False, system_debug)
+          If DeleteFile("updates/cache_updates/DEUS_V4.1/Versions_4_0_01.txt", #PB_FileSystem_Force)
+            AddToLogFile(__("DONE!"), #False, #True, system_debug)
+          Else
+            AddToLogFile(__("ERROR!"), #False, #True, system_debug)
+          EndIf
+        EndIf
+      Else
+        AddToLogFile(__("ERROR!"), #False, #True, system_debug)
+      EndIf
     Else
-      AddToLogFile(__("ERROR!"), #False, #True, system_debug)
+      AddToLogFile(FormatStr(__("The directory &#34;%1&#34; does not exist! Create it..."), "updates/cache_updates/DEUS_V4.1"), #True, #False, system_debug)
+      If CreateDirectory("updates/cache_updates/DEUS_V4.1")
+        AddToLogFile(__("DONE!"), #False, #True, system_debug)
+      Else
+        AddToLogFile(__("ERROR!"), #False, #True, system_debug)
+      EndIf
     EndIf
   Else
-    AddToLogFile(FormatStr(__("The directory &#34;%1&#34; does not exist! Create it..."), "updates/cache_updates/DEUS_V5.0"), #True, #False, system_debug)
-    If CreateDirectory("updates/cache_updates/DEUS_V5.0")
-      AddToLogFile(__("DONE!"), #False, #True, system_debug)
-    Else
-      AddToLogFile(__("ERROR!"), #False, #True, system_debug)
+    If FileSize("updates/cache_updates/DEUS_V4")=-2
+      AddToLogFile(FormatStr(__("Delete directory &#34;%1&#34;..."), "updates/cache_updates/DEUS_V4"), #True, #False, system_debug)
+      If DeleteDirectory("updates/cache_updates/DEUS_V4", "", #PB_FileSystem_Recursive | #PB_FileSystem_Force)
+        AddToLogFile(__("DONE!"), #False, #True, system_debug)
+      Else
+        AddToLogFile(__("ERROR!"), #False, #True, system_debug)
+      EndIf      
     EndIf
   EndIf
-Else
-  If FileSize("updates/cache_updates/DEUS_V4.1")=-2
-    AddToLogFile(FormatStr(__("Delete directory &#34;%1&#34;..."), "updates/cache_updates/DEUS_V4.1"), #True, #False, system_debug)
-    If DeleteDirectory("updates/cache_updates/DEUS_V4.1", "", #PB_FileSystem_Recursive | #PB_FileSystem_Force)
-      AddToLogFile(__("DONE!"), #False, #True, system_debug)
+EndIf
+
+; Update: 4.1 -> 5.0 (с версии 1.1.16.31)
+; TODO: при переходе на новую версию DEUS_UPDATE.exe не забыть убрать Not и исправить номер версии!
+If Not CompareProgramsVersions(CurrentUpdaterVersion$, "1.1.16.31") ; DEUS_UPDATE.exe <= 5.0
+  If FileSize("updates/cache_updates/DEUS_V5.0")=-1
+    If FileSize("updates/cache_updates/DEUS_V4.1")=-2
+      AddToLogFile(FormatStr(__("Rename the directory with cache &#34;%1&#34; to &#34;%2&#34;..."), "DEUS_V4.1", "DEUS_V5.0"), #True, #False, system_debug)
+      If RenameFile("updates/cache_updates/DEUS_V4.1", "updates/cache_updates/DEUS_V5.0")
+        AddToLogFile(__("DONE!"), #False, #True, system_debug)
+        If FileSize("updates/cache_updates/DEUS_V5.0/Versions_4_1_04.txt") >= 0
+          AddToLogFile(FormatStr(__("Delete file &#34;%1&#34;..."), "updates/cache_updates/DEUS_V5.0/Versions_4_1_04.txt"), #True, #False, system_debug)
+          If DeleteFile("updates/cache_updates/DEUS_V5.0/Versions_4_1_04.txt", #PB_FileSystem_Force)
+            AddToLogFile(__("DONE!"), #False, #True, system_debug)
+          Else
+            AddToLogFile(__("ERROR!"), #False, #True, system_debug)
+          EndIf
+        EndIf
+      Else
+        AddToLogFile(__("ERROR!"), #False, #True, system_debug)
+      EndIf
     Else
-      AddToLogFile(__("ERROR!"), #False, #True, system_debug)
-    EndIf      
+      AddToLogFile(FormatStr(__("The directory &#34;%1&#34; does not exist! Create it..."), "updates/cache_updates/DEUS_V5.0"), #True, #False, system_debug)
+      If CreateDirectory("updates/cache_updates/DEUS_V5.0")
+        AddToLogFile(__("DONE!"), #False, #True, system_debug)
+      Else
+        AddToLogFile(__("ERROR!"), #False, #True, system_debug)
+      EndIf
+    EndIf
+  Else
+    If FileSize("updates/cache_updates/DEUS_V4.1")=-2
+      AddToLogFile(FormatStr(__("Delete directory &#34;%1&#34;..."), "updates/cache_updates/DEUS_V4.1"), #True, #False, system_debug)
+      If DeleteDirectory("updates/cache_updates/DEUS_V4.1", "", #PB_FileSystem_Recursive | #PB_FileSystem_Force)
+        AddToLogFile(__("DONE!"), #False, #True, system_debug)
+      Else
+        AddToLogFile(__("ERROR!"), #False, #True, system_debug)
+      EndIf      
+    EndIf
   EndIf
 EndIf
 
@@ -224,23 +270,6 @@ For i=0 To CountProgramParameters()-1
   EndSelect
 Next i
 
-; Сравнивает два номера версий программ и возвращает True, если последняя новее
-Procedure CompareProgramsVersions(CurrentVersion.s, LatestVersion.s)
-  CVC.l = CountString(CurrentVersion, ".")
-  LVC.l = CountString(LatestVersion, ".")
-  If CVC>LVC : DVC.l = CVC : Else : DVC.l = LVC : EndIf
-  For i=1 To DVC+1
-    CVF$ = StringField(CurrentVersion, i, ".")
-    LVF$ = StringField(LatestVersion, i, ".")
-    If Val(LVF$)>Val(CVF$)
-      ProcedureReturn #True
-    ElseIf Val(LVF$)<Val(CVF$)
-      ProcedureReturn #False
-    EndIf
-  Next i
-  ProcedureReturn #False
-EndProcedure
-
 ; Обновление программы и прошивок
 Global VersionsFileName$ = "5_0_01" ;- FIXME: определить алгоритм формирования имени файла
 Global UpdateSuccess.b = #False
@@ -252,7 +281,7 @@ Procedure CheckForNewUpdates(hidden)
     ; Получаем информацию о последней версии
     AddToLogFile(FormatStr(__("Download file &#34;%1&#34;..."), "http://deus.lipkop.club/dou/index.php"), #True, #False, system_debug)
     LastUpdaterVersion$ = CurrentUpdaterVersion$
-    If ReceiveHTTPFile("http://deus.lipkop.club/dou/index.php", "updates/dou.txt")
+    If URLDownloadToFile_(#Null, "http://deus.lipkop.club/dou/index.php", "updates/dou.txt", 0, #Null) = #S_OK
       AddToLogFile(__("DONE!"), #False, #True, system_debug)
       AddToLogFile(FormatStr(__("Read last software version from file &#34;%1&#34;..."), "updates/dou.txt"), #True, #False, system_debug)
       If ReadFile(0, "updates/dou.txt")
@@ -275,7 +304,7 @@ Procedure CheckForNewUpdates(hidden)
       ; Спрашиваем пользователя, нужно ли обновляться
       If MessageRequester(__("Question"), FormatStr(__("New version %1 is available! Install the update?\n\nInformation: it is recommended to always install the latest versions of the software, as they may contain important updates, fixes for the correct installation of firmware or new functionality."), LastUpdaterVersion$), #MB_ICONQUESTION | #PB_MessageRequester_YesNo) = #PB_MessageRequester_Yes
         AddToLogFile(FormatStr(__("Download file &#34;%1&#34;..."), "http://deus.lipkop.club/dou/deus_offline_updater.exe"), #True, #False, system_debug)
-        If ReceiveHTTPFile("http://deus.lipkop.club/dou/deus_offline_updater.exe", "updates/deus_offline_updater.exe")
+        If URLDownloadToFile_(#Null, "http://deus.lipkop.club/dou/deus_offline_updater.exe", "updates/deus_offline_updater.exe", 0, #Null) = #S_OK
           AddToLogFile(__("DONE!"), #False, #True, system_debug)
           ; Запускаем установщик обновлений
           AddToLogFile(FormatStr(__("Execute file &#34;%1&#34;..."), "updates/deus_offline_updater.exe"), #True, #False, system_debug)
@@ -305,19 +334,21 @@ Procedure CheckForNewUpdates(hidden)
         AddToLogFile(__("Software update finished."), #True, #True, system_debug)
       EndIf
     EndIf
-    AddToLogFile(FormatStr(__("Delete file &#34;%1&#34;..."), "updates/dou.txt"), #True, #False, system_debug)
-    If DeleteFile("updates/dou.txt", #PB_FileSystem_Force)
-      AddToLogFile(__("DONE!"), #False, #True, system_debug)
-    Else
-      AddToLogFile(__("ERROR!"), #False, #True, system_debug)
+    If FileSize("updates/dou.txt") >= 0
+      AddToLogFile(FormatStr(__("Delete file &#34;%1&#34;..."), "updates/dou.txt"), #True, #False, system_debug)
+      If DeleteFile("updates/dou.txt", #PB_FileSystem_Force)
+        AddToLogFile(__("DONE!"), #False, #True, system_debug)
+      Else
+        AddToLogFile(__("ERROR!"), #False, #True, system_debug)
+      EndIf
     EndIf
   Else
     AddToLogFile(__("The software update is disabled in the settings."), #True, #True, system_debug)
   EndIf
   ; Обновление прошивок в локальном каталоге
+  ;-FIXME удаление файлов/каталогов
   If cache_updates > 0
     SetWindowTitle(0, __("Firmware updating..."))
-    HideGadget(1, #True) : HideGadget(0, #False)
     AddToLogFile(__("Checking the firmware update..."), #True, #True, system_debug)
     If hidden>0
       versions_url$ = "http://deus.lipkop.club/dou/updates/versions.php?show=all"
@@ -325,54 +356,96 @@ Procedure CheckForNewUpdates(hidden)
       versions_url$ = "http://deus.lipkop.club/dou/updates/versions.php"
     EndIf
     AddToLogFile(FormatStr(__("Download file &#34;%1&#34;..."), versions_url$), #True, #False, system_debug)
-    If ReceiveHTTPFile(versions_url$, "updates/cache_updates/Versions_"+VersionsFileName$+".txt")
+    If URLDownloadToFile_(#Null, versions_url$, "updates/cache_updates/Versions_"+VersionsFileName$+".txt", 0, #Null) = #S_OK
       AddToLogFile(__("DONE!"), #False, #True, system_debug)
-      Count.l = CountFileStrings("updates/cache_updates/Versions_"+VersionsFileName$+".txt")
-      If Count>0 And ReadFile(0, "updates/cache_updates/Versions_"+VersionsFileName$+".txt")
-        SetGadgetAttribute(0, #PB_ProgressBar_Maximum, Count*ListSize(FirmwareFiles()))
+      CountVersions.l = CountFileStrings("updates/cache_updates/Versions_"+VersionsFileName$+".txt", #False)
+      If CountVersions>0 And ReadFile(0, "updates/cache_updates/Versions_"+VersionsFileName$+".txt")
+        ; Перебираем все прошивки, доступные на сервере
+        CounterVersions.l = 0
         While Eof(0) = 0
-          ;- TODO: Обновление отдельных файлов по MD5 хешу
           version$ = Trim(ReadString(0))
           If Len(version$)>0
-            If FileSize("updates/cache_updates/DEUS_V5.0/"+version$) = -1 ; Если в локальном кеше такой прошивки нету
-              AddToLogFile(FormatStr(__("Get firmware &#34;%1&#34;..."), version$), #True, #True, system_debug)
-              ; Качаем ее во временный каталог
-              DownloadOfSuccessful.b = #True
-              AddToLogFile(FormatStr(__("Create directory &#34;%1&#34;..."), "updates/cache_updates/"), #True, #False, system_debug)
-              If CreateDirectory("updates/cache_updates/"+version$)
-                AddToLogFile(__("DONE!"), #False, #True, system_debug)
-              Else
-                AddToLogFile(__("ERROR!"), #False, #True, system_debug)
-              EndIf
-              ResetList(FirmwareFiles())
-              While NextElement(FirmwareFiles())
-                AddToLogFile(FormatStr(__("Download file &#34;%1&#34;..."), "http://deus.lipkop.club/dou/updates/"+version$+"/"+FirmwareFiles()\File), #True, #False, system_debug)
-                If Not ReceiveHTTPFile("http://deus.lipkop.club/dou/updates/"+version$+"/"+FirmwareFiles()\File, "updates/cache_updates/"+version$+"/"+FirmwareFiles()\File) And FirmwareFiles()\Required = #True
-                  DownloadOfSuccessful.b = #False
-                  SetGadgetState(0, GetGadgetState(0)+ListSize(FirmwareFiles())-ListIndex(FirmwareFiles()))
-                  AddToLogFile(__("ERROR!"), #False, #True, system_debug)
-                  Break 1
-                Else
-                  SetGadgetState(0, GetGadgetState(0)+1)
+            ; Меняем заголовок окна
+            CounterVersions = CounterVersions + 1
+            SetWindowTitle(0, FormatStr(__("Firmware updating (%1 of %2)..."), Str(CounterVersions), Str(CountVersions)))
+            ; Обнуляем прогресс бар
+            SetGadgetState(0, 0)
+            ; Создаем временный каталог
+            AddToLogFile(FormatStr(__("Create directory &#34;%1&#34;..."), "updates/cache_updates/"+version$+".tmp"), #True, #False, system_debug)
+            If CreateDirectory("updates/cache_updates/"+version$+".tmp")
+              AddToLogFile(__("DONE!"), #False, #True, system_debug)
+            Else
+              AddToLogFile(__("ERROR!"), #False, #True, system_debug)
+            EndIf
+            ; Получаем md5sums.txt с сервера
+            AddToLogFile(FormatStr(__("Download file &#34;%1&#34;..."), "http://deus.lipkop.club/dou/updates/"+version$+"/md5sums.txt"), #True, #False, system_debug)
+            If URLDownloadToFile_(#Null, "http://deus.lipkop.club/dou/updates/"+version$+"/md5sums.txt", "updates/cache_updates/"+version$+".tmp/md5sums.txt", 0, #Null) = #S_OK
+              AddToLogFile(__("DONE!"), #False, #True, system_debug)
+              CountSums.l = CountFileStrings("updates/cache_updates/"+version$+".tmp/md5sums.txt", #False)
+              If CountSums>0 And ReadFile(1, "updates/cache_updates/"+version$+".tmp/md5sums.txt")
+                ; Устанавливаем максимальное значение для прогресс бара
+                SetGadgetAttribute(0, #PB_ProgressBar_Maximum, CountSums)
+                ; Перебираем все файлы данной прошивки
+                CounterSums.l = 0
+                While Eof(1) = 0
+                  file_line$ = Trim(ReadString(1))
+                  If Len(file_line$) > 0
+                    ; Разбиваем строку на хеш и имя файла
+                    file_md5$  = Trim(StringField(file_line$, 1, Chr(9)))
+                    file_name$ = GetFilePart(Trim(StringField(file_line$, 2, Chr(9))))
+                    If (Len(file_md5$) > 0) And (Len(file_name$) > 0)
+                      ; Если такого файла нет в кеше прошивок, либо на сервере есть более свежая версия
+                      If (FileSize("updates/cache_updates/DEUS_V5.0/"+version$+"/"+file_name$) = -1) Or (FileFingerprint("updates/cache_updates/DEUS_V5.0/"+version$+"/"+file_name$, #PB_Cipher_MD5) <> file_md5$)
+                        ; Скачиваем его
+                        AddToLogFile(FormatStr(__("Download file &#34;%1&#34;..."), "http://deus.lipkop.club/dou/updates/"+version$+"/"+file_name$), #True, #False, system_debug)
+                        If URLDownloadToFile_(#Null, "http://deus.lipkop.club/dou/updates/"+version$+"/"+file_name$, "updates/cache_updates/"+version$+".tmp/"+file_name$, 0, #Null) = #S_OK
+                          AddToLogFile(__("DONE!"), #False, #True, system_debug)
+                          ; Если каталог с кешем прошивки отсутствует, то создаем его
+                          If FileSize("updates/cache_updates/DEUS_V5.0/"+version$) = -1
+                            AddToLogFile(FormatStr(__("Create directory &#34;%1&#34;..."), "updates/cache_updates/DEUS_V5.0/"+version$), #True, #False, system_debug)
+                            If CreateDirectory("updates/cache_updates/DEUS_V5.0/"+version$)
+                              AddToLogFile(__("DONE!"), #False, #True, system_debug)
+                            Else
+                              AddToLogFile(__("ERROR!"), #False, #True, system_debug)
+                            EndIf
+                          EndIf
+                          ; Копируем файл в основной каталог кеша прошивки
+                          AddToLogFile(FormatStr(__("Copy file &#34;%1&#34; to &#34;%2&#34;..."), "updates/cache_updates/"+version$+".tmp/"+file_name$, "updates/cache_updates/DEUS_V5.0/"+version$+"/"+file_name$), #True, #False, system_debug)
+                          If CopyFile("updates/cache_updates/"+version$+".tmp/"+file_name$, "updates/cache_updates/DEUS_V5.0/"+version$+"/"+file_name$)
+                            AddToLogFile(__("DONE!"), #False, #True, system_debug)
+                          Else
+                            AddToLogFile(__("ERROR!"), #False, #True, system_debug)
+                          EndIf
+                        Else
+                          AddToLogFile(__("ERROR!"), #False, #True, system_debug)
+                        EndIf
+                      EndIf
+                    EndIf
+                    ; Увеличиваем прогресс бар
+                    CounterSums = CounterSums + 1
+                    SetGadgetState(0, CounterSums)
+                  EndIf
+                Wend
+                CloseFile(1)
+                ; Копируем файл md5sums.txt в основной каталог кеша прошивки
+                AddToLogFile(FormatStr(__("Copy file &#34;%1&#34; to &#34;%2&#34;..."), "updates/cache_updates/"+version$+".tmp/md5sums.txt", "updates/cache_updates/DEUS_V5.0/"+version$+"/md5sums.txt"), #True, #False, system_debug)
+                If CopyFile("updates/cache_updates/"+version$+".tmp/md5sums.txt", "updates/cache_updates/DEUS_V5.0/"+version$+"/md5sums.txt")
                   AddToLogFile(__("DONE!"), #False, #True, system_debug)
-                EndIf
-              Wend
-              If DownloadOfSuccessful ; Если прошивка скачалась успешно
-                AddToLogFile(FormatStr(__("Copy directory &#34;%1&#34; to &#34;%2&#34;..."), "updates/cache_updates/"+version$, "updates/cache_updates/DEUS_V5.0/"+version$), #True, #False, system_debug)
-                If CopyDirectory("updates/cache_updates/"+version$, "updates/cache_updates/DEUS_V5.0/"+version$, "", #PB_FileSystem_Recursive | #PB_FileSystem_Force)
-                  AddToLogFile(__("DONE!"), #False, #True, system_debug)
                 Else
                   AddToLogFile(__("ERROR!"), #False, #True, system_debug)
                 EndIf
-              EndIf
-              AddToLogFile(FormatStr(__("Delete directory &#34;%1&#34;..."), "updates/cache_updates/"), #True, #False, system_debug)
-              If DeleteDirectory("updates/cache_updates/"+version$, "", #PB_FileSystem_Recursive | #PB_FileSystem_Force)
-                AddToLogFile(__("DONE!"), #False, #True, system_debug)
               Else
-                AddToLogFile(__("ERROR!"), #False, #True, system_debug)
+                AddToLogFile(FormatStr(__("Can`t open file &#34;%1&#34;!"), "updates/cache_updates/"+version$+".tmp/md5sums.txt"), #True, #True, system_debug)
               EndIf
             Else
-              SetGadgetState(0, GetGadgetState(0)+ListSize(FirmwareFiles()))
+              AddToLogFile(__("ERROR!"), #False, #True, system_debug)
+            EndIf
+            ; Удаляем временный каталог
+            AddToLogFile(FormatStr(__("Delete directory &#34;%1&#34;..."), "updates/cache_updates/"+version$+".tmp"), #True, #False, system_debug)
+            If DeleteDirectory("updates/cache_updates/"+version$+".tmp", "", #PB_FileSystem_Recursive | #PB_FileSystem_Force)
+              AddToLogFile(__("DONE!"), #False, #True, system_debug)
+            Else
+              AddToLogFile(__("ERROR!"), #False, #True, system_debug)
             EndIf
           EndIf
         Wend
@@ -402,9 +475,9 @@ If (system_updates > 0) Or (cache_updates > 0)
   ; Если интернет доступен
   If CheckInternetConnection()
     Exit.b = #False
+    ; FIXME: кнопка отмены
     OpenWindow(0, #PB_Any, #PB_Any, 300, 35, __("Updating"), #PB_Window_ScreenCentered)
-    ProgressBarGadget(0, 5, 5, 290, 25, 0, 1) : HideGadget(0, #True)
-    TextGadget(1, 5, 10, 290, 25, __("Please, wait..."), #PB_Text_Center) : HideGadget(1, #False)
+    ProgressBarGadget(0, 5, 5, 290, 25, 0, 1) : SetGadgetState(0, #PB_ProgressBar_Unknown)
     AddToLogFile(__("Check for new updates..."), #True, #True, system_debug)
     CreateThread(@CheckForNewUpdates(), cache_beta)
     Repeat
@@ -523,10 +596,14 @@ Procedure RequestProcess(ClientID.l)
 EndProcedure
 
 ; Запускаем HTTP сервер
+AddToLogFile(FormatStr(__("Create a network server on port %1..."), "8080"), #True, #False, system_debug)
 If CreateNetworkServer(0, 8080, #PB_Network_TCP)
+  AddToLogFile(__("DONE!"), #False, #True, system_debug)
   ; Запускаем DEUS UPDATE
+  AddToLogFile(FormatStr(__("Execute file %1..."), "DEUS_UPDATE.exe"), #True, #False, system_debug)
   DeusUpdate.l = RunProgram("DEUS_UPDATE.exe", "", "", #PB_Program_Open)
   If DeusUpdate
+    AddToLogFile(__("DONE!"), #False, #True, system_debug)
     Repeat
       Select NetworkServerEvent()
         Case #PB_NetworkEvent_Data
@@ -535,11 +612,11 @@ If CreateNetworkServer(0, 8080, #PB_Network_TCP)
       EndSelect
     Until Not ProgramRunning(DeusUpdate)
   Else
-    AddToLogFile(FormatStr(__("Can`t execute the %1 file!"), "DEUS_UPDATE.exe"), #True, #True, system_debug)
+    AddToLogFile(__("ERROR!"), #False, #True, system_debug)
     MessageRequester(__("Error"), FormatStr(__("Can`t execute the %1 file!"), "DEUS_UPDATE.exe"), #MB_ICONERROR)
   EndIf
 Else
-  AddToLogFile(FormatStr(__("Can`t create the http server on port %1!"), "8080"), #True, #True, system_debug)
+  AddToLogFile(__("ERROR!"), #False, #True, system_debug)
   MessageRequester(__("Error"), FormatStr(__("Can`t create the http server on port %1!"), "8080"), #MB_ICONERROR)
 EndIf
 
@@ -551,8 +628,8 @@ AddToLogFile(#Null$, #False, #True, system_debug)
 End 0
 
 ; IDE Options = PureBasic 5.60 (Windows - x86)
-; CursorPosition = 125
-; FirstLine = 102
+; CursorPosition = 178
+; FirstLine = 175
 ; Folding = -
 ; EnableThread
 ; EnableXP
