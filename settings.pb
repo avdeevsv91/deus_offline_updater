@@ -11,7 +11,8 @@ UsePNGImageDecoder() ; Для иконок
 system_updates.l = 1 ; Проверять обновления программы
 system_debug.l   = 0 ; Режим отладки
 cache_updates.l  = 1 ; Обновлять прошивки с сервера
-cache_beta.l   = 0   ; Загружать бета версии прошивок
+cache_beta.l     = 0 ; Загружать бета версии прошивок
+cache_delete.l   = 0 ; Разрешить удаление файлов
 
 ; Читаем настройки из файла
 If OpenPreferences("config.cfg", #PB_Preference_GroupSeparator)
@@ -21,6 +22,7 @@ If OpenPreferences("config.cfg", #PB_Preference_GroupSeparator)
   PreferenceGroup("cache")
   cache_updates = ReadPreferenceLong("updates",  cache_updates)
   cache_beta    = ReadPreferenceLong("beta",     cache_beta)
+  cache_delete  = ReadPreferenceLong("delete",   cache_delete)
   ClosePreferences()
 EndIf
 
@@ -29,15 +31,16 @@ CurrentUpdaterVersion$ = GetFileVersion("dou.exe", #GFVI_FileVersion, #False)
 
 ; Окно настроек
 Exit.b = #False
-If OpenWindow(0, #PB_Any, #PB_Any, 230, 185, FormatStr(__("DOU: Settings (version %1)"), CurrentUpdaterVersion$), #PB_Window_ScreenCentered)
-  FrameGadget(0, 5, 5, 220, 105, " "+__("Online updates")+" ")
-  CheckBoxGadget(7, 15, 25, 200, 25, __("Check for software updates")) : If system_updates : SetGadgetState(7, #PB_Checkbox_Checked) : Else : SetGadgetState(7, #PB_Checkbox_Unchecked) : EndIf
-  CheckBoxGadget(1, 15, 50, 200, 25, __("Download firmware updates")) : If cache_updates : SetGadgetState(1, #PB_Checkbox_Checked) : Else : SetGadgetState(1, #PB_Checkbox_Unchecked) : EndIf
-  CheckBoxGadget(2, 15, 75, 200, 25, __("Including beta versions")) : If cache_beta : SetGadgetState(2, #PB_Checkbox_Checked) : Else : SetGadgetState(2, #PB_Checkbox_Unchecked) : EndIf
-  CheckBoxGadget(3, 15, 115, 200, 25, __("Enable debug mode")) : If system_debug : SetGadgetState(3, #PB_Checkbox_Checked) : Else : SetGadgetState(3, #PB_Checkbox_Unchecked) : EndIf
-  ButtonGadget(4, 10, 150, 85, 25, __("Cancel"))
-  ButtonGadget(5, 100, 150, 85, 25, __("Save"))
-  ButtonImageGadget(6, 195, 150, 25, 25, ImageID(CatchImage(#PB_Any, ?HelpButton))) : GadgetToolTip(6, __("Help"))
+If OpenWindow(0, #PB_Any, #PB_Any, 230, 215, FormatStr(__("DOU: Settings (version %1)"), CurrentUpdaterVersion$), #PB_Window_ScreenCentered)
+  FrameGadget(0, 5, 10, 220, 125, " "+__("Online updates")+" ")
+  CheckBoxGadget(7, 15, 30, 200, 25, __("Check for software updates")) : If system_updates : SetGadgetState(7, #PB_Checkbox_Checked) : Else : SetGadgetState(7, #PB_Checkbox_Unchecked) : EndIf
+  CheckBoxGadget(1, 15, 55, 200, 25, __("Download firmware updates")) : If cache_updates : SetGadgetState(1, #PB_Checkbox_Checked) : Else : SetGadgetState(1, #PB_Checkbox_Unchecked) : EndIf
+  CheckBoxGadget(2, 15, 80, 200, 25, __("Including beta versions")) : If cache_beta : SetGadgetState(2, #PB_Checkbox_Checked) : Else : SetGadgetState(2, #PB_Checkbox_Unchecked) : EndIf
+  CheckBoxGadget(8, 15, 105, 200, 25, __("Allow file deletion")) : If cache_delete : SetGadgetState(8, #PB_Checkbox_Checked) : Else : SetGadgetState(8, #PB_Checkbox_Unchecked) : EndIf
+  CheckBoxGadget(3, 15, 140, 200, 25, __("Enable debug mode")) : If system_debug : SetGadgetState(3, #PB_Checkbox_Checked) : Else : SetGadgetState(3, #PB_Checkbox_Unchecked) : EndIf
+  ButtonGadget(4, 10, 175, 85, 25, __("Cancel"))
+  ButtonGadget(5, 100, 175, 85, 25, __("Save"))
+  ButtonImageGadget(6, 195, 175, 25, 25, ImageID(CatchImage(#PB_Any, ?HelpButton))) : GadgetToolTip(6, __("Help"))
   Repeat
     Select WaitWindowEvent(100)
       Case #PB_Event_Gadget
@@ -47,6 +50,7 @@ If OpenWindow(0, #PB_Any, #PB_Any, 230, 185, FormatStr(__("DOU: Settings (versio
           Case 5 ; Save
             cache_updates   = GetGadgetState(1)
             cache_beta      = GetGadgetState(2)
+            cache_delete    = GetGadgetState(8)
             system_updates  = GetGadgetState(7)
             system_debug    = GetGadgetState(3)
             Exit = #True
@@ -71,6 +75,7 @@ WritePreferenceLong("debug",   system_debug)
 PreferenceGroup("cache")
 WritePreferenceLong("updates", cache_updates)
 WritePreferenceLong("hidden",  cache_beta)
+WritePreferenceLong("delete",  cache_delete)
 ClosePreferences()
 
 End 0
@@ -82,8 +87,8 @@ EndDataSection
 
 
 ; IDE Options = PureBasic 5.60 (Windows - x86)
-; CursorPosition = 31
-; FirstLine = 18
+; CursorPosition = 33
+; FirstLine = 27
 ; EnableThread
 ; EnableXP
 ; EnableAdmin

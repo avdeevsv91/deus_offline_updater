@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: XP Deus Offline Updater\n"
-"POT-Creation-Date: 2018-07-30 16:03+0300\n"
-"PO-Revision-Date: 2018-07-30 16:05+0300\n"
+"POT-Creation-Date: 2018-07-31 11:15+0300\n"
+"PO-Revision-Date: 2018-07-31 11:15+0300\n"
 "Last-Translator: SoulTaker <thesoultaker48@gmail.com>\n"
 "Language-Team: http://deus.lipkop.club\n"
 "Language: ru_RU\n"
@@ -18,21 +18,21 @@ msgstr ""
 "X-Poedit-SearchPath-0: dou.pb\n"
 "X-Poedit-SearchPath-1: settings.pb\n"
 
-#: dou.pb:97 dou.pb:99
+#: dou.pb:99 dou.pb:101
 msgid "Deus Offline Updater started (version %1)."
 msgstr "Deus Offline Updater запущен (версия %1)."
 
-#: dou.pb:100
+#: dou.pb:102
 msgid "Can`t open config file! Will be used default settings."
 msgstr ""
 "Невозможно открыть файл конфигурации! Будут использованы настройки по "
 "умолчанию."
 
-#: dou.pb:101
+#: dou.pb:103
 msgid "Warning!"
 msgstr "Предупреждение!"
 
-#: dou.pb:101
+#: dou.pb:103
 msgid ""
 "This software IS NOT OFFICIAL updater and is intended for use solely for "
 "informational purposes.\n"
@@ -53,103 +53,107 @@ msgstr ""
 "\n"
 "Все действия вы производите на свой страх и риск!\n"
 
-#: dou.pb:103
+#: dou.pb:105
 msgid "Current settings:"
 msgstr "Текущие настройки:"
 
-#: dou.pb:104
+#: dou.pb:106
 msgid "Software updates = %1;"
 msgstr "Обновления программы = %1;"
 
-#: dou.pb:105
+#: dou.pb:107
 msgid "Debug mode       = %1;"
 msgstr "Режим отладки        = %1;"
 
-#: dou.pb:106
+#: dou.pb:108
 msgid "Firmware updates = %1;"
 msgstr "Обновления прошивок  = %1;"
 
-#: dou.pb:107
+#: dou.pb:109
 msgid "Beta firmwares   = %1;"
 msgstr "Бета прошивки        = %1;"
 
-#: dou.pb:111 dou.pb:119 dou.pb:138 dou.pb:194 dou.pb:233
+#: dou.pb:110
+msgid "File deletion    = %1;"
+msgstr "Удаление файлов      = %1;"
+
+#: dou.pb:114 dou.pb:122 dou.pb:141 dou.pb:198 dou.pb:237
 msgid "The directory &#34;%1&#34; does not exist! Create it..."
 msgstr "Директория &#34;%1&#34; не существует! Создаем ее..."
 
-#: dou.pb:113 dou.pb:121 dou.pb:133 dou.pb:140 dou.pb:155 dou.pb:164 dou.pb:181
-#: dou.pb:185 dou.pb:196 dou.pb:205 dou.pb:220 dou.pb:224 dou.pb:235 dou.pb:244
-#: dou.pb:285 dou.pb:289 dou.pb:308 dou.pb:314 dou.pb:330 dou.pb:340 dou.pb:360
-#: dou.pb:376 dou.pb:383 dou.pb:402 dou.pb:407 dou.pb:415 dou.pb:433 dou.pb:446
-#: dou.pb:459 dou.pb:601 dou.pb:606
+#: dou.pb:116 dou.pb:124 dou.pb:136 dou.pb:143 dou.pb:159 dou.pb:168 dou.pb:185
+#: dou.pb:189 dou.pb:200 dou.pb:209 dou.pb:224 dou.pb:228 dou.pb:239 dou.pb:248
+#: dou.pb:289 dou.pb:294 dou.pb:313 dou.pb:319 dou.pb:335 dou.pb:345 dou.pb:364
+#: dou.pb:382 dou.pb:389 dou.pb:410 dou.pb:415 dou.pb:423 dou.pb:480 dou.pb:497
+#: dou.pb:656 dou.pb:661
 msgid "DONE!"
 msgstr "ГОТОВО!"
 
-#: dou.pb:115 dou.pb:123 dou.pb:135 dou.pb:142 dou.pb:157 dou.pb:166 dou.pb:169
-#: dou.pb:187 dou.pb:191 dou.pb:198 dou.pb:207 dou.pb:226 dou.pb:230 dou.pb:237
-#: dou.pb:246 dou.pb:296 dou.pb:299 dou.pb:317 dou.pb:320 dou.pb:332 dou.pb:342
-#: dou.pb:378 dou.pb:409 dou.pb:417 dou.pb:420 dou.pb:435 dou.pb:441 dou.pb:448
-#: dou.pb:461 dou.pb:464 dou.pb:615 dou.pb:619
+#: dou.pb:118 dou.pb:126 dou.pb:138 dou.pb:145 dou.pb:161 dou.pb:170 dou.pb:173
+#: dou.pb:191 dou.pb:195 dou.pb:202 dou.pb:211 dou.pb:230 dou.pb:234 dou.pb:241
+#: dou.pb:250 dou.pb:301 dou.pb:304 dou.pb:322 dou.pb:325 dou.pb:337 dou.pb:347
+#: dou.pb:384 dou.pb:417 dou.pb:425 dou.pb:428 dou.pb:475 dou.pb:482 dou.pb:499
+#: dou.pb:502 dou.pb:670 dou.pb:675
 msgid "ERROR!"
 msgstr "ОШИБКА!"
 
-#: dou.pb:131 dou.pb:146
+#: dou.pb:134 dou.pb:149
 msgid "Clear directory &#34;%1&#34;..."
 msgstr "Очищаем директорию &#34;%1&#34;..."
 
-#: dou.pb:153 dou.pb:203 dou.pb:242 dou.pb:444
+#: dou.pb:157 dou.pb:207 dou.pb:246 dou.pb:478
 msgid "Delete directory &#34;%1&#34;..."
 msgstr "Удаляем директорию &#34;%1&#34;..."
 
-#: dou.pb:162 dou.pb:183 dou.pb:222 dou.pb:328 dou.pb:338 dou.pb:457
+#: dou.pb:166 dou.pb:187 dou.pb:226 dou.pb:333 dou.pb:343 dou.pb:495
 msgid "Delete file &#34;%1&#34;..."
 msgstr "Удаляем файл &#34;%1&#34;..."
 
-#: dou.pb:179 dou.pb:218
+#: dou.pb:183 dou.pb:222
 msgid "Rename the directory with cache &#34;%1&#34; to &#34;%2&#34;..."
 msgstr "Переименовываем каталог с кэшем &#34;%1&#34; в &#34;%2&#34;..."
 
-#: dou.pb:260 dou.pb:261
+#: dou.pb:264 dou.pb:265
 msgid "The software was successfully updated!"
 msgstr "Программа была успешно обновлена!"
 
-#: dou.pb:261 dou.pb:264
+#: dou.pb:265 dou.pb:268
 msgid "Information"
 msgstr "Информация"
 
-#: dou.pb:263 dou.pb:264
+#: dou.pb:267 dou.pb:268
 msgid "The software was successfully installed!"
 msgstr "Программа была успешно установлена!"
 
-#: dou.pb:269
+#: dou.pb:273
 msgid "Unsupported startup key: %1"
 msgstr "Неподдерживаемый ключ запуска: %1"
 
-#: dou.pb:279
+#: dou.pb:283
 msgid "Software updating"
 msgstr "Обновление программы"
 
-#: dou.pb:280
+#: dou.pb:284
 msgid "Check for software updates..."
 msgstr "Проверка обновлений программы..."
 
-#: dou.pb:282 dou.pb:306 dou.pb:358 dou.pb:381 dou.pb:400
+#: dou.pb:286 dou.pb:311 dou.pb:362 dou.pb:387 dou.pb:408
 msgid "Download file &#34;%1&#34;..."
 msgstr "Загрузка файла &#34;%1&#34;..."
 
-#: dou.pb:286
+#: dou.pb:290
 msgid "Read last software version from file &#34;%1&#34;..."
 msgstr "Получаем номер последней версии программы из файла &#34;%1&#34;..."
 
-#: dou.pb:303
+#: dou.pb:308
 msgid "A new version %1 of the software is available."
 msgstr "Доступна новая версия программы: %1."
 
-#: dou.pb:305
+#: dou.pb:310
 msgid "Question"
 msgstr "Вопрос"
 
-#: dou.pb:305
+#: dou.pb:310
 msgid ""
 "New version %1 is available! Install the update?\n"
 "\n"
@@ -163,195 +167,207 @@ msgstr ""
 "обеспечения, так как они могут содержать важные обновления, исправления для "
 "корректной установки прошивок или новый функционал."
 
-#: dou.pb:310
+#: dou.pb:315
 msgid "Execute file &#34;%1&#34;..."
 msgstr "Выполняем файл &#34;%1&#34;..."
 
-#: dou.pb:323
-msgid "The software update has been canceled by the user."
+#: dou.pb:328
+msgid "The software update has been canceled by user."
 msgstr "Обновление программы отменено пользователем."
 
-#: dou.pb:326
+#: dou.pb:331
 msgid "There are no updates available."
 msgstr "Нет доступных обновлений."
 
-#: dou.pb:334
+#: dou.pb:339
 msgid "Software update finished."
 msgstr "Обновление программы завершено."
 
-#: dou.pb:346
+#: dou.pb:351
 msgid "The software update is disabled in the settings."
 msgstr "Обновление программы отключено в настройках."
 
-#: dou.pb:351
+#: dou.pb:355
 msgid "Firmware updating..."
 msgstr "Обновление прошивок..."
 
-#: dou.pb:352
+#: dou.pb:356
 msgid "Checking the firmware update..."
 msgstr "Проверка обновлений прошивок..."
 
-#: dou.pb:370
+#: dou.pb:376
 msgid "Firmware updating (%1 of %2)..."
 msgstr "Обновление прошивок (%1 из %2)..."
 
-#: dou.pb:374 dou.pb:405
+#: dou.pb:380 dou.pb:413
 msgid "Create directory &#34;%1&#34;..."
 msgstr "Создаем директорию &#34;%1&#34;..."
 
-#: dou.pb:413 dou.pb:431
+#: dou.pb:421
 msgid "Copy file &#34;%1&#34; to &#34;%2&#34;..."
 msgstr "Копируем файл &#34;%1&#34; в &#34;%2&#34;..."
 
-#: dou.pb:438 dou.pb:455 dou.pb:514
+#: dou.pb:469 dou.pb:489 dou.pb:568
 msgid "Can`t open file &#34;%1&#34;!"
 msgstr "Невозможно открыть файл &#34;%1&#34;!"
 
-#: dou.pb:467
+#: dou.pb:472 dou.pb:493
+msgid "The &#34;%1&#34; file may be corrupted!"
+msgstr "Возможно файл &#34;%1&#34; поврежден!"
+
+#: dou.pb:505
 msgid "The firmware update is disabled in the settings."
 msgstr "Обновление прошивок отключено в настройках."
 
-#: dou.pb:470
+#: dou.pb:508
 msgid "Updates finished."
 msgstr "Обновление завершено."
 
-#: dou.pb:479
+#: dou.pb:516
 msgid "Updating"
 msgstr "Обновление"
 
-#: dou.pb:481
-msgid "Check for new updates..."
-msgstr "Проверка новых обновлений..."
-
-#: dou.pb:488
-msgid "Updating is impossible: no network connection."
-msgstr "Обновление невозможно: отсутствует подключение к сети."
-
-#: dou.pb:491
-msgid "Updating is disabled in settings."
-msgstr "Обновление отключено в настройках."
-
-#: dou.pb:495
-msgid "Updating file &#34;%1&#34;..."
-msgstr "Обновление файла &#34;%1&#34;..."
-
-#: dou.pb:504
-msgid "Add version string &#34;%1&#34;;"
-msgstr "Добавляем строку с версией &#34;%1&#34;;"
-
-#: dou.pb:510
-msgid "Can`t examine directory &#34;%1&#34;!"
-msgstr "Не удалось прочитать директорию &#34;%1&#34;!"
-
-#: dou.pb:528
-msgid "HTTP/GET file &#34;%1&#34;..."
-msgstr "HTTP/GET файл &#34;%1&#34;..."
-
-#: dou.pb:547
-msgid "OK-200 (%1 bytes)!"
-msgstr "OK-200 (%1 байт)!"
-
-#: dou.pb:550
-msgid "ERROR-404!"
-msgstr "ОШИБКА-404!"
-
-#: dou.pb:554
-msgid "404 Not Found"
-msgstr "404 Не найдено"
-
-#: dou.pb:556
-msgid "Not Found"
-msgstr "Не найдено"
-
-#: dou.pb:557
-msgid "The requested URL %1 was not found on this server."
-msgstr "Запрошенный URL %1 недоступен."
-
-#: dou.pb:566
-msgid "ERROR-404 (header location %1)!"
-msgstr "ОШИБКА-404 (перенаправляем на %1)!"
-
-#: dou.pb:578
-msgid "HTTP/UNKNOWN request..."
-msgstr "HTTP/НЕИЗВЕСТНЫЙ запрос..."
-
-#: dou.pb:580
-msgid "ERROR-400!"
-msgstr "ОШИБКА-400!"
-
-#: dou.pb:584
-msgid "400 Bad Request"
-msgstr "400 Неверный запрос"
-
-#: dou.pb:586
-msgid "Bad Request"
-msgstr "Неверный запрос"
-
-#: dou.pb:587
-msgid "Your browser sent a request that this server could not understand."
-msgstr "Ваш браузер послал запрос, который сервер не смог обработать."
-
-#: dou.pb:599
-msgid "Create a network server on port %1..."
-msgstr "Запускаем HTTP сервер на порту %1..."
-
-#: dou.pb:603
-msgid "Execute file %1..."
-msgstr "Выполняем файл %1..."
-
-#: dou.pb:616 dou.pb:620 settings.pb:64
-msgid "Error"
-msgstr "Ошибка"
-
-#: dou.pb:616
-msgid "Can`t execute the %1 file!"
-msgstr "Невозможно запустить файл %1!"
-
-#: dou.pb:620
-msgid "Can`t create the http server on port %1!"
-msgstr "Невозможно запустить HTTP сервер на порту %1!"
-
-#: dou.pb:624
-msgid "The program is completed."
-msgstr "Завершение работы программы."
-
-#: settings.pb:32
-msgid "DOU: Settings (version %1)"
-msgstr "DOU: Настройки (версия %1)"
-
-#: settings.pb:33
-msgid "Online updates"
-msgstr "Онлайн обновления"
-
-#: settings.pb:34
-msgid "Check for software updates"
-msgstr "Проверять обновления программы"
-
-#: settings.pb:35
-msgid "Download firmware updates"
-msgstr "Загружать обновления прошивок"
-
-#: settings.pb:36
-msgid "Including beta versions"
-msgstr "В том числе и бета версии"
-
-#: settings.pb:37
-msgid "Enable debug mode"
-msgstr "Включить режим отладки"
-
-#: settings.pb:38
+#: dou.pb:518 settings.pb:41
 msgid "Cancel"
 msgstr "Отмена"
 
+#: dou.pb:519
+msgid "Check for new updates..."
+msgstr "Проверка новых обновлений..."
+
+#: dou.pb:530
+msgid "The update has been canceled by user."
+msgstr "Обновление отменено пользователем."
+
+#: dou.pb:537
+msgid "Updating is impossible: no network connection."
+msgstr "Обновление невозможно: отсутствует подключение к сети."
+
+#: dou.pb:540
+msgid "Updating is disabled in settings."
+msgstr "Обновление отключено в настройках."
+
+#: dou.pb:544
+msgid "Formation of the &#34;%1&#34; file..."
+msgstr "Формирование файла &#34;%1&#34;..."
+
+#: dou.pb:558
+msgid "Add version string &#34;%1&#34;;"
+msgstr "Добавляем строку с версией &#34;%1&#34;;"
+
+#: dou.pb:564
+msgid "Can`t examine directory &#34;%1&#34;!"
+msgstr "Не удалось прочитать директорию &#34;%1&#34;!"
+
+#: dou.pb:582
+msgid "HTTP/GET file &#34;%1&#34;..."
+msgstr "HTTP/GET файл &#34;%1&#34;..."
+
+#: dou.pb:601
+msgid "OK-200 (%1 bytes)!"
+msgstr "OK-200 (%1 байт)!"
+
+#: dou.pb:604
+msgid "ERROR-404!"
+msgstr "ОШИБКА-404!"
+
+#: dou.pb:608
+msgid "404 Not Found"
+msgstr "404 Не найдено"
+
+#: dou.pb:610
+msgid "Not Found"
+msgstr "Не найдено"
+
+#: dou.pb:611
+msgid "The requested URL %1 was not found on this server."
+msgstr "Запрошенный URL %1 недоступен."
+
+#: dou.pb:620
+msgid "ERROR-404 (header location %1)!"
+msgstr "ОШИБКА-404 (перенаправляем на %1)!"
+
+#: dou.pb:632
+msgid "HTTP/UNKNOWN request..."
+msgstr "HTTP/НЕИЗВЕСТНЫЙ запрос..."
+
+#: dou.pb:634
+msgid "ERROR-400!"
+msgstr "ОШИБКА-400!"
+
+#: dou.pb:638
+msgid "400 Bad Request"
+msgstr "400 Неверный запрос"
+
+#: dou.pb:640
+msgid "Bad Request"
+msgstr "Неверный запрос"
+
+#: dou.pb:641
+msgid "Your browser sent a request that this server could not understand."
+msgstr "Ваш браузер послал запрос, который сервер не смог обработать."
+
+#: dou.pb:653
+msgid "Create a network server on port %1..."
+msgstr "Запускаем HTTP сервер на порту %1..."
+
+#: dou.pb:658
+msgid "Execute file %1..."
+msgstr "Выполняем файл %1..."
+
+#: dou.pb:671 dou.pb:676 settings.pb:68
+msgid "Error"
+msgstr "Ошибка"
+
+#: dou.pb:671
+msgid "Can`t execute the %1 file!"
+msgstr "Невозможно запустить файл %1!"
+
+#: dou.pb:676
+msgid "Can`t create the http server on port %1!"
+msgstr "Невозможно запустить HTTP сервер на порту %1!"
+
+#: dou.pb:680
+msgid "The program is completed."
+msgstr "Завершение работы программы."
+
+#: settings.pb:34
+msgid "DOU: Settings (version %1)"
+msgstr "DOU: Настройки (версия %1)"
+
+#: settings.pb:35
+msgid "Online updates"
+msgstr "Онлайн обновления"
+
+#: settings.pb:36
+msgid "Check for software updates"
+msgstr "Проверять обновления программы"
+
+#: settings.pb:37
+msgid "Download firmware updates"
+msgstr "Загружать обновления прошивок"
+
+#: settings.pb:38
+msgid "Including beta versions"
+msgstr "В том числе и бета версии"
+
 #: settings.pb:39
+msgid "Allow file deletion"
+msgstr "Разрешить удаление файлов"
+
+#: settings.pb:40
+msgid "Enable debug mode"
+msgstr "Включить режим отладки"
+
+#: settings.pb:42
 msgid "Save"
 msgstr "Сохранить"
 
-#: settings.pb:40
+#: settings.pb:43
 msgid "Help"
 msgstr "Помощь"
 
-#: settings.pb:64
+#: settings.pb:68
 msgid "Can`t create config file! The current settings will be lost."
 msgstr ""
 "Невозможно создать файл конфигурации! Текущие настройки будут потеряны."
