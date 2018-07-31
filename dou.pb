@@ -275,7 +275,7 @@ For i=0 To CountProgramParameters()-1
 Next i
 
 ; Обновление программы и прошивок
-Global VersionsFileName$ = "5_0_01" ;- FIXME: определить алгоритм формирования имени файла
+Global VersionsFileName$ = "5_0_01" ; Method:HIDBootLoader.Form1.Thread_ReadVersion()
 Global UpdateSuccess.b = #False
 Procedure CheckForNewUpdates(hidden)
   ; Обновление самой программы
@@ -579,7 +579,6 @@ If (system_updates > 0) Or (cache_updates > 0)
           Select EventGadget()
             Case 1:
               If IsThread(Thread)
-                ;- FIXME: безопасное завершение потока
                 KillThread(Thread)
                 UpdateSuccess = #True
                 AddToLogFile(__("The update has been canceled by user."), #True, #True, system_debug)
@@ -739,8 +738,8 @@ AddToLogFile(#Null$, #False, #True, system_debug)
 End 0
 
 ; IDE Options = PureBasic 5.60 (Windows - x86)
-; CursorPosition = 538
-; FirstLine = 514
+; CursorPosition = 580
+; FirstLine = 572
 ; Folding = -
 ; EnableThread
 ; EnableXP
