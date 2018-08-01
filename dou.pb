@@ -280,7 +280,7 @@ Global UpdateSuccess.b = #False
 Procedure CheckForNewUpdates(hidden)
   ; Обновление самой программы
   If system_updates > 0
-    SetWindowTitle(0, __("Software updating"))
+    SetWindowTitle(0, __("Software updating..."))
     AddToLogFile(__("Check for software updates..."), #True, #True, system_debug)
     ; Получаем информацию о последней версии
     AddToLogFile(FormatStr(__("Download file &#34;%1&#34;..."), "http://deus.lipkop.club/dou/index.php"), #True, #False, system_debug)
@@ -578,10 +578,12 @@ If (system_updates > 0) Or (cache_updates > 0)
         Case #PB_Event_Gadget:
           Select EventGadget()
             Case 1:
-              If IsThread(Thread)
-                KillThread(Thread)
-                UpdateSuccess = #True
+              If MessageRequester(__("Question"), __("Do you really want to abort the update? In some cases, this can damage the local cache."), #MB_ICONQUESTION | #PB_MessageRequester_YesNo) = #PB_MessageRequester_Yes
+                If IsThread(Thread)
+                  KillThread(Thread)
+                EndIf
                 AddToLogFile(__("The update has been canceled by user."), #True, #True, system_debug)
+                UpdateSuccess = #True
               EndIf
           EndSelect
       EndSelect
@@ -738,8 +740,8 @@ AddToLogFile(#Null$, #False, #True, system_debug)
 End 0
 
 ; IDE Options = PureBasic 5.60 (Windows - x86)
-; CursorPosition = 580
-; FirstLine = 572
+; CursorPosition = 583
+; FirstLine = 550
 ; Folding = -
 ; EnableThread
 ; EnableXP

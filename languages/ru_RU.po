@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: XP Deus Offline Updater\n"
-"POT-Creation-Date: 2018-07-31 15:07+0300\n"
-"PO-Revision-Date: 2018-07-31 15:07+0300\n"
+"POT-Creation-Date: 2018-08-01 09:33+0300\n"
+"PO-Revision-Date: 2018-08-01 09:34+0300\n"
 "Last-Translator: SoulTaker <thesoultaker48@gmail.com>\n"
 "Language-Team: http://deus.lipkop.club\n"
 "Language: ru_RU\n"
@@ -85,7 +85,7 @@ msgstr "Директория &#34;%1&#34; не существует! Создаем ее..."
 #: dou.pb:189 dou.pb:200 dou.pb:209 dou.pb:224 dou.pb:228 dou.pb:239 dou.pb:248
 #: dou.pb:289 dou.pb:294 dou.pb:313 dou.pb:319 dou.pb:335 dou.pb:345 dou.pb:364
 #: dou.pb:382 dou.pb:389 dou.pb:410 dou.pb:415 dou.pb:423 dou.pb:462 dou.pb:469
-#: dou.pb:494 dou.pb:522 dou.pb:529 dou.pb:552 dou.pb:710 dou.pb:715
+#: dou.pb:494 dou.pb:522 dou.pb:529 dou.pb:552 dou.pb:712 dou.pb:717
 msgid "DONE!"
 msgstr "ГОТОВО!"
 
@@ -93,7 +93,7 @@ msgstr "ГОТОВО!"
 #: dou.pb:191 dou.pb:195 dou.pb:202 dou.pb:211 dou.pb:230 dou.pb:234 dou.pb:241
 #: dou.pb:250 dou.pb:301 dou.pb:304 dou.pb:322 dou.pb:325 dou.pb:337 dou.pb:347
 #: dou.pb:384 dou.pb:417 dou.pb:425 dou.pb:428 dou.pb:464 dou.pb:471 dou.pb:489
-#: dou.pb:496 dou.pb:524 dou.pb:531 dou.pb:554 dou.pb:557 dou.pb:724 dou.pb:729
+#: dou.pb:496 dou.pb:524 dou.pb:531 dou.pb:554 dou.pb:557 dou.pb:726 dou.pb:731
 msgid "ERROR!"
 msgstr "ОШИБКА!"
 
@@ -131,8 +131,8 @@ msgid "Unsupported startup key: %1"
 msgstr "Неподдерживаемый ключ запуска: %1"
 
 #: dou.pb:283
-msgid "Software updating"
-msgstr "Обновление программы"
+msgid "Software updating..."
+msgstr "Обновление программы..."
 
 #: dou.pb:284
 msgid "Check for software updates..."
@@ -150,7 +150,7 @@ msgstr "Получаем номер последней версии программы из файла &#34;%1&#34;..."
 msgid "A new version %1 of the software is available."
 msgstr "Доступна новая версия программы: %1."
 
-#: dou.pb:310
+#: dou.pb:310 dou.pb:582
 msgid "Question"
 msgstr "Вопрос"
 
@@ -208,7 +208,7 @@ msgstr "Создаем директорию &#34;%1&#34;..."
 msgid "Copy file &#34;%1&#34; to &#34;%2&#34;..."
 msgstr "Копируем файл &#34;%1&#34; в &#34;%2&#34;..."
 
-#: dou.pb:483 dou.pb:544 dou.pb:622
+#: dou.pb:483 dou.pb:544 dou.pb:624
 msgid "Can`t open file &#34;%1&#34;!"
 msgstr "Невозможно открыть файл &#34;%1&#34;!"
 
@@ -236,99 +236,107 @@ msgstr "Отмена"
 msgid "Check for new updates..."
 msgstr "Проверка новых обновлений..."
 
-#: dou.pb:584
+#: dou.pb:582
+msgid ""
+"Do you really want to abort the update? In some cases, this can damage the "
+"local cache."
+msgstr ""
+"Вы действительно хотите прервать обновление? В некоторых случаях это может "
+"привести к повреждению локального кэша."
+
+#: dou.pb:585
 msgid "The update has been canceled by user."
 msgstr "Обновление отменено пользователем."
 
-#: dou.pb:591
+#: dou.pb:593
 msgid "Updating is impossible: no network connection."
 msgstr "Обновление невозможно: отсутствует подключение к сети."
 
-#: dou.pb:594
+#: dou.pb:596
 msgid "Updating is disabled in settings."
 msgstr "Обновление отключено в настройках."
 
-#: dou.pb:598
+#: dou.pb:600
 msgid "Formation of the &#34;%1&#34; file..."
 msgstr "Формирование файла &#34;%1&#34;..."
 
-#: dou.pb:612
+#: dou.pb:614
 msgid "Add version string &#34;%1&#34;;"
 msgstr "Добавляем строку с версией &#34;%1&#34;;"
 
-#: dou.pb:618
+#: dou.pb:620
 msgid "Can`t examine directory &#34;%1&#34;!"
 msgstr "Не удалось прочитать директорию &#34;%1&#34;!"
 
-#: dou.pb:636
+#: dou.pb:638
 msgid "HTTP/GET file &#34;%1&#34;..."
 msgstr "HTTP/GET файл &#34;%1&#34;..."
 
-#: dou.pb:655
+#: dou.pb:657
 msgid "OK-200 (%1 bytes)!"
 msgstr "OK-200 (%1 байт)!"
 
-#: dou.pb:658
+#: dou.pb:660
 msgid "ERROR-404!"
 msgstr "ОШИБКА-404!"
 
-#: dou.pb:662
+#: dou.pb:664
 msgid "404 Not Found"
 msgstr "404 Не найдено"
 
-#: dou.pb:664
+#: dou.pb:666
 msgid "Not Found"
 msgstr "Не найдено"
 
-#: dou.pb:665
+#: dou.pb:667
 msgid "The requested URL %1 was not found on this server."
 msgstr "Запрошенный URL %1 недоступен."
 
-#: dou.pb:674
+#: dou.pb:676
 msgid "ERROR-404 (header location %1)!"
 msgstr "ОШИБКА-404 (перенаправляем на %1)!"
 
-#: dou.pb:686
+#: dou.pb:688
 msgid "HTTP/UNKNOWN request..."
 msgstr "HTTP/НЕИЗВЕСТНЫЙ запрос..."
 
-#: dou.pb:688
+#: dou.pb:690
 msgid "ERROR-400!"
 msgstr "ОШИБКА-400!"
 
-#: dou.pb:692
+#: dou.pb:694
 msgid "400 Bad Request"
 msgstr "400 Неверный запрос"
 
-#: dou.pb:694
+#: dou.pb:696
 msgid "Bad Request"
 msgstr "Неверный запрос"
 
-#: dou.pb:695
+#: dou.pb:697
 msgid "Your browser sent a request that this server could not understand."
 msgstr "Ваш браузер послал запрос, который сервер не смог обработать."
 
-#: dou.pb:707
+#: dou.pb:709
 msgid "Create a network server on port %1..."
 msgstr "Запускаем HTTP сервер на порту %1..."
 
-#: dou.pb:712
+#: dou.pb:714
 msgid "Execute file %1..."
 msgstr "Выполняем файл %1..."
 
-#: dou.pb:725 dou.pb:730 settings.pb:68
+#: dou.pb:727 dou.pb:732 settings.pb:68
 msgid "Error"
 msgstr "Ошибка"
 
-#: dou.pb:725
+#: dou.pb:727
 msgid "Can`t execute the %1 file!"
 msgstr "Невозможно запустить файл %1!"
 
-#: dou.pb:730
+#: dou.pb:732
 msgid "Can`t create the http server on port %1!"
 msgstr "Невозможно запустить HTTP сервер на порту %1!"
 
-#: dou.pb:734
+#: dou.pb:736
 msgid "The program is completed."
 msgstr "Завершение работы программы."
 
