@@ -355,7 +355,7 @@ Procedure CheckForNewUpdates(hidden)
     SetWindowTitle(0, __("Firmware updating..."))
     AddToLogFile(__("Checking the firmware update..."), #True, #True, system_debug)
     If hidden>0
-      versions_url$ = "http://deus.lipkop.club/dou/updates/versions.php?show=all"
+      versions_url$ = "http://deus.lipkop.club/dou/updates/versions.php?hidden=true&version="+URLEncoder(CurrentUpdaterVersion$)
     Else
       versions_url$ = "http://deus.lipkop.club/dou/updates/versions.php"
     EndIf
@@ -740,8 +740,8 @@ AddToLogFile(#Null$, #False, #True, system_debug)
 End 0
 
 ; IDE Options = PureBasic 5.60 (Windows - x86)
-; CursorPosition = 583
-; FirstLine = 550
+; CursorPosition = 357
+; FirstLine = 337
 ; Folding = -
 ; EnableThread
 ; EnableXP
