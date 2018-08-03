@@ -7,12 +7,12 @@
   <section name="data">
     <explorer view="" pattern="0"/>
     <log show="1"/>
-    <lastopen date="2018-08-03 09:14" user="Пользователь" host="WORKPLACE-15"/>
+    <lastopen date="2018-08-03 14:00" user="Пользователь" host="WORKPLACE-15"/>
   </section>
   <section name="files">
     <file name="dou.pb">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
-      <fingerprint md5="9cfdf17319a328b53f2cea7ac532e7be"/>
+      <fingerprint md5="73d0cb305c34eae80ab1a8cf65ca54bf"/>
     </file>
     <file name="settings.pb">
       <config load="0" scan="1" panel="1" warn="1" lastopen="1" panelstate="+"/>
@@ -27,8 +27,8 @@
       <executable value="dou.exe"/>
       <options unicode="1" thread="1" xpskin="1" admin="1" debug="1"/>
       <icon enable="1">dou.ico</icon>
-      <compilecount enable="1" value="35"/>
-      <buildcount enable="1" value="7"/>
+      <compilecount enable="1" value="36"/>
+      <buildcount enable="1" value="8"/>
       <versioninfo enable="1">
         <field0 value="1.4.%BUILDCOUNT.%COMPILECOUNT"/>
         <field1 value="1.4.%BUILDCOUNT.%COMPILECOUNT"/>
@@ -52,8 +52,8 @@
       <executable value="settings.exe"/>
       <options unicode="1" thread="1" xpskin="1"/>
       <icon enable="1">settings.ico</icon>
-      <compilecount enable="1" value="27"/>
-      <buildcount enable="1" value="7"/>
+      <compilecount enable="1" value="28"/>
+      <buildcount enable="1" value="8"/>
       <versioninfo enable="1">
         <field0 value="1.4.%BUILDCOUNT.%COMPILECOUNT"/>
         <field2 value="LipKop.club"/>

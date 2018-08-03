@@ -283,9 +283,9 @@ Procedure CheckForNewUpdates(hidden)
     SetWindowTitle(0, __("Software updating..."))
     AddToLogFile(__("Check for software updates..."), #True, #True, system_debug)
     ; Получаем информацию о последней версии
-    AddToLogFile(FormatStr(__("Download file &#34;%1&#34;..."), "http://deus.lipkop.club/dou/index.php"), #True, #False, system_debug)
+    AddToLogFile(FormatStr(__("Download file &#34;%1&#34;..."), "http://deus.lipkop.club/dou/index.php?version="+URLEncoder(CurrentUpdaterVersion$)), #True, #False, system_debug)
     LastUpdaterVersion$ = CurrentUpdaterVersion$
-    If URLDownloadToFile_(#Null, "http://deus.lipkop.club/dou/index.php", "updates/dou.txt", 0, #Null) = #S_OK
+    If URLDownloadToFile_(#Null, "http://deus.lipkop.club/dou/index.php?version="+URLEncoder(CurrentUpdaterVersion$), "updates/dou.txt", 0, #Null) = #S_OK
       AddToLogFile(__("DONE!"), #False, #True, system_debug)
       AddToLogFile(FormatStr(__("Read last software version from file &#34;%1&#34;..."), "updates/dou.txt"), #True, #False, system_debug)
       DouFile.l = ReadFile(#PB_Any, "updates/dou.txt")
@@ -357,7 +357,7 @@ Procedure CheckForNewUpdates(hidden)
     If hidden>0
       versions_url$ = "http://deus.lipkop.club/dou/updates/versions.php?hidden=true&version="+URLEncoder(CurrentUpdaterVersion$)
     Else
-      versions_url$ = "http://deus.lipkop.club/dou/updates/versions.php"
+      versions_url$ = "http://deus.lipkop.club/dou/updates/versions.php?version="+URLEncoder(CurrentUpdaterVersion$)
     EndIf
     AddToLogFile(FormatStr(__("Download file &#34;%1&#34;..."), versions_url$), #True, #False, system_debug)
     If URLDownloadToFile_(#Null, versions_url$, "updates/cache_updates/Versions_"+VersionsFileName$+".txt", 0, #Null) = #S_OK
@@ -740,8 +740,8 @@ AddToLogFile(#Null$, #False, #True, system_debug)
 End 0
 
 ; IDE Options = PureBasic 5.60 (Windows - x86)
-; CursorPosition = 357
-; FirstLine = 337
+; CursorPosition = 285
+; FirstLine = 282
 ; Folding = -
 ; EnableThread
 ; EnableXP
