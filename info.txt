@@ -1,8 +1,8 @@
 XP Deus Offline Updater (version: {PRODUCT_VERSION})
  
 ============================================
-Author: SoulTaker
-E-Mail: thesoultaker48@gmail.com
+Author: Sergey Avdeev
+E-Mail: avdeevsv91@gmail.com
 Home Page: http://deus.lipkop.club/
 ============================================
  

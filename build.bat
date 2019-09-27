@@ -7,9 +7,9 @@ set PATH=%PATH%;C:\Program Files\PureBasic
 echo ****************************************
 echo Deus Offline Updater (build.bat)
 echo.
-echo Author: SoulTaker
+echo Author: Sergey Avdeev
 echo URL: http://deus.lipkop.club
-echo E-Mail: thesoultaker48@gmail.com
+echo E-Mail: avdeevsv91@gmail.com
 echo ****************************************
 echo.
 echo With this tool, you can build a project from the source code.

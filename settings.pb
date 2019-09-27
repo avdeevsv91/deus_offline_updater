@@ -106,8 +106,8 @@ EndDataSection
 ; VersionField6 = Unofficial XP Deus updater: settings
 ; VersionField7 = deus_offline_updater_settings
 ; VersionField8 = %EXECUTABLE
-; VersionField9 = SoulTaker
-; VersionField13 = thesoultaker48@gmail.com
+; VersionField9 = Sergey Avdeev
+; VersionField13 = avdeevsv91@gmail.com
 ; VersionField14 = http://deus.lipkop.club
 ; VersionField15 = VOS_NT_WINDOWS32
 ; VersionField16 = VFT_APP
