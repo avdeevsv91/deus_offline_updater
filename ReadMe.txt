@@ -1,9 +1,9 @@
-XP Deus Offline Updater (version: {PRODUCT_VERSION})
+XP Deus Offline Updater (version: 1.1.0.0)
  
 ============================================
 Author: Sergey Avdeev
 E-Mail: avdeevsv91@gmail.com
-Home Page: http://deus.lipkop.club/
+Home Page: http://io-net.ru
 ============================================
  
 Warning!
