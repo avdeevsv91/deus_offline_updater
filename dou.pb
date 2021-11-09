@@ -146,6 +146,6 @@ End 0
 ; VersionField8 = %EXECUTABLE
 ; VersionField9 = Sergey Avdeev
 ; VersionField13 = avdeevsv91@gmail.com
-; VersionField14 = http://io-net.ru
+; VersionField14 = http://kasito.ru
 ; VersionField15 = VOS_NT
 ; VersionField16 = VFT_APP

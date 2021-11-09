@@ -3,7 +3,7 @@ XP Deus Offline Updater (version: 1.1.0.0)
 ============================================
 Author: Sergey Avdeev
 E-Mail: avdeevsv91@gmail.com
-Home Page: http://io-net.ru
+Home Page: http://kasito.ru
 ============================================
  
 Warning!
